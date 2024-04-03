@@ -10,7 +10,7 @@ use Controller\BaseController;
 /**
  * Summary of ProductController
  */
-class OrderController extends BaseController
+class CommandeController extends BaseController
 {
 
     /**

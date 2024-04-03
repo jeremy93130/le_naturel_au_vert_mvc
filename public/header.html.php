@@ -20,16 +20,14 @@
         </script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script src="public/assets/js/ajax.js"></script>
+        <script src="public/assets/js/add_delete_cart.js"></script>
+        <script src="public/assets/js/commande.js"></script>
+        <script src="public/assets/js/password.js"></script>
+        <script src="public/assets/js/structure.js"></script>
         <title><?= $h1 ?? "Projet" ?></title>
     </head>
 
     <body>
-        <div class="container-fluid">
-            <div class="container">
-                <div class="row">
                     <?php include __DIR__ . "/nav.html.php"; ?>
 
                     <?php include __DIR__ . "/../views/messages.html.php";?>
-
-                    <h1><?= $h1 ?? "Bienvenue au projet" ?></h1>

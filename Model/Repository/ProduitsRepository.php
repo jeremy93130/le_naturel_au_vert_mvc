@@ -113,4 +113,14 @@ class ProduitsRepository extends BaseRepository
         return null;
     }
 
+    public function paginate($limit, $offset)
+    {
+        $query = "SELECT * FROM produits LIMIT :limit OFFSET :offset";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(':limit', $limit);
+        $statement->bindValue(':offset', $offset);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
 }

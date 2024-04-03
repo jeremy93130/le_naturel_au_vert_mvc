@@ -5,27 +5,27 @@
 namespace Controller\Admin;
 
 use Controller\BaseController;
-use Model\Entity\Product;
+use Model\Entity\Produits;
 use Model\Entity\Category;
-use Form\ProductHandleRequest;
-use Model\Repository\ProductRepository;
+use Form\ProduitsHandleRequest;
+use Model\Repository\ProduitsRepository;
 use Model\Repository\CategoryRepository;
 use Service\ImageHandler;
 
 /**
  * Summary of ProductController
  */
-class ProductController extends BaseController
+class ProduitsController extends BaseController
 {
-    private ProductRepository $productRepository;
-    private ProductHandleRequest $form;
-    private Product $product;
+    private ProduitsRepository $productRepository;
+    private ProduitsHandleRequest $form;
+    private Produits $product;
 
     public function __construct()
     {
-        $this->productRepository = new ProductRepository;
-        $this->form = new ProductHandleRequest;
-        $this->product = new Product;
+        $this->productRepository = new ProduitsRepository;
+        $this->form = new ProduitsHandleRequest;
+        $this->product = new Produits;
     }
 
     public function list()
@@ -40,31 +40,6 @@ class ProductController extends BaseController
 
     public function new()
     {
-        $product = $this->product;
-
-        $this->form->handleInsertForm($product);
-
-        if ($this->form->isSubmitted() && $this->form->isValid()) {
-            
-            ImageHandler::handelPhoto($product);
-            
-            $this->productRepository->insertProduct($product);
-            
-            return redirection(addLink("home"));
-        }
-
-        $errors = $this->form->getEerrorsForm();
-
-        $category = new Category;        
-        $categorieRepository = new CategoryRepository;
-        $categories = $categorieRepository->findAll($category);
-
-        return $this->render("product/form.html.php", [
-            "h1" => "Ajouter un nouveau produit",
-            "product" => $product,
-            "errors" => $errors,
-            "categories"=> $categories
-        ]);
     }
 
     /**
@@ -77,7 +52,7 @@ class ProductController extends BaseController
         if (!empty($id) && is_numeric($id)) {
 
             /**
-             * @var Product
+             * @var Produits
              */
             $product = $this->product;
 

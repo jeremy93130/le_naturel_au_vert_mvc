@@ -2,50 +2,59 @@
 
 namespace Service;
 
-use Model\Repository\ProductRepository;
+use Model\Entity\Produits;
+use Model\Repository\ProduitsRepository;
 
 /**
  * Summary of ProductController
  */
 class CartManager
 {
-    private ProductRepository $productRepository;
+    private ProduitsRepository $productRepository;
 
     public function __construct()
     {
-        $this->productRepository = new ProductRepository;
+        $this->productRepository = new ProduitsRepository;
     }
 
-    public function addCart($id){
-        $quantity = $_GET["qte"] ?? 1;
+    public function addCart($id): void
+    {
+        $quantity = 1;
         $pr = $this->productRepository;
-        $product = $pr->findById('product', $id);
+        $product = $pr->findById('produits', $id);
 
-        if(!isset($_SESSION["cart"]))
+        if (!$product) {
+            echo json_encode(['message' => 'Plante introuvable']);
+        }
+
+        if (!isset($_SESSION["cart"])) {
             $_SESSION["cart"] = [];
-        
-        $cart = $_SESSION["cart"]; // on récupère ce qu'il y a dans le cart en session
-
-        $productDejaDanscart = false;
-        foreach ($cart as $indice => $value) {
-            if ($product->getId() == $value["product"]->getId()) {
-                $cart[$indice]["quantity"] += $quantity;
-                $productDejaDanscart = true;
-                break;  // pour sortir de la boucle foreach
+        } else {
+            $panier = $_SESSION['cart'];
+            if (array_key_exists($id, $panier)) {
+                echo json_encode(['doublon' => "Ce produit est déjà dans votre panier"]);
+                return;
             }
         }
-        
-        if (!$productDejaDanscart) {
-            $cart[] = ["quantity" => $quantity, "product" => $product];  // on ajoute une value au cart => $cart est un array d'array
-        }
-        
-        $_SESSION["cart"] = $cart;  // je remets $cart dans la session, à l'indice 'cart'
-        
+
+        $panier[$id] = [
+            'id' => $product->getId(),
+            'nom' => $product->getNomProduit(),
+            'prix' => $product->getPrixProduit(),
+            'image' => $product->getImage(),
+            'nbArticles' => $quantity,
+            'categorie' => $product->getCategorie(),
+            'lot' => $product->getLot()
+        ];
+
+        $_SESSION["cart"] = $panier;  // je remets $panier dans la session, à l'indice 'cart'
+
         $nb = 0;
-        foreach ($cart as $value){
-            $nb += $value["quantity"];
+        foreach ($panier as $value) {
+            $nb += $value["nbArticles"];
         }
         $_SESSION["nombre"] = $nb;
-        return $nb;
+
+        echo json_encode(['message' => 'Votre produit a bien été ajouté au panier', 'totalQuantite' => $nb]);
     }
 }

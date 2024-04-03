@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Entity;
+namespace Model\Entity;
+
 use Model\Entity\BaseEntity;
 
 class Images extends BaseEntity

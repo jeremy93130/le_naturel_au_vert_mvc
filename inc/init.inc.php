@@ -5,12 +5,12 @@
 require "autoload.php";
 session_start();
 include __DIR__ . "/functions.inc.php";
-define("ROOT", "/app_shopping/");
+define("ROOT", "/le_naturel_au_vert_mvc/");
 define("ROLE_USER", "ROLE_USER");
-define("ROLE_ADMIN", "ROLE_ADMIN"); 
-define("INSERTED", "Enregistrer"); 
-define("UPDATED", "Modifier"); 
-define("DELETED", "Spprimr"); 
+define("ROLE_ADMIN", "ROLE_ADMIN");
+define("INSERTED", "Enregistrer");
+define("UPDATED", "Modifier");
+define("DELETED", "Supprimer");
 define("UPLOAD_LOGOS_IMG", "uploads/logos/");
 define("UPLOAD_PLANTES_IMG", "uploads/plantes/");
 define("UPLOAD_GRAINES_IMG", "uploads/graines/");

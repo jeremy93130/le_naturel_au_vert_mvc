@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use Model\Entity\BaseEntity;
 use Model\Entity\User;
 use Model\Entity\Commande;
 
-class UserAdresseCommande
+class UserAdresseCommande extends BaseEntity
 {
     private ?User $user;
     private ?Adresse $adresse;

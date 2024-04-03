@@ -9,7 +9,7 @@ use Model\Repository\ProduitsRepository;
 /**
  * Summary of ProductController
  */
-class ProductController extends BaseController
+class ProduitsController extends BaseController
 {
     public function list()
     {

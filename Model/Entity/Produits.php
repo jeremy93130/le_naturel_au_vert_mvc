@@ -1,4 +1,5 @@
 <?php
+
 namespace Model\Entity;
 
 use Model\Entity\Category;
@@ -8,7 +9,6 @@ class Produits extends BaseEntity
     private $nom_produit;
     private $description_produit;
     private $prix_produit;
-    private $price;
     private $stock;
     private $image;
     private $caracteristiques;
@@ -48,18 +48,6 @@ class Produits extends BaseEntity
     public function setPrixProduit($prix_produit)
     {
         $this->prix_produit = $prix_produit;
-
-        return $this;
-    }
-
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function setPrice($price)
-    {
-        $this->price = $price;
 
         return $this;
     }

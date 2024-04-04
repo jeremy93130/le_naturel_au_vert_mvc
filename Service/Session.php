@@ -58,4 +58,12 @@ abstract class Session
     {
         unset($_SESSION[$content]);
     }
+
+
+    public static function getPanier()
+    {
+        if(isset($_SESSION['cart'])){
+            return $_SESSION['cart'];
+        }
+    }
 }

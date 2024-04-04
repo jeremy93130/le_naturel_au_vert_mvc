@@ -4,6 +4,7 @@
  */
 namespace Controller;
 
+use Model\Repository\ProduitsRepository;
 use Service\CartManager;
 use Service\BackgroundManager;
 
@@ -12,6 +13,11 @@ use Service\BackgroundManager;
  */
 class PanierController extends BaseController
 {
+    private ProduitsRepository $produitsRepository;
+    public function __construct()
+    {
+        $this->produitsRepository = new ProduitsRepository;
+    }
 
     public function addToCart(): void
     {
@@ -39,23 +45,24 @@ class PanierController extends BaseController
         // unset($_SESSION['cart']);
         // unset($_SESSION['nombre']);
         $totalGeneral = 0;
-
+        $cssRed = '';
         $produits = isset($_SESSION['cart']) ? $_SESSION['cart'] : null;
-
         if (isset($produits)) {
             foreach ($produits as &$p) {
                 $totalGeneral += $p['prix'] * $p['nbArticles'];
                 $cheminDossier = BackgroundManager::chooseProductFolder($p['categorie']);
-
                 // Ajouter le chemin du dossier à chaque produit
                 $p['cheminDossier'] = $cheminDossier;
             }
             $_SESSION['totalGeneral'] = $totalGeneral;
         }
 
+
+
         $this->render("panier/panier.html.php", [
             "h1" => "Fiche cart",
-            'produits' => $produits
+            'produits' => $produits,
+            'cssRed' => $cssRed
         ]);
 
     }
@@ -71,7 +78,14 @@ class PanierController extends BaseController
 
     public function delete($id)
     {
+        $cm = new CartManager;
+        $cm->deleteFromCart($id);
+    }
 
+    public function deleteAll()
+    {
+        $cm = new CartManager;
+        $cm->deleteAll();
     }
 
 }

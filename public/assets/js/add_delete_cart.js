@@ -1,6 +1,6 @@
 // Fonction ajout panier
-var nbArticles = $("#nb_articles");
 function ajouterAuPanier(url, id, nom, prix, image, clickedIcon) {
+  let nbArticles = $("#nb_articles");
   var ajoutPanier = $("#ajout-panier");
   var produitData = {
     id: id,
@@ -17,10 +17,10 @@ function ajouterAuPanier(url, id, nom, prix, image, clickedIcon) {
     success: function (response) {
       $("#ajout-panier").empty();
       if (response.message) {
-        console.log(nbArticles);
         ajoutPanier.addClass("alert alert-success");
         ajoutPanier.append("<p>" + response.message + "</p>");
         nbArticles.text(response.totalQuantite);
+
         $(clickedIcon).addClass("selected_cart");
       } else if (response.doublon) {
         ajoutPanier.addClass("alert alert-warning");
@@ -44,6 +44,7 @@ function supprimerArticleDuPanier(url, id) {
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify({ id: id }),
+    dataType: "json",
     success: function (response) {
       if (response && response.success) {
         location.reload();
@@ -58,10 +59,23 @@ function supprimerArticleDuPanier(url, id) {
   });
 }
 
+function viderPanier(url) {
+  $.ajax({
+    url: url,
+    type: "POST",
+    dataType: "json",
+    success: function (response) {
+      if (response.success) {
+        window.location.reload();
+      }
+    },
+  });
+}
+
 $(document).ready(function () {
   $("#ajouter_panier_link").click(function (e) {
     e.preventDefault();
-    var url = $(this).attr("href");
+    var url = $(this).data("url");
     var id = $(this).data("id");
     var nom = $(this).data("nom");
     var prix = $(this).data("prix");

@@ -9,8 +9,7 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {
                 <i class="fa-solid fa-arrow-right" style="color: #d40c0c;"></i>
             </a>
         </div>
-    </div>
-<?php } else { ?>
+    </div><?php } else { ?>
     <div class="table_panier_div container-height">
         <table class="table mt-4 table_panier">
             <thead>
@@ -20,40 +19,34 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {
                     <th scope="col">Prix Unitaire</th>
                     <th scope="col">Quantité</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($produits as $p) { ?>
-                    <tr class="delete_article">
-                        <td>
-                            <a href="<?= addLink('home', 'details', $p['id']) ?>&categorie=<?= $p['categorie'] ?>"><img
-                                    src="<?= $p['cheminDossier'] . $p['image'] ?>" alt="<?= $p['nom']; ?>"
-                                    data-categorie="<?= $p['categorie']; ?>" /></a>
-                        </td>
-                        <td>
-                            <?= $p['nom']; ?>
-                        </td>
-                        <td>
-                            <?= $p['prix']; ?>€
-                        </td>
-                        <td class="quantite-input" id="quantite-<?= $p['id']; ?>">
-                            <button type="button" data-article="<?= $p['id']; ?>" class="quantity-change moins none"
-                                data-delta="-1">-</button>
-                            <input type="text" value="<?= $p['nbArticles'] ?>" data-article="<?= $p['id'] ?>" class="quantity"
-                                name="quantity_produit" id="quantity-<?= $p['id'] ?>" data-lot="<?= $p['lot']; ?>" />
-                            <button type="button" data-article="<?= $p['id'] ?>" class="quantity-change plus none"
-                                data-delta="1">+</button>
-                        </td>
-                        <td class="total-column">
-                            <?= $p['prix'] ?>
-                            €
-                        </td>
-                        <td class="">
-                            <a id="link-supp" class="supprimer_article"
-                                onclick="supprimerArticleDuPanier('<?= addLink('panier', 'delete', $p['id']); ?>')">Supprimer</a>
-                        </td>
-                    </tr>
+                        <tr class="delete_article">
+                            <td>
+                                <a href="<?= addLink('home', 'details', $p['id']) ?>&categorie=<?= $p['categorie'] ?>"><img src="<?= $p['cheminDossier'] . $p['image'] ?>" alt="<?= $p['nom']; ?>" data-categorie="<?= $p['categorie']; ?>"/></a>
+                            </td>
+                            <td>
+                                <?= $p['nom']; ?>
+                            </td>
+                            <td>
+                                <?= $p['prix']; ?>€
+                            </td>
+                            <td class="quantite-input" id="quantite-<?= $p['id']; ?>">
+                                <button type="button" data-article="<?= $p['id']; ?>" class="quantity-change moins none" data-delta="-1">-</button>
+                                <input type="text" value="<?= $p['nbArticles'] ?>" data-article="<?= $p['id'] ?>" class="quantity" name="quantity_produit" id="quantity-<?= $p['id'] ?>" data-lot="<?= $p['lot']; ?>"/>
+                                <button type="button" data-article="<?= $p['id'] ?>" class="quantity-change plus none" data-delta="1">+</button>
+                            </td>
+                            <td class="total-column">
+                                <?= $p['prix'] ?>
+                                €
+                            </td>
+                            <td class="">
+                                <a id="link-supp" class="supprimer_article" onclick="supprimerArticleDuPanier('<?= addLink('panier', 'delete', $p['id']); ?>')">Supprimer</a>
+                            </td>
+                        </tr>
                 <?php } ?>
             </tbody>
             <tfoot>
@@ -63,11 +56,12 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {
                         <?= $_SESSION['totalGeneral'] ?>
                         €
                     </td>
-                    <td>
-                        <a id="commander">Passer la commande</a>
+                    <td colspan="2">
+                        <a id="commander" data-url="<?= addLink('commande','index') ?>">Passer la commande</a>
+                        <a onclick="viderPanier('<?= addLink('panier', 'deleteAll'); ?>')">Vider le panier</a>
                     </td>
                 </tr>
             </tfoot>
         </table>
-    </div>
-<?php } ?>
+    </div><?php } ?>
+

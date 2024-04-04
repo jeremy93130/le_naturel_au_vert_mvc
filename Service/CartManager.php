@@ -57,4 +57,42 @@ class CartManager
 
         echo json_encode(['message' => 'Votre produit a bien été ajouté au panier', 'totalQuantite' => $nb]);
     }
+
+    public static function isInCart($productId)
+    {
+        $sessionPanier = $_SESSION['cart'] ?? [];
+        foreach ($sessionPanier as $session) {
+            if ($session['id'] == $productId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static function deleteFromCart($id)
+    {
+        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $key => $cart) {
+                if ($cart['id'] == $id) {
+                    unset($_SESSION['cart'][$key]);
+                    $_SESSION['nombre']--;
+                    if ($_SESSION['nombre'] == 0) {
+                        $_SESSION['nombre'] = "";
+                    }
+                    break;
+                }
+            }
+            echo json_encode(['success' => "Article bien supprimé"]);
+        } else {
+            echo json_encode(['erreur' => 'une erreur s\'est produite']);
+        }
+    }
+
+    public static function deleteAll()
+    {
+        unset($_SESSION['cart']);
+        unset($_SESSION['nombre']);
+        echo json_encode(['success' => 'Super']);
+    }
 }

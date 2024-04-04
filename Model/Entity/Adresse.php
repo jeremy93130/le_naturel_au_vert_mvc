@@ -1,22 +1,19 @@
 <?php
+namespace Model\Entity;
 
-namespace App\Entity;
-
-use Model\Entity\User;
-use Model\Entity\Commande;
 use Model\Entity\BaseEntity;
 
 class Adresse extends BaseEntity
 {
-    private  $nomComplet;
-    private  $adresse;
+    private $nomComplet;
+    private $adresse;
     private ?int $codePostal;
-    private  $ville;
-    private  $pays;
-    private  $instruction_livraison;
+    private $ville;
+    private $pays;
+    private $instruction_livraison;
     private $client_id;
-    private  $telephone;
-    private  $type;
+    private $telephone;
+    private $type;
     private $userAdresseCommande_id;
     private $commande_id;
 
@@ -65,12 +62,12 @@ class Adresse extends BaseEntity
         return $this;
     }
 
-    public function getPays():string
+    public function getPays(): string
     {
         return $this->pays;
     }
 
-    public function setPays(?string $pays):static
+    public function setPays(?string $pays): static
     {
         $this->pays = $pays;
 

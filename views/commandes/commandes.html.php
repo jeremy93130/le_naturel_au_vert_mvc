@@ -1,70 +1,60 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}
-  commandes
-{% endblock %}
-
-{% block body %}
-  {% include 'navbar/navbar.html.twig' %}
-  <div class="container-height">
-    {% if successMessage is same as(true) %}
+<div class="container-height">
+  <?php if (isset($_SESSION['confirmation_paiement'])) { ?>
       <div class="container text-center text-warning">
-        {% for message in app.flashes('success') %}
-          <h1>{{ message }}</h1>
-        {% endfor %}
+        <h1>{{ message }}</h1>
         <p>
           À très vite chez
           <span class="titre-site">Le Naturel Au Vert</span>
         </p>
         <a href="{{ path('app_home') }}" class="text-warning">Retour à l'accueil</a>
       </div>
-    {% else %}
-      {% if app.session.get('commande') %}
-        <div class="recap">
-          <h1>Récapitulatif de la commande</h1>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Produit</th>
-                <th class="td-quantite">Quantité</th>
-                <th class="td-quantite">Lot de :</th>
-                <th class="td-prix">Total HT</th>
-                <th class="td-prix">Total TTC</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for data in dataCommande['commandeData'] %}
+  <?php } else { ?>
+      <?php if (isset($_SESSION['commande'])) ?>
+      <div class="recap">
+        <h1>Récapitulatif de la commande</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th class="td-quantite">Quantité</th>
+              <th class="td-quantite">Lot de :</th>
+              <th class="td-prix">Total HT</th>
+              <th class="td-prix">Total TTC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($data as $d) { ?>
                 <tr>
-                  <td class="td-nom">{{ data.alt }}</td>
-                  <td class="td-quantite">{{ data.quantite }}</td>
-                  <td class="td-quantite">{{ data.lot * data.quantite }}</td>
-                  <td class="td-prix">{{ data.prix * data.quantite }}€</td>
-                  <td class="td-prix">{{ data.prixTTC * data.quantite }}€</td>
+                  <td class="td-nom"><?= $d['alt']; ?></td>
+                  <td class="td-quantite"><?= $d['quantite']; ?></td>
+                  <td class="td-quantite"><?= $d['lot'] * $d['quantite'] ?></td>
+                  <td class="td-prix"><?= $d['prix'] ?>€</td>
+                  <td class="td-prix"><?= $d['prixTTC'] ?>€</td>
                 </tr>
-              {% endfor %}
-              {% if app.session.get('commande')['totalGeneral'] < 50 %}
+            <?php } ?>
+            <?php if ($totalGeneral < 50) { ?>
                 <tr>
                   <td class="td-nom" colspan="3">Frais de Livraison</td>
                   <td class="td-prix">3.33€</td>
                   <td class="td-prix">3.99€</td>
                 </tr>
-              {% else %}
+            <?php } else { ?>
                 <tr>
                   <td class="td-nom" colspan="3">Frais de Livraison</td>
                   <td class="td-prix" colspan="2">Offerts</td>
                 </tr>
-              {% endif %}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td class="ttG"></td>
-                <td class="ttG"></td>
-                <td class="ttG"></td>
-                <td class="ttG" colspan="2">{{ dataCommande.totalGeneral }}€</td>
-              </tr>
-            </tfoot>
-          </table>
-          {% if app.session.get('adresseValide') or adresseInfos is not null %}
+            <?php } ?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="ttG"></td>
+              <td class="ttG"></td>
+              <td class="ttG"></td>
+              <td class="ttG" colspan="2"><?= $totalGeneral ?>€</td>
+            </tr>
+          </tfoot>
+        </table>
+        <?php if (isset($_SESSION['adresseValide']) || (isset($adresseInfos) && $adresseInfos !== null)) { ?>
             <div class="adresse_livraison_facture">
               <div>
                 <h3 class="livraison_factureh3">Adresse de Facturation :</h3>
@@ -98,28 +88,24 @@
                 </div>
               </div>
             </div>
-          {% else %}
+        <?php } else { ?>
             <div class="adresse_livraison_facture">
               <div class="adresse_vierge">
                 <div class="adresse_link">
-                  <a class="paiement_links" href="{{ path('app_adresse') }}">Définir l'adresse de livraison</a>
+                  <a class="paiement_links" href="<?= addLink('adresse', 'index'); ?>">Définir l'adresse de livraison</a>
                 </div>
               </div>
             </div>
-            {% if erreur_adresse is not null %}
-              <div>
-                <p class="alert alert-danger text-center">{{ erreur_adresse }}</p>
-              </div>
-            {% endif %}
-          {% endif %}
+            <?php if (isset($erreur_adresse) && $erreur_adresse !== null) { ?>
+                <div>
+                  <p class="alert alert-danger text-center">{{ erreur_adresse }}</p>
+                </div>
+            <?php }
+        } ?>
           <div class="paiement_div">
-            <a class="paiement_links" href="{{ path('app_paiement', { ids: dataCommande['commandeData']|column('id')|join(','), total: dataCommande.totalGeneral }) }}"><img src="{{ asset('images/logos/Logo_CB.png') }}" /></a>
+            <a class="paiement_links" href="<?php echo 'app_paiement.php?ids=' . implode(',', array_column($dataCommande['commandeData'], 'id')) . '&total=' . $dataCommande['totalGeneral']; ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
           </div>
         </div>
-      {% endif %}
-    {% endif %}
+    <?php } ?>
   </div>
-  {% block footer %}
-    {% include 'footer/footer.html.twig' %}
-  {% endblock %}
-{% endblock %}
+

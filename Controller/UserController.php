@@ -133,7 +133,7 @@ class UserController extends BaseController
              */
             $user = $this->getUser();
 
-                $this->setMessage("erreur",  $user->getSurname() . " , vous êtes déjà connecté");
+                $this->setMessage("erreur",  $user->getPrenom() . " , vous êtes déjà connecté");
             return redirection(addLink("home"));
         }
 
@@ -144,7 +144,7 @@ class UserController extends BaseController
              * @var User
              */
             $user = $this->getUser();
-            $this->setMessage("succes", "Bonjour " . $user->getSurname() .", vous êtes connecté");
+            $this->setMessage("succes", "Bonjour " . $user->getPrenom() .", vous êtes connecté");
             redirection(addLink("home"));
             return redirection(addLink("home"));
         }

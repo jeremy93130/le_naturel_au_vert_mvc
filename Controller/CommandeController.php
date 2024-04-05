@@ -6,32 +6,27 @@
 
 namespace Controller;
 
-use Form\AdresseHandleRequest;
-use Model\Repository\CommandeRepository;
-use Model\Repository\ProduitsRepository;
-use Model\Repository\DetailCommandeRepository;
+use Model\Entity\User;
+use Model\Repository\AdresseRepository;
 use Service\CommandeManager;
+use Service\Session;
 
 /**
  * Summary of OrderController
  */
 class CommandeController extends BaseController
 {
-    private ProduitsRepository $productRepository;
-    private CommandeRepository $orderRepository;
-    private DetailCommandeRepository $detailRepository;
-    private AdresseHandleRequest $adresseHandleRequest;
 
+    private AdresseRepository $adresseRepository;
+    private User $user;
     public function __construct()
     {
-        $this->productRepository = new ProduitsRepository;
-        $this->orderRepository = new CommandeRepository;
-        $this->detailRepository = new DetailCommandeRepository;
-        $this->adresseHandleRequest = new AdresseHandleRequest;
+        $this->adresseRepository = new AdresseRepository;
     }
 
     public function index()
     {
+
         $request_body = file_get_contents("php://input");
 
         $data = json_decode($request_body, true);
@@ -41,17 +36,26 @@ class CommandeController extends BaseController
 
     public function recapp()
     {
-
+        if (!isset($_SESSION['user'])) {
+            $_SESSION['message_connexion'] = "Merci de vous connecter ou vous inscrire avant de valider votre panier";
+            redirection(addLink('user', 'login'));
+        }
         $data = $_SESSION['commande'];
         $totalGeneral = $_SESSION['totalGeneral'];
-        
-        if($this->adresseHandleRequest->isSubmitted() && $this->adresseHandleRequest->isValid()){
-            d_die($_SESSION['adresse_livraison']);
-        }
+        $adresse_livraison = isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser(), 'livraison') ?? null);
+        $adresse_facturation = isset($_SESSION['adresse_facturation']) ? $_SESSION['adresse_facturation'] : (isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser(), 'facturation')));
+
+        $url = [
+            'ids' => implode(',', array_column($data, 'id')),
+            'total' => $totalGeneral,
+        ];
 
         $this->render('commandes/commandes.html.php', [
             'data' => $data,
-            'totalGeneral' => $totalGeneral
+            'totalGeneral' => $totalGeneral,
+            'adresse_livraison' => $adresse_livraison,
+            'adresse_facturation' => $adresse_facturation,
+            'url' => $url
         ]);
     }
 

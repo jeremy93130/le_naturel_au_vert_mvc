@@ -5,7 +5,7 @@ namespace Form;
 use Model\Entity\Adresse;
 use Model\Repository\AdresseRepository;
 
-class AdresseHandleRequest extends BaseHandleRequest
+class AdresseLivraisonHandleRequest extends BaseHandleRequest
 {
     private AdresseRepository $adresseRepository;
     private $imageTraitement;
@@ -35,7 +35,8 @@ class AdresseHandleRequest extends BaseHandleRequest
                     ->setVille($ville)
                     ->setPays($pays)
                     ->setTelephone($telephone)
-                    ->setInstruction_livraison($instructions ?? null);
+                    ->setInstruction_livraison($instructions ?? null)
+                    ->setType('livraison');
 
                     $_SESSION['adresse_livraison'] = $adresses;
                 return $this;

@@ -4,8 +4,9 @@
  */
 namespace Controller;
 
+use Form\AdresseFacturationHandleRequest;
 use Model\Entity\Adresse;
-use Form\AdresseHandleRequest;
+use Form\AdresseLivraisonHandleRequest;
 
 /**
  * Summary of OrderController
@@ -13,15 +14,17 @@ use Form\AdresseHandleRequest;
 class AdresseController extends BaseController
 {
     private Adresse $adresse;
-    private AdresseHandleRequest $adresseHandleRequest;
+    private AdresseLivraisonHandleRequest $adresseLivraisonHandleRequest;
+    private AdresseFacturationHandleRequest $adresseFacturationHandleRequest;
 
     public function __construct()
     {
         $this->adresse = new Adresse;
-        $this->adresseHandleRequest = new AdresseHandleRequest;
+        $this->adresseLivraisonHandleRequest = new AdresseLivraisonHandleRequest;
+        $this->adresseFacturationHandleRequest = new AdresseFacturationHandleRequest;
     }
 
-    public function index()
+    public function adresseLivraison()
     {
         $data = file_get_contents('data/pays.json');
         $pays = json_decode($data, true);
@@ -29,12 +32,12 @@ class AdresseController extends BaseController
         $dataVille = file_get_contents('data/cities.json');
         $ville = json_decode($dataVille, true);
 
-        $this->adresseHandleRequest->handleInsertForm($this->adresse);
+        $this->adresseLivraisonHandleRequest->handleInsertForm($this->adresse);
 
 
-        if ($this->adresseHandleRequest->isSubmitted() && $this->adresseHandleRequest->isValid()) {
+        if ($this->adresseLivraisonHandleRequest->isSubmitted() && $this->adresseLivraisonHandleRequest->isValid()) {
             $_SESSION['adresseValide'] = true;
-            $_SESSION['adresseData'] = $this->adresseHandleRequest;
+            $this->redirectToRoute(['commande', 'recapp']);
         }
 
         $this->render('adresse/adresse.html.php', [
@@ -43,9 +46,25 @@ class AdresseController extends BaseController
         ]);
     }
 
-    public function edit($id)
+    public function adresseFacturation()
     {
+        $data = file_get_contents('data/pays.json');
+        $pays = json_decode($data, true);
 
+        $dataVille = file_get_contents('data/cities.json');
+        $ville = json_decode($dataVille, true);
+
+        $this->adresseFacturationHandleRequest->handleInsertForm($this->adresse);
+
+
+        if ($this->adresseLivraisonHandleRequest->isSubmitted() && $this->adresseFacturationHandleRequest->isValid()) {
+            $this->redirectToRoute(['commande', 'recapp']);
+        }
+
+        $this->render('adresse/adresse_facture.html.php', [
+            'pays' => $pays,
+            'villes' => $ville
+        ]);
     }
 
     public function delete($id)

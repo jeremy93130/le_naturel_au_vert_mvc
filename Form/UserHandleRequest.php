@@ -12,7 +12,7 @@ class UserHandleRequest extends BaseHandleRequest
 
     public function __construct()
     {
-        $this->userRepository  = new UserRepository;
+        $this->userRepository = new UserRepository;
     }
 
     public function handleInsertForm(User $user)
@@ -42,7 +42,7 @@ class UserHandleRequest extends BaseHandleRequest
             $userExists = $this->userRepository->checkUserExist($surname, $email);
 
             //$userExists = $this->userRepository->findByAttributes($user, ["surname" => $surname]);
-            
+
             if ($userExists) {
                 $errors[] = "Le pseudo ou l'email existe déjà, veuillez en choisir un nouveau";
             }
@@ -70,15 +70,11 @@ class UserHandleRequest extends BaseHandleRequest
 
             if (empty($errors)) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user->setGender($gender);
-                $user->setFirstname($firstname ?? null);
-                $user->setLastname($lastname ?? null);
-                $user->setSurname($surname);
+                $user->setPrenom($firstname ?? null);
+                $user->setNom($lastname ?? null);
                 $user->setPassword($password);
                 $user->setEmail($email);
-                $user->setBirthday($birthday ?? null);
-                $user->setBirthday($birthday ?? null);
-                if(isset($role))
+                if (isset($role))
                     $user->setRole($role);
                 return $this;
             }
@@ -93,7 +89,6 @@ class UserHandleRequest extends BaseHandleRequest
     public function handleLogin()
     {
         if (($_SERVER['REQUEST_METHOD'] === 'POST') && isset($_POST["login"])) {
-
             extract($_POST);
             $errors = [];
             if (empty($email) || empty($password)) {
@@ -104,18 +99,18 @@ class UserHandleRequest extends BaseHandleRequest
                  */
                 $user = $this->userRepository->loginUser($email);
                 if (empty($user)) {
-                        $errors[] = "Il n'y a pas d'utilisateur avec cet email";
+                    $errors[] = "Il n'y a pas d'utilisateur avec cet email";
                 } else {
                     if (!password_verify($password, $user->getPassword())) {
                         $errors[] = "Le mot de passe ne correspond pas";
                     }
                 }
             }
-            if (empty($errors)) {        
+            if (empty($errors)) {
                 Sess::authentication($user);
                 return $this;
             }
-            
+
             $this->setEerrorsForm($errors);
             return $this;
         }

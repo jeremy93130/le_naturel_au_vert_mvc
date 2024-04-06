@@ -28,6 +28,11 @@ abstract class BaseController
         return $user;
     }
 
+    public function getUserId()
+    {
+        $user = Sess::getUserConnected();
+    }
+
     public function isUserConnected()
     {
         return Sess::isConnected();

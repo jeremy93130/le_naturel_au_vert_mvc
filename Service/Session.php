@@ -64,6 +64,8 @@ abstract class Session
     {
         if(isset($_SESSION['cart'])){
             return $_SESSION['cart'];
+        } else {
+            return [];
         }
     }
 }

@@ -14,34 +14,12 @@ class UserHandleRequest extends BaseHandleRequest
     {
         $this->userRepository  = new UserRepository;
     }
-
     public function handleInsertForm(User $user)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
             extract($_POST);
             $errors = [];
-
-            // Vérification de la validité du formulaire
-            if (empty($surname)) {
-                $errors[] = "Le pseudo ne peut pas être vide";
-            }
-            if (strlen($surname) < 4) {
-                $errors[] = "Le pseudo doit avoir au moins 4 caractères";
-            }
-            if (strlen($surname) > 20) {
-                $errors[] = "Le pseudo ne peut avoir plus de 20 caractères";
-            }
-
-            if (!strpos($surname, " ") === false) {
-                $errors[] = "Les espaces ne sont pas autorisés pour le pseudo";
-            }
-
-            // Est-ce que le surname existe déjà dans la bdd ?
-
-            $userExists = $this->userRepository->checkUserExist($surname, $email);
-
-            //$userExists = $this->userRepository->findByAttributes($user, ["surname" => $surname]);
             
             if ($userExists) {
                 $errors[] = "Le pseudo ou l'email existe déjà, veuillez en choisir un nouveau";
@@ -70,16 +48,11 @@ class UserHandleRequest extends BaseHandleRequest
 
             if (empty($errors)) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user->setGender($gender);
-                $user->setFirstname($firstname ?? null);
-                $user->setLastname($lastname ?? null);
-                $user->setSurname($surname);
+                $user->setFirstname($firstname);
+                $user->setLastname($lastname);
                 $user->setPassword($password);
                 $user->setEmail($email);
-                $user->setBirthday($birthday ?? null);
-                $user->setBirthday($birthday ?? null);
-                if(isset($role))
-                    $user->setRole($role);
+                $user->setRole($role);
                 return $this;
             }
             $this->setEerrorsForm($errors);

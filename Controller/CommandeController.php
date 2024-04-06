@@ -42,6 +42,12 @@ class CommandeController extends BaseController
     public function recapp()
     {
 
+        if(!isset($_SESSION['user'])){
+            $_SESSION['message_connexion'] = "Veuillez vous connecter ou vous inscrire avant de continuer !";
+            $_SESSION['recapp_url'] = addLink('commande','recapp');
+            $this->redirectToRoute(['user','login']);
+        }
+
         $data = $_SESSION['commande'];
         $totalGeneral = $_SESSION['totalGeneral'];
         

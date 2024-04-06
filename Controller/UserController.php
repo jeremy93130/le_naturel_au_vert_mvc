@@ -42,13 +42,18 @@ class UserController extends BaseController
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             
             $this->userRepository->insertUser($user);
+
+            if(isset($_SESSION['recapp_url'])){
+                return redirection(addLink($_SESSION['recapp_url']));
+            }
+
             return redirection(addLink("home"));
         }
 
         $errors = $this->form->getEerrorsForm();
         
-        return $this->render("user/form.html.php", [
-            "h1" => "Ajouter un nouvel utilisateur",
+        return $this->render("user/register.html.php", [
+            "h1" => "Inscription",
             "user" => $user,
             "errors" => $errors
         ]);

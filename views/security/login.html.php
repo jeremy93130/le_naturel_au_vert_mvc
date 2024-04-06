@@ -2,6 +2,12 @@
 require "views/errors_form.html.php";
 ?>
 
+<?php if(isset($_SESSION['message_connexion'])): ?>
+<div class="alert alert-danger">
+    <p><?= $_SESSION['message_connexion']; ?></p>
+    <p>Pas encore inscrit ? <span><a href="<?= addLink('user','new'); ?>">par ici !</a></span></p>
+</div>
+<?php endif; unset($_SESSION['message_connexion']) ;?>
 <form method="post">
     <div class="form-group">
         <label for="email">Email <sup>*</sup></label>

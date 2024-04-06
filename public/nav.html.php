@@ -11,7 +11,7 @@
                     Naturel Au Vert</a>
             </h2>
             <ul class="navbar-nav w-50 justify-content-end align-items-center">
-                <?php if (!$_SESSION) { ?>
+                <?php if (!isset($_SESSION['user'])) { ?>
                     <li class="nav-item">
                         <a class="nav-link text-warning" href="<?= addLink('user', 'login'); ?>">Connexion</a>
                     </li>

@@ -22,44 +22,19 @@ class UserHandleRequest extends BaseHandleRequest
             extract($_POST);
             $errors = [];
 
-            // Vérification de la validité du formulaire
-            if (empty($surname)) {
-                $errors[] = "Le pseudo ne peut pas être vide";
-            }
-            if (strlen($surname) < 4) {
-                $errors[] = "Le pseudo doit avoir au moins 4 caractères";
-            }
-            if (strlen($surname) > 20) {
-                $errors[] = "Le pseudo ne peut avoir plus de 20 caractères";
-            }
-
-            if (!strpos($surname, " ") === false) {
-                $errors[] = "Les espaces ne sont pas autorisés pour le pseudo";
-            }
-
-            // Est-ce que le surname existe déjà dans la bdd ?
-
-            $userExists = $this->userRepository->checkUserExist($surname, $email);
-
-            //$userExists = $this->userRepository->findByAttributes($user, ["surname" => $surname]);
-
-            if ($userExists) {
-                $errors[] = "Le pseudo ou l'email existe déjà, veuillez en choisir un nouveau";
-            }
-
-            if (!empty($lastname)) {
-                if (strlen($lastname) < 2) {
+            if (!empty($nom)) {
+                if (strlen($nom) < 2) {
                     $errors[] = "Le nom doit avoir au moins 2 caractères";
                 }
-                if (strlen($lastname) > 30) {
+                if (strlen($nom) > 30) {
                     $errors[] = "Le nom ne peut avoir plus de 30 caractères";
                 }
             }
-            if (!empty($firstname)) {
-                if (strlen($firstname) < 2) {
+            if (!empty($prenom)) {
+                if (strlen($prenom) < 2) {
                     $errors[] = "Le prénom doit avoir au moins 2 caractères";
                 }
-                if (strlen($firstname) > 30) {
+                if (strlen($prenom) > 30) {
                     $errors[] = "Le prénom ne peut avoir plus de 30 caractères";
                 }
             }
@@ -70,8 +45,8 @@ class UserHandleRequest extends BaseHandleRequest
 
             if (empty($errors)) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user->setPrenom($firstname ?? null);
-                $user->setNom($lastname ?? null);
+                $user->setPrenom($prenom ?? null);
+                $user->setNom($nom ?? null);
                 $user->setPassword($password);
                 $user->setEmail($email);
                 if (isset($role))
@@ -83,8 +58,67 @@ class UserHandleRequest extends BaseHandleRequest
         }
     }
 
-    public function handleEditForm($user)
+    public function handleEditForm(User $user)
     {
+        if (isset($_POST)) {
+            $nom = $_POST['nom'] ?? null;
+            $prenom = $_POST['prenom'] ?? null;
+            $email = $_POST['email'] ?? null;
+            $telephone = $_POST['telephone'] ?? null;
+            $ancienMdp = $_POST['ancienMdp'] ?? null;
+            $nouveauMdp = $_POST['nouveauMdp'] ?? null;
+            $champModifie = $_POST['champModifie'] ?? null;
+
+            switch ($champModifie) {
+                case 'nom':
+                    $message = "Votre nom a bien été modifié";
+                    break;
+                case 'prenom':
+                    $message = "Votre prenom a bien été modifié";
+                    break;
+                case 'email':
+                    $message = "Votre email a bien été modifié";
+                    break;
+                case 'telephone':
+                    $message = "Votre numéro de téléphone a bien été modifié";
+                    break;
+                default:
+                    "Rien n'a été modifié";
+            }
+
+            // Vérifiez si les valeurs ne sont pas nulles avant de les utiliser
+            $nom = $nom !== null ? $nom : $user->getNom();
+            $prenom = $prenom !== null ? $prenom : $user->getPrenom();
+            $email = $email !== null ? $email : $user->getEmail();
+            $telephone = $telephone !== null ? ($telephone) : $user->getPhone();
+            $ancienMdp = $ancienMdp !== null ? trim($ancienMdp) : '';
+            $nouveauMdp = $nouveauMdp !== null ? trim($nouveauMdp) : '';
+
+
+
+            $user->setNom($nom);
+            $user->setPrenom($prenom);
+            $user->setEmail($email);
+            $user->setPhone($telephone);
+
+            $erreur_mdp = null;
+            //Hasher le mdp :
+            if (!empty($ancienMdp)) {
+                // Vérifier l'ancien mot de passe
+                if (password_verify($ancienMdp, $user->getPassword())) {
+                    // Le mot de passe actuel est correct, procédez à la mise à jour
+                    $hashedPassword = password_hash($nouveauMdp, PASSWORD_DEFAULT);
+                    $user->setPassword($hashedPassword);
+                } else {
+                    echo json_encode(['erreur_mdp' => 'Ancien mot de passe incorrect']);
+                }
+            }
+
+            $this->userRepository->updateUser($user);
+
+            $success_message = "Vos informations ont bien été enregistrées";
+            echo json_encode(['erreur_mdp' => $erreur_mdp ?? null, 'success_message' => $success_message ?? null, 'message' => $message ?? null]);
+        }
     }
     public function handleLogin()
     {

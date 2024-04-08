@@ -38,13 +38,16 @@ class CommandeController extends BaseController
     {
         if (!isset($_SESSION['user'])) {
             $_SESSION['message_connexion'] = "Merci de vous connecter ou vous inscrire avant de valider votre panier";
+            $_SESSION['url_commande'] = true;
             redirection(addLink('user', 'login'));
         }
         $data = $_SESSION['commande'];
         $totalGeneral = $_SESSION['totalGeneral'];
-        $adresse_livraison = isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser(), 'livraison') ?? null);
-        $adresse_facturation = isset($_SESSION['adresse_facturation']) ? $_SESSION['adresse_facturation'] : (isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser(), 'facturation')));
 
+        $adresse_livraison = isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser()->getId(), 'livraison') ?? null);
+        $adresse_facturation = isset($_SESSION['adresse_facturation']) ? $_SESSION['adresse_facturation'] : ($this->adresseRepository->findByIdAndType($this->getUser()->getId(), 'facturation') ?? (isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : null));
+
+        // d_die($adresse_facturation);
         $url = [
             'ids' => implode(',', array_column($data, 'id')),
             'total' => $totalGeneral,

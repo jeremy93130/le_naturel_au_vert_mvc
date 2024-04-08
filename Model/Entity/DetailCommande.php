@@ -6,8 +6,6 @@ class DetailCommande extends BaseEntity
     private $quantite;
     private $produit_id;
     private $commande_id;
-
-
     /**
      * Get the value of quantity
      */

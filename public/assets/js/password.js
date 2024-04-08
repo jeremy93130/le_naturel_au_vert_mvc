@@ -11,6 +11,7 @@ var mdpActuel = $("#motDePasse");
 
 function modifInfosPerso(event) {
   var fieldName = $(event.target).data("field");
+  var url = $(event.target).data("url");
   if (isFieldBeingModified) {
     // Si un champ est déjà en cours de modification, ne faites rien
     return;
@@ -102,7 +103,7 @@ function modifInfosPerso(event) {
     isFieldBeingModified = false; // Réinitialisez l'état de modification
 
     $.ajax({
-      url: "/update",
+      url: url,
       method: "post",
       data: {
         nom: nom,
@@ -111,7 +112,9 @@ function modifInfosPerso(event) {
         telephone: telephone,
         champModifie: fieldName,
       },
+      dataType: "json",
       success: function (response) {
+        console.log(typeof response);
         confirmDiv.empty();
         confirmDiv.append(
           '<p class="alert alert-success text-center">' +

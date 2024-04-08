@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use Model\Entity\BaseEntity;
 use Model\Entity\User;
+use Model\Entity\Adresse;
 use Model\Entity\Commande;
+use Model\Entity\BaseEntity;
 
 class UserAdresseCommande extends BaseEntity
 {

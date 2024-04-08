@@ -29,9 +29,9 @@ class AdresseFacturationHandleRequest extends BaseHandleRequest
             }
 
             if (empty($errors)) {
-                $adresses->setNomComplet($nomComplet)
+                $adresses->setNomComplet($nom_complet)
                     ->setAdresse($adresse)
-                    ->setCodePostal($codePostal)
+                    ->setCodePostal($code_postal)
                     ->setVille($ville)
                     ->setPays($pays)
                     ->setTelephone($telephone)

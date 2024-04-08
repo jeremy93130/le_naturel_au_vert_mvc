@@ -23,6 +23,30 @@
     }
 
 
+    /* Page Login */
+
+    .form-login {
+      color: white;
+      width: 700px;
+      margin: auto;
+    }
+
+    .btn-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-login h1 {
+      color: #FFC107;
+      margin: 0 0 40px 0;
+      text-align: center;
+      text-decoration: underline;
+    }
+
+    .form-login input {
+      margin: 20px 0;
+    }
+
     /* CSS sous conditions */
 
     /* background de page accueil et différentes catégories + pages details */
@@ -741,6 +765,10 @@
 
 
     /* Page Infos utilisateur */
+
+    .modifInfos {
+      cursor: pointer;
+    }
 
     #div-infos-perso h1 {
       margin: 30px 0;

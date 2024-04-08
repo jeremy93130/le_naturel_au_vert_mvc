@@ -5,8 +5,7 @@
         </button>
         <div class="collapse navbar-collapse align-items-center" id="navbarSupportedContent">
             <h2 class="text-warning w-50">
-                <a class="nav-link active titre-site" aria-current="page" href="<?= addLink('home', 'index'); ?>">Le
-                                                                                                                                                                                                                                                                                                                                                    Naturel Au Vert</a>
+                <a class="nav-link active titre-site" aria-current="page" href="<?= addLink('home', 'index'); ?>">Le Naturel Au Vert</a>
             </h2>
             <ul class="navbar-nav w-50 justify-content-end align-items-center">
                 <?php if (!$_SESSION) { ?>
@@ -27,19 +26,18 @@
                             <div class="dropdown-child">
                                 <ul class="dropdown-menu drop-nav bg-dark">
                                     <li>
-                                        <a href="{{ path('app_info_utilisateur') }}" class="nav-link text-warning dropdown-item p-2">Informations personnelles</a>
+                                        <a href="<?= addLink('user', 'infoUser') ?>" class="nav-link text-warning dropdown-item p-2">Informations personnelles</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link text-warning dropdown-item p-2" href="{{ path('app_historique_commandes') }}">Historique des commandes</a>
+                                        <a class="nav-link text-warning dropdown-item p-2" href="<?= addLink('historiqueCommandes', 'index') ?>">Historique des commandes</a>
                                     </li>
-                                    <?php if ($_SESSION['user']->getRole() === '["ROLE_ADMIN"]') { ?>
+                                    <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === '["ROLE_ADMIN"]') { ?>
                                             <li>
                                                 <a class="nav-link text-danger dropdown-item p-2" href="{{ path('admin') }}">Admin</a>
                                             </li>
                                     <?php } ?>
                                     <li>
-                                        <a class="nav-link text-warning dropdown-item p-2" href="{{ path('app_logout') }}">Se
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        déconnecter</a>
+                                        <a class="nav-link text-warning dropdown-item p-2" href="<?= addLink('user', 'logout') ?>">Se déconnecter</a>
                                     </li>
                                 </ul>
                             </div>

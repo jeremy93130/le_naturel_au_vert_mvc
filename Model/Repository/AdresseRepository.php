@@ -77,7 +77,7 @@ class AdresseRepository extends BaseRepository
 
     public function findByIdAndType($id, $type)
     {
-        $sql = "SELECT * FROM adresse WHERE id = :id AND type = :type";
+        $sql = "SELECT * FROM adresse WHERE client_id = :id AND type = :type";
 
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(':id', $id);
@@ -87,42 +87,63 @@ class AdresseRepository extends BaseRepository
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('Adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+            return $request->fetch();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
+
+
+    public function findByLastLivraison($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='livraison'";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+
+            return $request->fetchAll();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    public function findByLastFacture($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='facture'";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+
             return $request->fetchAll();
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 
-
-    public function findByLastLivraison($id){
-        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='livraison'";
+    public function findByCommande($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE commande_id = :id";
 
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(':id', $id);
 
-        try{
+        try {
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
 
             return $request->fetchAll();
-        }catch(PDOException $e){
-            echo $e->getMessage();
-        }
-    }
-    public function findByLastFacture($id){
-        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='facture'";
-
-        $request = $this->dbConnection->prepare($sql);
-        $request->bindValue(':id', $id);
-
-        try{
-            $request->execute();
-            $class = "Model\Entity\\" . ucfirst('adresse');
-            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
-
-            return $request->fetchAll();
-        }catch(PDOException $e){
+        } catch(PDOException $e){
             echo $e->getMessage();
         }
     }

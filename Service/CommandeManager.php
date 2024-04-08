@@ -2,14 +2,18 @@
 
 namespace Service;
 
+use Model\Entity\Produits;
+use Model\Repository\AdresseRepository;
+use Model\Repository\CommandeRepository;
 use Model\Repository\ProduitsRepository;
+use Model\Repository\DetailCommandeRepository;
+
 
 /**
  * Summary of ProductController
  */
 class CommandeManager
 {
-
 
     public static function recapp(array $data): void
     {
@@ -42,8 +46,50 @@ class CommandeManager
             echo json_encode($errors);
         } else {
             $_SESSION['commande'] = $commandeData;
-            $_SESSION['totalGeneral'] = number_format($totalGeneral, 2, '.', '');;
+            $_SESSION['totalGeneral'] = number_format($totalGeneral, 2, '.', '');
+            ;
             echo json_encode(['redirect' => addLink('commande', 'recapp')]);
         }
+    }
+
+    public static function history($user)
+    {
+        $detailsCommandes = new DetailCommandeRepository;
+        $details = $detailsCommandes->findByUserAdresseCommande($user);
+        $formattedResult = [];
+        // Charger tous les produits à l'avance
+        $produitsRepository = new ProduitsRepository;
+        $produits = new Produits;
+        $allProduits = $produitsRepository->findAll($produits);
+        $produitsMap = [];
+        foreach ($allProduits as $produit) {
+            $produitsMap[$produit->getId()] = $produit;
+        }
+        foreach ($details as $detail) {
+            $commandeId = $detail->getCommandeId();
+            if (!isset($formattedResult[$commandeId])) {
+                $commandeRepository = new CommandeRepository;
+                $commande = $commandeRepository->findById('commande', $commandeId);
+                $formattedResult[$commandeId] = [
+                    'commande' => $commande,
+                    'produits' => [],
+                ];
+            }
+
+            $produitId = $detail->getProduitId();
+            // Récupérer les détails du produit à partir de $produitsMap
+            $prod = $produitsMap[$produitId];
+            $adresseRepository = new AdresseRepository;
+            $adresses = $adresseRepository->findByCommande($commandeId);
+
+            $formattedResult[$commandeId]['produits'][] = [
+                'produit' => $prod,
+                'adresse' => $adresses,
+                'quantite' => $detail->getQuantite(),
+            ];
+        }
+
+
+        return $formattedResult;
     }
 }

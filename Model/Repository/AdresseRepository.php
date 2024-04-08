@@ -3,11 +3,12 @@
 namespace Model\Repository;
 
 use Model\Entity\Adresse;
+use PDOException;
 use Service\Session;
 
 class AdresseRepository extends BaseRepository
 {
-    public function insertAdresse()
+    public function insertAdresse(array $adresse)
     {
         $adresse = new Adresse;
         $adresse->setClient($_SESSION["user"]->getId());
@@ -71,6 +72,80 @@ class AdresseRepository extends BaseRepository
         }
         Session::addMessage("danger", "Erreur SQL");
         return null;
+    }
+
+
+    public function findByIdAndType($id, $type)
+    {
+        $sql = "SELECT * FROM adresse WHERE client_id = :id AND type = :type";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+        $request->bindValue(':type', $type);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('Adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+            return $request->fetch();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return null;
+        }
+    }
+
+
+    public function findByLastLivraison($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='livraison'";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+
+            return $request->fetchAll();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+    public function findByLastFacture($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='facture'";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+
+            return $request->fetchAll();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function findByCommande($id)
+    {
+        $sql = "SELECT * FROM adresse WHERE commande_id = :id";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('adresse');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+
+            return $request->fetchAll();
+        } catch(PDOException $e){
+            echo $e->getMessage();
+        }
     }
 
 }

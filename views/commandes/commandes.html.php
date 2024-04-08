@@ -54,22 +54,22 @@
           </tr>
         </tfoot>
       </table>
-      <?php if (isset($_SESSION['adresseValide']) || (isset($adresseInfos) && $adresseInfos !== null)) { ?>
+      <?php if (isset($_SESSION['adresseValide']) || (isset($adresse_livraison) && $adresse_livraison !== null)) { ?>
         <div class="adresse_livraison_facture">
           <div>
             <h3 class="livraison_factureh3">Adresse de Facturation :</h3>
             <div class="livraison_facture">
               <div>
                 <p>Mme/Mr</p>
-                <p>{{ adresseFactureInfos.nomComplet }}</p>
-                <p>{{ adresseFactureInfos.adresse }}</p>
-                <p>{{ adresseFactureInfos.codePostal }}
-                  {{ adresseFactureInfos.ville }}
+                <p><?= $adresse_facturation->getNomComplet(); ?></p>
+                <p><?= $adresse_facturation->getAdresse();?></p>
+                <p><?= $adresse_facturation->getCodePostal(); ?>
+                  <?= $adresse_facturation->getVille(); ?>
                 </p>
-                <p>{{ adresseFactureInfos.pays }}</p>
-                <p>{{ adresseFactureInfos.telephone }}</p>
+                <p><?= $adresse_facturation->getPays(); ?></p>
+                <p><?= $adresse_facturation->getTelephone(); ?></p>
               </div>
-              <a href="{{ path('app_adresse_facture') }}" class="modif-adresse">Modifier</a>
+              <a href="<?= addLink('adresse','adresseFacturation') ?>" class="modif-adresse">Modifier</a>
             </div>
           </div>
           <div>
@@ -77,16 +77,15 @@
             <div class="livraison_facture">
               <div>
                 <p>Mme/Mr</p>
-                <p>{{ adresseInfos.nomComplet }}</p>
-                <p>{{ adresseInfos.adresse }}</p>
-                <p>{{ adresseInfos.codePostal }}
-                  {{ adresseInfos.ville }}
+                <p><?= $adresse_livraison->getNomComplet(); ?></p>
+                <p><?= $adresse_livraison->getAdresse();?></p>
+                <p><?= $adresse_livraison->getCodePostal(); ?>
+                  <?= $adresse_livraison->getVille(); ?>
                 </p>
-                <p>{{ adresseInfos.pays }}</p>
-                <p>{{ adresseInfos.telephone }}</p>
-                <p>{{ adresseInfos.instructionLivraison }}</p>
+                <p><?= $adresse_livraison->getPays(); ?></p>
+                <p><?= $adresse_livraison->getTelephone(); ?></p>
               </div>
-              <a href="{{ path('app_adresse') }}" class="modif-adresse">Modifier</a>
+              <a href="<?= addLink('adresse', 'adresseLivraison'); ?>" class="modif-adresse">Modifier</a>
             </div>
           </div>
         </div>
@@ -105,7 +104,7 @@
       <?php }
       } ?>
       <div class="paiement_div">
-        <a class="paiement_links" href="<?php echo 'app_paiement.php?ids=' . implode(',', array_column($dataCommande['commandeData'], 'id')) . '&total=' . $dataCommande['totalGeneral']; ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
+        <a class="paiement_links" href="<?= addLink('paiement','stripeCheckout') ?>?<?= http_build_query($url) ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
       </div>
     </div>
   <?php } ?>

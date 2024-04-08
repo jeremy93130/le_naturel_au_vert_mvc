@@ -40,7 +40,7 @@ class UserController extends BaseController
         $this->form->handleInsertForm($user);
 
         if ($this->form->isSubmitted() && $this->form->isValid()) {
-            
+
             $this->userRepository->insertUser($user);
 
             if(isset($_SESSION['recapp_url'])){
@@ -97,10 +97,10 @@ class UserController extends BaseController
 
                 $user = $this->user;
             } else {
-                $this->setMessage("danger",  "ERREUR 404 : la page demandé n'existe pas");
+                $this->setMessage("danger", "ERREUR 404 : la page demandé n'existe pas");
             }
         } else {
-            $this->setMessage("danger",  "ERREUR 404 : la page demandé n'existe pas");
+            $this->setMessage("danger", "ERREUR 404 : la page demandé n'existe pas");
         }
 
         $this->render("user/form.html.php", [
@@ -116,10 +116,10 @@ class UserController extends BaseController
             if (is_numeric($id)) {
                 $user = $this->user;
             } else {
-                $this->setMessage("danger",  "Erreur 404 : cette page n'existe pas");
+                $this->setMessage("danger", "Erreur 404 : cette page n'existe pas");
             }
         } else {
-            $this->setMessage("danger",  "Erreur 403 : vous n'avez pas accès à cet URL");
+            $this->setMessage("danger", "Erreur 403 : vous n'avez pas accès à cet URL");
             redirection(addLink("user", "list"));
         }
 
@@ -131,27 +131,33 @@ class UserController extends BaseController
 
     public function login()
     {
-        
-        if ($this->isUserConnected()) {            
+
+        if ($this->isUserConnected()) {
             /**
              * @var User
              */
             $user = $this->getUser();
 
-                $this->setMessage("erreur",  $user->getSurname() . " , vous êtes déjà connecté");
+            $this->setMessage("erreur", $user->getPrenom() . " , vous êtes déjà connecté");
             return redirection(addLink("home"));
         }
 
         $this->form->handleLogin();
-        
+
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             /**
              * @var User
              */
+
+            if (isset($_SESSION['url_commande'])) {
+                unset($_SESSION['url_commande']);
+                return redirection(addLink('commande', 'recapp'));
+            }
+
             $user = $this->getUser();
-            $this->setMessage("succes", "Bonjour " . $user->getSurname() .", vous êtes connecté");
+            $this->setMessage("succes", "Bonjour " . $user->getPrenom() . ", vous êtes connecté");
             redirection(addLink("home"));
-            return redirection(addLink("home"));
+            return redirection(addLink("home", 'index'));
         }
 
         $errors = $this->form->getEerrorsForm();
@@ -159,7 +165,7 @@ class UserController extends BaseController
         return $this->render("security/login.html.php", [
             "h1" => "Entrez vos identifiants de connexion",
             "errors" => $errors
-            
+
         ]);
     }
 
@@ -167,6 +173,23 @@ class UserController extends BaseController
     {
         $this->disconnection();
         $this->setMessage("success", "Vous êtes déconnecté");
-        redirection(addLink("home"));
+        redirection(addLink("home", 'index'));
     }
+
+    public function infoUser()
+    {
+        $user = $this->getUser();
+
+        $this->render('info_utilisateur/infosUtilisateur.html.php', [
+            'h1' => "Vos Informations personnelles",
+            'user' => $user,
+        ]);
+    }
+
+    public function infoUpdateUser()
+    {
+        $user = $this->getUser();
+        $this->form->handleEditForm($user);
+    }
+
 }

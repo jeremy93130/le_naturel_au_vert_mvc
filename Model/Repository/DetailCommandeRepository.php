@@ -2,10 +2,11 @@
 
 namespace Model\Repository;
 
-use Model\Entity\Commande;
-use Model\Entity\Order;
-use Model\Entity\DetailCommande;
 use Service\Session;
+use Model\Entity\User;
+use Model\Entity\Order;
+use Model\Entity\Commande;
+use Model\Entity\DetailCommande;
 
 class DetailCommandeRepository extends BaseRepository
 {
@@ -15,24 +16,24 @@ class DetailCommandeRepository extends BaseRepository
         $detail->setQuantite($quantity)
             ->setCommandeId($orderId)
             ->setProduitId($productId);
-        
+
         try {
             $this->dbConnection->beginTransaction();
 
             $sql = "INSERT INTO `details_commande` (quantite, commande_id, produit_id) VALUES (:quantity, :orderId, :productId)";
 
             $request = $this->dbConnection->prepare($sql);
-            
+
             $request->bindValue(":quantity", $quantity);
             $request->bindValue(":orderId", $orderId);
             $request->bindValue(":productId", $productId);
 
             $request = $request->execute();
-            
+
             // Validez la transaction si tout s'est bien passé
             $this->dbConnection->commit();
 
-         } catch (\PDOException $e) {
+        } catch (\PDOException $e) {
             // En cas d'erreur, annulez la transaction
 
             $this->dbConnection->rollBack();
@@ -40,27 +41,23 @@ class DetailCommandeRepository extends BaseRepository
         }
     }
 
-
-    public function updateOrder(Commande $order)
+    public function findByUserAdresseCommande(User $user)
     {
-        $sql = "UPDATE commande 
-                SET etat_commande = :state, client_id = :userId
-                WHERE id = :id";
+        $sql = "SELECT * FROM details_commande dc
+            LEFT JOIN produits p ON dc.produit_id = p.id
+            LEFT JOIN commande c ON dc.commande_id = c.id
+            LEFT JOIN user cl ON c.client_id = cl.id
+            LEFT JOIN adresse a ON a.commande_id = c.id
+            WHERE cl.id = :user";
         $request = $this->dbConnection->prepare($sql);
-        $request->bindValue(":id", $order->getId());
-        $request->bindValue(":state", $order->getEtatCommande());
-        $request->bindValue(":userId", $order->getClientId());
-        $request = $request->execute();
-        if ($request) {
-            if ($request == 1) {
-                Session::addMessage("success",  "La mise à jour de la commande a bien été éffectuée");
-                return true;
-            }
-            Session::addMessage("danger",  "Erreur : la commande n'a pas été mise à jour");
+        $request->bindValue(':user', $user->getId());
+
+        if ($request->execute()) {
+            $request->setFetchMode(\PDO::FETCH_CLASS, "Model\Entity\DetailCommande");
+            return $request->fetchAll();
+        } else {
             return false;
         }
-        Session::addMessage("danger",  "Erreur SQL");
-        return null;
     }
 
 }

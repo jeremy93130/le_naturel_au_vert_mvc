@@ -1,27 +1,37 @@
 <?php
 require "views/errors_form.html.php";
 ?>
+<div class="container-height d-flex">
+    <form method="post" class="form-login">
+        <h1><?= $h1 ?></h1>
+        <?php if (isset($_SESSION['message_connexion'])) { ?>
+                <div class="alert alert-danger text-center">
+                    <p><?= $_SESSION['message_connexion']; ?></p>
+                    <p>Pas encore inscrit ?
+                        <a href="<?= addLink('user', 'register'); ?>">par ici</a>
+                    </p>
+                </div>
+        <?php }
+        unset($_SESSION['message_connexion']); ?>
+        <div class="form-group">
+            <label for="email">Email
+                <sup>*</sup>
+            </label>
+            <input type="text" name="email" id="email" class="form-control">
+        </div>
 
-<?php if(isset($_SESSION['message_connexion'])): ?>
-<div class="alert alert-danger">
-    <p><?= $_SESSION['message_connexion']; ?></p>
-    <p>Pas encore inscrit ? <span><a href="<?= addLink('user','new'); ?>">par ici !</a></span></p>
+        <div class="form-group">
+            <label for="password">Mot de passe
+                <sup>*</sup>
+            </label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+
+        <div class="form-group btn-center">
+            <button type="submit" class="btn btn-primary" name="login">
+                Connexion
+            </button>
+        </div>
+    </form>
 </div>
-<?php endif; unset($_SESSION['message_connexion']) ;?>
-<form method="post">
-    <div class="form-group">
-        <label for="email">Email <sup>*</sup></label>
-        <input type="text" name="email" id="email" class="form-control">
-    </div>
 
-    <div class="form-group">
-        <label for="password">Mot de passe <sup>*</sup></label>
-        <input type="text" name="password" id="password" class="form-control">
-    </div>
-
-    <div class="d-flex justify-content-between">
-        <button type="submit" class="btn btn-primary" name="login">
-            Connexion
-        </button>
-    </div>
-</form>

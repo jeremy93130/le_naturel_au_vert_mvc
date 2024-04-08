@@ -5,9 +5,9 @@ use Model\Entity\BaseEntity;
 
 class Adresse extends BaseEntity
 {
-    private $nomComplet;
+    private $nom_complet;
     private $adresse;
-    private ?int $codePostal;
+    private ?int $code_postal;
     private $ville;
     private $pays;
     private $instruction_livraison;
@@ -17,14 +17,14 @@ class Adresse extends BaseEntity
     private $userAdresseCommande_id;
     private $commande_id;
 
-    public function getNomComplet(): string
+    public function getNomComplet(): ?string
     {
-        return $this->nomComplet;
+        return $this->nom_complet;
     }
 
     public function setNomComplet(?string $nomComplet): static
     {
-        $this->nomComplet = $nomComplet;
+        $this->nom_complet = $nomComplet;
         return $this;
     }
 
@@ -41,12 +41,12 @@ class Adresse extends BaseEntity
 
     public function getCodePostal(): int
     {
-        return $this->codePostal;
+        return $this->code_postal;
     }
 
     public function setCodePostal(?int $codePostal): static
     {
-        $this->codePostal = $codePostal;
+        $this->code_postal = $codePostal;
         return $this;
     }
 

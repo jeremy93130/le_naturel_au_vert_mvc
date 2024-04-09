@@ -16,6 +16,7 @@ class Adresse extends BaseEntity
     private $type;
     private $userAdresseCommande_id;
     private $commande_id;
+    private Commande $commande;
 
     public function getNomComplet(): ?string
     {
@@ -134,15 +135,25 @@ class Adresse extends BaseEntity
         return $this;
     }
 
-    public function getCommande()
+    public function getCommandeId()
     {
         return $this->commande_id;
     }
 
-    public function setCommande($commande)
+    public function setCommandeId($commande)
     {
         $this->commande_id = $commande;
 
+        return $this;
+    }
+
+    public function getCommande()
+    {
+        return $this->commande;
+    }
+    public function setCommande(Commande $commande)
+    {
+        $this->commande = $commande;
         return $this;
     }
 }

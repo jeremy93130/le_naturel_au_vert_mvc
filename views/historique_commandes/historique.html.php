@@ -7,69 +7,104 @@
   <?php } else { ?>
       <h1 class="historiqueH1">Historique des commandes</h1>
       <table class="table table_historic">
-        <tr class="text-warning">
-          <th>Date de la commande</th>
-          <th>Adresse de facturation</th>
-          <th>Adresse de livraison</th>
-          <th>Produit(s)</th>
-          <th>prix</th>
-          <th>Quantité</th>
-          <th>Total</th>
-        </tr>
-        <?php foreach ($commande as $c) { ?>
-            <tr class="text-warning">
-              <td><?= date_create($c['commande']->getDateCommande())->format('d-m-y'); ?></td>
-              <?php if (isset($c['adresse']) && $c['adresse']->getType() == 'facturation') { ?>
+        <thead>
+          <tr class="text-warning">
+            <th>Date de la commande</th>
+            <th>Adresse de facturation</th>
+            <th>Adresse de livraison</th>
+            <th>Produit(s)</th>
+            <th>prix</th>
+            <th>Quantité</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody class="historic_body">
+          <?php foreach ($commande as $c) {
+            if ($c !== null) {
+              ?>
+                <tr class="text-warning">
                   <td>
-                    <?= $c['adresse']->getNomComplet(); ?>
-                    <br/>
-                    <?= $c['adresse']->getAdresse() ?>,
-                    <br/><?= $c['code_postal']; ?>
-                    ,
-                    <?= $c['ville']; ?>
-                    ,
-                    <?= $c['pays']; ?>
+                    <p><?= date_create($c['commande']->getDateCommande())->format('d-m-y'); ?></p>
                   </td>
-                <?php }
-              foreach ($c['adresse'] as $adresse) {
-                if ($c['commande']->getAdresse()->getType() == 'livraison') { ?>
-                      <td>
-                        <?= $adresse->getNomComplet(); ?>
-                        <br/>
-                        <?= $c['adresse']; ?>,
-                        <br/>{{ commande.adresse_livraison.code_postal }}
-                        ,
-                        {{ commande.adresse_livraison.ville }}
-                        ,
-                        {{ commande.adresse_livraison.pays }},
-                        <br/>{{ commande.adresse_livraison.instruction_livraison }}
-                      </td>
-
-                  <?php }
-              } ?>
-                <td>
-                  {{ plante.produit }}
-
-                  ,<div style="padding: 8px 0 ;"></div>
-
-                </td>
-                <td>
-
-
-                  <div style="padding: 8px 0 ;"></div>
-
-                </td>
-                <td>
-
-
-                  <div style="padding: 8px 0 ;"></div>
-
-                </td>
-                <td>{{ commande.total|number_format(2, ',', 'fr') }}
-                  €</td>
-              </tr>
-          <?php } ?>
-        </table>
-    <?php } ?>
+                  <?php if (isset($c['adresse']) && is_array($c['adresse'])) {
+                    foreach ($c['adresse'] as $facturation) {
+                      if ($facturation->getType() == 'facturation') {
+                        ?>
+                          <td>
+                            <p>
+                              <?= $facturation->getNomComplet(); ?>
+                            </p>
+                            <p>
+                              <?= $facturation->getAdresse() ?>,
+                            </p>
+                            <p>
+                              <?= $facturation->getCodePostal(); ?>
+                              ,
+                              <?= $facturation->getVille(); ?>
+                              ,
+                              <?= $facturation->getPays(); ?>
+                            </p>
+                          </td>
+                        <?php }
+                    }
+                    foreach ($c['adresse'] as $livraison) {
+                      if ($livraison->getType() == 'livraison') {
+                        ?>
+                            <td>
+                              <p>
+                                <?= $livraison->getNomComplet(); ?>
+                              </p>
+                              <p>
+                                <?= $livraison->getAdresse() ?>,
+                              </p>
+                              <p>
+                                <?= $livraison->getCodePostal(); ?>
+                                ,
+                                <?= $livraison->getVille(); ?>
+                                ,
+                                <?= $livraison->getPays(); ?>
+                              </p>
+                            </td>
+                        <?php }
+                    }
+                  } ?>
+                    <td>
+                      <?php foreach ($c['produits'] as $produit) { ?>
+                          <p>
+                            <?= $produit['produit']->getNomProduit(); ?>
+                            <?php if ($produit !== end($c['produits'])) { ?>
+                                ,
+                            <?php } ?>
+                          </p>
+                      <?php } ?>
+                    </td>
+                    <td>
+                      <?php foreach ($c['produits'] as $produit) { ?>
+                          <div style="padding: 8px 0 ;">
+                            <p>
+                              <?= $produit['produit']->getPrixProduit() ?>€
+                            </p>
+                          </div>
+                      <?php } ?>
+                    </td>
+                    <td>
+                      <?php foreach ($c['produits'] as $quantite) { ?>
+                          <p>
+                            <?= $quantite['quantite']; ?>
+                          </p>
+                      <?php } ?>
+                    </td>
+                    <td>
+                      <p>
+                        <?= $c['commande']->getTotal(); ?>
+                        €
+                      </p>
+                    </td>
+                  </tr>
+              <?php } ?>
+          <?php }
+  } ?>
+      </tbody>
+    </table>
   </div>
 

@@ -43,12 +43,12 @@ class DetailCommandeRepository extends BaseRepository
 
     public function findByUserAdresseCommande(User $user)
     {
-        $sql = "SELECT * FROM details_commande dc
-            LEFT JOIN produits p ON dc.produit_id = p.id
-            LEFT JOIN commande c ON dc.commande_id = c.id
-            LEFT JOIN user cl ON c.client_id = cl.id
-            LEFT JOIN adresse a ON a.commande_id = c.id
-            WHERE cl.id = :user";
+        $sql = "SELECT details_commande.*, commande.*, produits.*, adresse.*, user.* FROM details_commande 
+        LEFT JOIN commande ON details_commande.commande_id = commande.id 
+        LEFT JOIN produits ON details_commande.produit_id = produits.id 
+        LEFT JOIN user ON commande.client_id = user.id 
+        LEFT JOIN adresse ON adresse.commande_id = commande.id 
+        WHERE user.id = :user";
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(':user', $user->getId());
 

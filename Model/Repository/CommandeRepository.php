@@ -67,5 +67,4 @@ class CommandeRepository extends BaseRepository
         Session::addMessage("danger",  "Erreur SQL");
         return null;
     }
-
 }

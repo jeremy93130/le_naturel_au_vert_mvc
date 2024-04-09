@@ -2,11 +2,16 @@
 
 namespace Service;
 
+use Model\Entity\Adresse;
+use Model\Entity\Commande;
 use Model\Entity\Produits;
+use Model\Entity\User;
 use Model\Repository\AdresseRepository;
 use Model\Repository\CommandeRepository;
 use Model\Repository\ProduitsRepository;
 use Model\Repository\DetailCommandeRepository;
+use Model\Repository\UserAdresseCommandeRepository;
+use Model\Repository\UserRepository;
 
 
 /**
@@ -56,40 +61,52 @@ class CommandeManager
     {
         $detailsCommandes = new DetailCommandeRepository;
         $details = $detailsCommandes->findByUserAdresseCommande($user);
+
         $formattedResult = [];
-        // Charger tous les produits à l'avance
-        $produitsRepository = new ProduitsRepository;
-        $produits = new Produits;
-        $allProduits = $produitsRepository->findAll($produits);
-        $produitsMap = [];
-        foreach ($allProduits as $produit) {
-            $produitsMap[$produit->getId()] = $produit;
-        }
-        foreach ($details as $detail) {
-            $commandeId = $detail->getCommandeId();
-            if (!isset($formattedResult[$commandeId])) {
-                $commandeRepository = new CommandeRepository;
-                $commande = $commandeRepository->findById('commande', $commandeId);
-                $formattedResult[$commandeId] = [
+
+        foreach ($details as $d) {
+            $adresseRepository = new AdresseRepository;
+            $adresse = $adresseRepository->findByCommande($d->getCommandeId());
+
+            $commandeRepository = new CommandeRepository;
+            $commande = $commandeRepository->findById('commande', $d->getCommandeId());
+
+            $produitRepository = new ProduitsRepository;
+            $produit = $produitRepository->findById('produits', $d->getProduitId());
+
+            $userRepository = new UserRepository;
+            $user = $userRepository->findById('user', $user->getId());
+
+            // Vérifier si la commande existe déjà dans $formattedResult
+            if (isset($formattedResult[$commande->getId()])) {
+                // Vérifier si le produit a déjà été ajouté à la commande
+                $produitExiste = false;
+                foreach ($formattedResult[$commande->getId()]['produits'] as $prod) {
+                    // d_die($prod);
+                    if ($prod['produit']->getId() === $produit->getId()) {
+                        $produitExiste = true;
+                        break;
+                    }
+                }
+                // Si le produit n'existe pas, l'ajouter à la liste des produits de cette commande
+                if (!$produitExiste) {
+                    $formattedResult[$commande->getId()]['produits'][] = ['produit' => $produit, 'quantite' => $d->getQuantite()];
+                }
+            } else {
+                // Si la commande n'existe pas, créer une nouvelle entrée pour cette commande dans $formattedResult
+                $formattedResult[$commande->getId()] = [
+                    'user' => $user,
+                    'adresse' => $adresse,
                     'commande' => $commande,
-                    'produits' => [],
+                    'produits' => [
+                        [
+                            'produit' => $produit,
+                            'quantite' => $d->getQuantite(),
+                        ]
+                    ], // Créer un tableau contenant le premier produit de la commande
                 ];
             }
-
-            $produitId = $detail->getProduitId();
-            // Récupérer les détails du produit à partir de $produitsMap
-            $prod = $produitsMap[$produitId];
-            $adresseRepository = new AdresseRepository;
-            $adresses = $adresseRepository->findByCommande($commandeId);
-
-            $formattedResult[$commandeId]['produits'][] = [
-                'produit' => $prod,
-                'adresse' => $adresses,
-                'quantite' => $detail->getQuantite(),
-            ];
         }
-
-
         return $formattedResult;
     }
 }

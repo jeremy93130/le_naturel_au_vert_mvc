@@ -43,7 +43,7 @@ class UserController extends BaseController
 
             $this->userRepository->insertUser($user);
 
-            if(isset($_SESSION['recapp_url'])){
+            if (isset($_SESSION['recapp_url'])) {
                 return redirection(addLink($_SESSION['recapp_url']));
             }
 
@@ -51,7 +51,7 @@ class UserController extends BaseController
         }
 
         $errors = $this->form->getEerrorsForm();
-        
+
         return $this->render("user/register.html.php", [
             "h1" => "Inscription",
             "user" => $user,
@@ -137,8 +137,6 @@ class UserController extends BaseController
              * @var User
              */
             $user = $this->getUser();
-
-            $this->setMessage("erreur", $user->getPrenom() . " , vous êtes déjà connecté");
             return redirection(addLink("home"));
         }
 
@@ -155,8 +153,6 @@ class UserController extends BaseController
             }
 
             $user = $this->getUser();
-            $this->setMessage("succes", "Bonjour " . $user->getPrenom() . ", vous êtes connecté");
-            redirection(addLink("home"));
             return redirection(addLink("home", 'index'));
         }
 

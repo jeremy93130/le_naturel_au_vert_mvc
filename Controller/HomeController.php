@@ -34,7 +34,6 @@ class HomeController extends BaseController
         $cheminDossier = BackgroundManager::chooseProductFolder($categorie);
         $css = BackgroundManager::getBackGround($categorie);
         $produitsParPage = Pagination::$produitsParPage;
-
         $cssPanier = array();
         foreach ($produits as $product) {
             if (CartManager::isInCart($product->getId())) {

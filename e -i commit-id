@@ -1,0 +1,68 @@
+[33mcommit 342083d3f402104fa464ad1782acd3c4efd2e5e5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Mon Apr 8 16:27:45 2024 +0200
+
+    historique à continuer
+
+[33mcommit e71016d27b2a18c9599ec3bf6a361594988e5f07[m
+Merge: 247c4df c2d1e84
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Mon Apr 8 16:25:15 2024 +0200
+
+    Merge branch 'master' into main
+
+[33mcommit c2d1e842305be63c5cc91e800773bd8166b69cad[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Mon Apr 8 16:20:55 2024 +0200
+
+    historique à continuer
+
+[33mcommit 2f78849a083c7affd5191b3722fd85957eaff94a[m
+Merge: 4d09922 81edab9
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Mon Apr 8 09:10:33 2024 +0200
+
+    Merge branch 'master' of https://github.com/jeremy93130/le_naturel_au_vert_mvc
+
+[33mcommit 247c4dfd2ae15c9b6f82b641fbe4f6d846d39a42[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: jeremy Dubrulle <https://github.com/jeremy93130>
+Date:   Sat Apr 6 14:51:53 2024 +0200
+
+    a voir sessions
+
+[33mcommit 81edab9e2b373a92983559368dd6749a686ac3f9[m[33m ([m[1;31morigin/master[m[33m)[m
+Merge: 9cf9cab 82644b3
+Author: jeremy Dubrulle <https://github.com/jeremy93130>
+Date:   Sat Apr 6 11:47:47 2024 +0200
+
+    conflits
+
+[33mcommit 4d0992221196febc08b1e214a69fe3351be4590b[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Fri Apr 5 16:49:41 2024 +0200
+
+    voir stripe
+
+[33mcommit 9cf9cab7bc55d33bbb3c3406fcde5d94083b975a[m
+Author: jeremy Dubrulle <https://github.com/jeremy93130>
+Date:   Thu Apr 4 21:24:13 2024 +0200
+
+    avancement adresse
+
+[33mcommit 82644b32e9cfa9e7146edc551f7b2bf67f5b0f24[m[33m ([m[1;32mmerge[m[33m)[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Thu Apr 4 16:47:41 2024 +0200
+
+    adresse à continuer
+
+[33mcommit c5ce3d82b525177280b552821ace7450a98f63a3[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Wed Apr 3 16:40:53 2024 +0200
+
+    avancement mvc
+
+[33mcommit 46c69b5e18aaddab603a5c0278755d2d2bd95064[m
+Author: Jeremy dubrulle <jerem-du-75020@hotmail.fr>
+Date:   Fri Mar 22 16:46:54 2024 +0100
+
+    Initial Commit

@@ -36,6 +36,7 @@ class CommandeController extends BaseController
 
     public function recapp()
     {
+        $_SESSION['adresseValide'] = null;
         if (!isset($_SESSION['user'])) {
             $_SESSION['message_connexion'] = "Merci de vous connecter ou vous inscrire avant de valider votre panier";
             $_SESSION['url_commande'] = true;
@@ -47,7 +48,7 @@ class CommandeController extends BaseController
         $adresse_livraison = isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : ($this->adresseRepository->findByIdAndType($this->getUser()->getId(), 'livraison') ?? null);
         $adresse_facturation = isset($_SESSION['adresse_facturation']) ? $_SESSION['adresse_facturation'] : ($this->adresseRepository->findByIdAndType($this->getUser()->getId(), 'facturation') ?? (isset($_SESSION['adresse_livraison']) ? $_SESSION['adresse_livraison'] : null));
 
-        // d_die($adresse_facturation);
+        // d_die($this->adresseRepository->findByIdAndType($this->getUser()->getId(), 'facturation'));
         $url = [
             'ids' => implode(',', array_column($data, 'id')),
             'total' => $totalGeneral,

@@ -7,7 +7,7 @@ use Service\Session;
 
 class CommandeRepository extends BaseRepository
 {
-    public function insertOrder()
+    public function insertOrder(Commande $order)
     {        
         $order = new Commande;
         $order->setClientId($_SESSION["user"]->getId());

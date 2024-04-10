@@ -1,4 +1,5 @@
-<div class="container-height">
+<div
+  class="container-height">
   <?php if (isset($_SESSION['confirmation_paiement'])) { ?>
     <div class="container text-center text-warning">
       <h1>{{ message }}</h1>
@@ -62,14 +63,14 @@
               <div>
                 <p>Mme/Mr</p>
                 <p><?= $adresse_facturation->getNomComplet(); ?></p>
-                <p><?= $adresse_facturation->getAdresse();?></p>
+                <p><?= $adresse_facturation->getAdresse(); ?></p>
                 <p><?= $adresse_facturation->getCodePostal(); ?>
                   <?= $adresse_facturation->getVille(); ?>
                 </p>
                 <p><?= $adresse_facturation->getPays(); ?></p>
                 <p><?= $adresse_facturation->getTelephone(); ?></p>
               </div>
-              <a href="<?= addLink('adresse','adresseFacturation') ?>" class="modif-adresse">Modifier</a>
+              <a href="<?= addLink('adresse', 'adresseFacturation') ?>" class="modif-adresse">Modifier</a>
             </div>
           </div>
           <div>
@@ -78,12 +79,13 @@
               <div>
                 <p>Mme/Mr</p>
                 <p><?= $adresse_livraison->getNomComplet(); ?></p>
-                <p><?= $adresse_livraison->getAdresse();?></p>
+                <p><?= $adresse_livraison->getAdresse(); ?></p>
                 <p><?= $adresse_livraison->getCodePostal(); ?>
                   <?= $adresse_livraison->getVille(); ?>
                 </p>
                 <p><?= $adresse_livraison->getPays(); ?></p>
                 <p><?= $adresse_livraison->getTelephone(); ?></p>
+                <p><?= $adresse_livraison->getInstruction_livraison(); ?></p>
               </div>
               <a href="<?= addLink('adresse', 'adresseLivraison'); ?>" class="modif-adresse">Modifier</a>
             </div>
@@ -93,7 +95,10 @@
         <div class="adresse_livraison_facture">
           <div class="adresse_vierge">
             <div class="adresse_link">
-              <a class="paiement_links" href="<?= addLink('adresse', 'index'); ?>">Définir l'adresse de livraison</a>
+              <h3 class="text-warning mb-5">
+                <u>Aucune adresse n'est actuellement enregistrée</u>
+              </h3>
+              <a class="paiement_links" href="<?= addLink('adresse', 'adresseLivraison'); ?>">Définir l'adresse de livraison</a>
             </div>
           </div>
         </div>
@@ -101,11 +106,18 @@
           <div>
             <p class="alert alert-danger text-center">{{ erreur_adresse }}</p>
           </div>
-      <?php }
+        <?php }
       } ?>
+      <?php if (isset($_SESSION['erreur_adresse'])) { ?>
+        <div class="alert alert-danger">
+          <p class="text-center"><?= $_SESSION['erreur_adresse']; ?></p>
+        </div>
+      <?php }
+      unset($_SESSION['erreur_adresse']); ?>
       <div class="paiement_div">
-        <a class="paiement_links" href="<?= addLink('paiement','stripeCheckout') ?>?<?= http_build_query($url) ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
+        <a class="paiement_links" href="<?= addLink('paiement', 'stripeCheckout') ?>?<?= http_build_query($url) ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
       </div>
     </div>
   <?php } ?>
 </div>
+

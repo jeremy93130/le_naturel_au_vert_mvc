@@ -14,7 +14,6 @@ class Adresse extends BaseEntity
     private $client_id;
     private $telephone;
     private $type;
-    private $userAdresseCommande_id;
     private $commande_id;
     private Commande $commande;
 
@@ -119,18 +118,6 @@ class Adresse extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getUserAdresseCommande()
-    {
-        return $this->userAdresseCommande_id;
-    }
-
-    public function setUserAdresseCommande($userAdresseCommande)
-    {
-        $this->userAdresseCommande_id = $userAdresseCommande;
 
         return $this;
     }

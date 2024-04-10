@@ -2,13 +2,17 @@
 
 namespace Controller;
 
+require_once 'vendor/autoload.php';
+use Stripe\Stripe;
+use Service\Session;
 use Model\Entity\Commande;
 use Controller\BaseController;
+use Model\Entity\Adresse;
 use Model\Repository\AdresseRepository;
-use Model\Repository\DetailCommandeRepository;
+use Model\Repository\CommandeRepository;
 use Model\Repository\ProduitsRepository;
-use Service\Session;
-use Stripe\Stripe;
+use Model\Repository\DetailCommandeRepository;
+use Service\AdresseManager;
 
 class PaiementController extends BaseController
 {
@@ -16,11 +20,16 @@ class PaiementController extends BaseController
     private Commande $commande;
     private ProduitsRepository $produitsRepository;
     private DetailCommandeRepository $detailCommandeRepository;
+    private CommandeRepository $commandeRepository;
+    private $user;
 
     public function __construct()
     {
-        $this->commande = new Commande;
         $this->detailCommandeRepository = new DetailCommandeRepository;
+        $this->adresseRepository = new AdresseRepository;
+        $this->produitsRepository = new ProduitsRepository;
+        $this->commandeRepository = new CommandeRepository;
+        $this->user = $this->getUser();
     }
 
     public function index()
@@ -39,12 +48,18 @@ class PaiementController extends BaseController
     }
     public function stripeCheckout()
     {
-        Stripe::setApiKey('sk_test_51OICEgC3GA5BR02Af7eTScs2GgI29d4FpjzMiWRo625SCPzvudJNRQPg0A3ICZ9wTnCiXJadx9TrO7MRr9lVaXV800sjafT7mP'); // Remplacez par votre clé secrète Stripe
+        $secret_stripe_key = "sk_test_51OICEgC3GA5BR02Af7eTScs2GgI29d4FpjzMiWRo625SCPzvudJNRQPg0A3ICZ9wTnCiXJadx9TrO7MRr9lVaXV800sjafT7mP";
+        Stripe::setApiKey($secret_stripe_key); // Remplacez par votre clé secrète Stripe
 
-        $adresseLivraison = $_SESSION['adresse_livraison'];
-        $adresseFacturation = $_SESSION['adresse_facturation'];
+        $adresseLivraison = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findLastLivraison($this->user);
+        $adresseFacturation = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findLastFacturation($this->user) ?? $adresseLivraison;
+
+        if (!empty($adresse_facturation) && $adresseFacturation == $adresseLivraison) {
+            $adresseFacturation = AdresseManager::AdresseTableauOuObjet($adresseFacturation);
+        }
+
         if (!isset($adresseLivraison) || !isset($adresseFacturation)) {
-            $erreur_adresse = 'Merci d\'entrer une adresse valide avant de procéder au paiement !';
+            $_SESSION['erreur_adresse'] = 'Merci d\'entrer une adresse valide avant de procéder au paiement !';
             return $this->redirectToRoute(['commande', 'recapp']);
         } else {
             $commandeData = $_SESSION['commande'];
@@ -84,37 +99,32 @@ class PaiementController extends BaseController
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $this->redirectToRoute(['paiement', 'handleSuccessfullPayment']),
-            'cancel_url' => $this->redirectToRoute(['paiement', 'cancel']),
+            'success_url' => "http://localhost/le_naturel_au_vert_mvc/paiement/handleSuccessfullPayment",
+            'cancel_url' => "http://localhost/le_naturel_au_vert_mvc/paiement/cancelPayment"
         ]);
         header('Location: ' . $checkout_session->url);
         exit;
     }
-    public function handleSuccessfulPayment()
+    public function handleSuccessfullPayment()
     {
+        // d_die('test');
         $_SESSION['adresseValide'] = false;
-
-        $user = $this->getUser();
-
         // Récupérer les informations de la session
-        $adresseInfo = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findByLastLivraison($user);
-
-        $adresseFactureInfo = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findByLastFacture($user) ?? $adresseInfo;
-
+        $adresseInfo = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findLastLivraison($this->user);
+        $adresseFactureInfo = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findLastFacturation($this->user) ?? $adresseInfo;
         if (!empty($adresseFactureInfo) && is_array($adresseFactureInfo)) {
             $adresseFactureInfo['type'] = "facturation";
             unset($adresseFactureInfo['instructions']);
         }
         ;
-        //Récuperer les plantes dans la session panier 
-        $panier = $_SESSION['cart'];
+        //Récuperer les plantes dans la session commande 
+        $panier = $_SESSION['commande'];
 
         //Créer une nouvelle entité Commandes
-        $commande = $this->commande;
-
+        $commande = new Commande;
         $total = 0;
         $quantiteTotale = 0;
-        foreach ($panier['commandeData'] as $item) {
+        foreach ($panier as $item) {
             $produit = $this->produitsRepository->findById('produits', $item['id']);
             if ($produit) {
                 $quantite = $item['quantite'];
@@ -127,13 +137,24 @@ class PaiementController extends BaseController
                 if ($produit->getStock() >= $quantite) {
                     // Soustrayez la quantité du stock
                     $produit->setStock($produit->getStock() - $quantite);
-
-                    // Inserer les details dans la BDD
-                    $this->detailCommandeRepository->insertDetail($produit, $commande, $quantite);
                 }
             }
         }
         $commande->setTotal((float) number_format($total, 2));
+
+        $this->commandeRepository->insertOrder($commande);
+
+        // Maintenant que la commande est insérée, vous pouvez obtenir son ID
+        $commandeId = $commande->getId();
+
+        // Ensuite, vous pouvez insérer les détails de la commande pour chaque produit
+        foreach ($panier as $item) {
+            $produit = $this->produitsRepository->findById('produits', $item['id']);
+            if ($produit) {
+                $quantite = $item['quantite'];
+                $this->detailCommandeRepository->insertDetail($produit->getId(), $commandeId, $quantite);
+            }
+        }
 
         if (is_array($adresseInfo) && is_array($adresseFactureInfo)) {
             // On enregistre l'adresse de livraison et de facturation
@@ -141,6 +162,8 @@ class PaiementController extends BaseController
             $this->adresseRepository->insertAdresse($adresseFactureInfo);
         }
 
+
+        d_die($panier);
         // Supprimer les éléments de la session panier
         Session::delete($_SESSION['panier']);
 
@@ -152,6 +175,7 @@ class PaiementController extends BaseController
 
         Session::delete($_SESSION['adresse_livraison']);
         Session::delete($_SESSION['adresse_facture']);
+        Session::delete($_SESSION['commande']);
 
         // Ajout d'un message flash pour informer l'utilisateur
         $this->setMessage('success', 'Votre paiement a bien été accepté, merci pour votre commande');

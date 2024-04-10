@@ -2,9 +2,10 @@
 
 namespace Model\Repository;
 
-use Model\Entity\Adresse;
 use PDOException;
 use Service\Session;
+use Model\Entity\User;
+use Model\Entity\Adresse;
 
 class AdresseRepository extends BaseRepository
 {
@@ -87,7 +88,11 @@ class AdresseRepository extends BaseRepository
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('Adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
-            return $request->fetch();
+            $result = $request->fetchAll();
+            if (!$result) {
+                return null;
+            }
+            return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
             return null;
@@ -95,40 +100,49 @@ class AdresseRepository extends BaseRepository
     }
 
 
-    public function findByLastLivraison($id)
+    public function findLastLivraison(User $user)
     {
-        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='livraison'";
+        $sql = "SELECT * FROM adresse WHERE type='livraison' AND client_id=:user ORDER BY id DESC LIMIT 1";
 
         $request = $this->dbConnection->prepare($sql);
-        $request->bindValue(':id', $id);
+        $request->bindValue(":user", $user);
 
         try {
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+            $result = $request->fetch();
 
-            return $request->fetchAll();
+            if (!$result) {
+                return null;
+            }
+            return $request->fetch(); // Utilisation de fetch() au lieu de fetchAll()
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
-    public function findByLastFacture($id)
+
+    public function findLastFacturation(User $user)
     {
-        $sql = "SELECT * FROM adresse WHERE client_id = :client AND type='facture'";
+        $sql = "SELECT * FROM adresse WHERE type='facturation' AND client_id = :user ORDER BY id DESC LIMIT 1";
 
         $request = $this->dbConnection->prepare($sql);
-        $request->bindValue(':id', $id);
-
+        $request->bindValue(':user', $user);
         try {
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+            $result = $request->fetch();
 
-            return $request->fetchAll();
+            if(!$result){
+                return null;
+            }
+            return $request->fetch(); // Utilisation de fetch() au lieu de fetchAll()
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
+
 
     public function findByCommande($id)
     {
@@ -143,7 +157,7 @@ class AdresseRepository extends BaseRepository
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
 
             return $request->fetchAll();
-        } catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }

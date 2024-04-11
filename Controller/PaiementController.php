@@ -48,8 +48,8 @@ class PaiementController extends BaseController
     }
     public function stripeCheckout()
     {
-        $secret_stripe_key = "sk_test_51OICEgC3GA5BR02Af7eTScs2GgI29d4FpjzMiWRo625SCPzvudJNRQPg0A3ICZ9wTnCiXJadx9TrO7MRr9lVaXV800sjafT7mP";
-        Stripe::setApiKey($secret_stripe_key); // Remplacez par votre clé secrète Stripe
+        $stripeSecretKey = getenv('STRIPE_SECRET_KEY');;
+        Stripe::setApiKey($stripeSecretKey); // Remplacez par votre clé secrète Stripe
 
         $adresseLivraison = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findLastLivraison($this->user);
         $adresseFacturation = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findLastFacturation($this->user) ?? $adresseLivraison;

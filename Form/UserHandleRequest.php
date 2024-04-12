@@ -17,7 +17,6 @@ class UserHandleRequest extends BaseHandleRequest
     public function handleInsertForm(User $user)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-
             extract($_POST);
             $errors = [];
 
@@ -47,9 +46,9 @@ class UserHandleRequest extends BaseHandleRequest
                 $user->setPrenom($prenom ?? null);
                 $user->setNom($nom ?? null);
                 $user->setPassword($password);
+                $user->setPhone($telephone);
                 $user->setEmail($email);
-                if (isset($role))
-                    $user->setRole($role);
+                $user->setRole(null);
                 return $this;
             }
             $this->setEerrorsForm($errors);

@@ -7,6 +7,8 @@ namespace Controller;
 use Model\Entity\User;
 use Model\Repository\UserRepository;
 use Form\UserHandleRequest;
+use Service\EmailVerifyManager;
+use Service\Session;
 
 /**
  * Summary of UserController
@@ -16,38 +18,35 @@ class UserController extends BaseController
     private UserRepository $userRepository;
     private UserHandleRequest $form;
     private User $user;
+    private EmailVerifyManager $emailVerifyManager;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository;
         $this->form = new UserHandleRequest;
         $this->user = new User;
-    }
-
-    public function list()
-    {
-        $users = $this->userRepository->findAll($this->user);
-
-        $this->render("user/index.html.php", [
-            "h1" => "Liste des utilisateurs",
-            "users" => $users
-        ]);
+        $this->emailVerifyManager = new EmailVerifyManager;
     }
 
     public function new()
     {
         $user = $this->user;
         $this->form->handleInsertForm($user);
-
         if ($this->form->isSubmitted() && $this->form->isValid()) {
+            $email = $this->emailVerifyManager->verifyEmail($user);
+            if($email == false) {
+                $_SESSION['infos_user_invalid_email'] = $user;
+                return redirection(addLink('user','new'));
+            }
 
             $this->userRepository->insertUser($user);
-
+            Session::delete('infos_user_invalid_email');
+            Session::delete('mdp_temp');
             if (isset($_SESSION['recapp_url'])) {
                 return redirection(addLink($_SESSION['recapp_url']));
             }
 
-            return redirection(addLink("home"));
+            return redirection(addLink("user",'login'));
         }
 
         $errors = $this->form->getEerrorsForm();
@@ -55,7 +54,8 @@ class UserController extends BaseController
         return $this->render("user/register.html.php", [
             "h1" => "Inscription",
             "user" => $user,
-            "errors" => $errors
+            "errors" => $errors,
+            'userInvalid' => $_SESSION['infos_user_invalid_email'] ?? null
         ]);
     }
 

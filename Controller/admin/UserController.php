@@ -54,7 +54,7 @@ class UserController extends BaseController
 
             $user = $this->getUser();
 
-            $this->form->handleForm($user);
+            $this->form->handleEditForm($user);
 
             if ($this->form->isSubmitted() && $this->form->isValid()) {
                 $this->userRepository->updateUser($user);

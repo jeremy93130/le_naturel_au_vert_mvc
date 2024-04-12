@@ -35,22 +35,22 @@ class UserRepository extends BaseRepository
 
     public function insertUser(User $user)
     {
-        $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, telephone, roles) VALUES (:lastname, :firstname, :password, :email, :telephone,:role)";
+        $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, telephone, roles) VALUES (:lastname, :firstname, :email,:password, :telephone,:role)";
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(":lastname", $user->getNom());
         $request->bindValue(":firstname", $user->getPrenom());
-        $request->bindValue(":password", $user->getPassword());
         $request->bindValue(":email", $user->getEmail());
+        $request->bindValue(":password", $user->getPassword());
         $request->bindValue(":telephone", $user->getPhone());
         $request->bindValue(":role", $user->getRole());
 
         $request = $request->execute();
         if ($request) {
             if ($request == 1) {
-                Session::addMessage("success", "Le nouvel utilisateur a bien été enregistré");
+                Session::addMessage("success", "Votre inscription s'est bien déroulée");
                 return true;
             }
-            Session::addMessage("danger", "Erreur : l'utilisateur n'a pas été enregisté");
+            Session::addMessage("danger", "Erreur : Il y'a eu un problème lors de votre inscription");
             return false;
         }
         Session::addMessage("danger", "Erreur SQL");

@@ -211,3 +211,21 @@ function checkMDP() {
     }
   }
 }
+
+$(document).ready(function () {
+  // Montrer / cacher le mdp de l'input inscription
+  var oeil = $("#oeil_mdp");
+  var inputMdp = $("#password_inscription");
+
+  oeil.on("click", function () {
+    var inputType = inputMdp.attr("type");
+
+    if (inputType === "password") {
+      inputMdp.attr("type", "text");
+      oeil.removeClass("fa-eye").addClass("fa-eye-slash");
+    } else {
+      inputMdp.attr("type", "password");
+      oeil.removeClass("fa-eye-slash").addClass("fa-eye");
+    }
+  });
+});

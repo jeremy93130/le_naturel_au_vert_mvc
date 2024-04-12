@@ -253,6 +253,7 @@
     .titre-site {
       color: #FFC107;
       text-shadow: 4px 3px rgba(0, 0, 0, 0.603);
+      width: 40%;
     }
 
     #relative-div {
@@ -454,6 +455,15 @@
     .relative {
       flex: 1;
       position: relative;
+    }
+
+    .mdp_show{
+      display: flex;
+      align-items: center;
+    }
+
+    .mdp_show i{
+      cursor: pointer;
     }
 
     /* FIN PAGE INSCRIPTION */

@@ -13,7 +13,7 @@
         Prénom :
         <span id="prenom"><?= $user->getPrenom(); ?></span>
       </p>
-      <a class="modifInfos" data-field="prenom" data-url="<?= addLink('user', 'infoUser'); ?>">Modifier</a>
+      <a class="modifInfos" data-field="prenom" data-url="<?= addLink('user', 'infoUpdateUser'); ?>">Modifier</a>
 
     </div>
     <div>
@@ -21,7 +21,7 @@
         Email :
         <span id="email"><?= $user->getEmail(); ?></span>
       </p>
-      <a class="modifInfos" data-field="email" data-url="<?= addLink('user', 'infoUser'); ?>">Modifier</a>
+      <a class="modifInfos" data-field="email" data-url="<?= addLink('user', 'infoUpdateUser'); ?>">Modifier</a>
 
     </div>
     <div>
@@ -40,7 +40,7 @@
           <span id="confirm-nouveau-mdp"></span>
         </p>
       </div>
-      <a class="modifInfos" data-field="motDePasse" data-url="<?= addLink('user', 'infoUser'); ?>">Modifier</a>
+      <a class="modifInfos" data-field="motDePasse" data-url="<?= addLink('user', 'infoUpdateUser'); ?>">Modifier</a>
 
     </div>
     <div id="div-mdp"></div>
@@ -49,7 +49,7 @@
         Numéro de téléphone :
         <span id="telephone"><?= $user->getPhone(); ?></span>
       </p>
-      <a class="modifInfos" data-field="telephone" data-url="<?= addLink('user', 'infoUser'); ?>">Modifier</a>
+      <a class="modifInfos" data-field="telephone" data-url="<?= addLink('user', 'infoUpdateUser'); ?>">Modifier</a>
 
     </div>
     <div id="confirm-infos"></div>

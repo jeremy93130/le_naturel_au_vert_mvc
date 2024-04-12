@@ -67,9 +67,9 @@ class Commande extends BaseEntity
         return $this->numero_commande;
     }
 
-    public function setNumeroCommande($numero_commande)
+    public function setNumeroCommande()
     {
-        $this->numero_commande = $numero_commande;
+        $this->numero_commande = "CMD" . uniqid();
         return $this;
     }
 }

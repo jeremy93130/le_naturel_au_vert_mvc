@@ -9,7 +9,7 @@ class CommandeRepository extends BaseRepository
 {
     public function insertOrder(Commande $order)
     {        
-        $order = new Commande;
+       
         $order->setClientId($_SESSION["user"]->getId());
 
         try {
@@ -32,7 +32,8 @@ class CommandeRepository extends BaseRepository
 
             if ($request) {
                 if ($request == 1) {
-                    return $idOrder;
+                    $order->setId($idOrder);
+                    return $order;
                 }
                 Session::addMessage("danger",  "Erreur : la commande n'a pas été enregisté");
                 return false;

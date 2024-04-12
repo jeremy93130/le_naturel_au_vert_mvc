@@ -2,7 +2,9 @@
 
 namespace Service;
 
+use Model\Entity\User;
 use Model\Entity\Adresse;
+use Model\Repository\AdresseRepository;
 
 class AdresseManager
 {
@@ -21,8 +23,48 @@ class AdresseManager
         return $adresse_facturation;
     }
 
-    public static function chooseProductFolder($categorie)
+    public static function isObject(Adresse $adresse)
     {
+        if (is_object($adresse)) {
+            // Extraire les propriétés de l'objet et les placer dans un tableau
+            $adresse = [
+                'id' => $adresse->getId(),
+                'nom_complet' => $adresse->getNomComplet(),
+                'adresse' => $adresse->getAdresse(),
+                'code_postal' => $adresse->getCodePostal(),
+                'ville' => $adresse->getVille(),
+                'pays' => $adresse->getPays(),
+                'instruction_livraison' => $adresse->getInstruction_livraison() ?? null,
+                'client_id' => $adresse->getClient(),
+                'telephone' => $adresse->getTelephone(),
+                'type' => $adresse->getType(),
+                'commande_id' => $adresse->getCommandeId(),
+                // Ajoutez d'autres propriétés au besoin
+            ];
 
+            return $adresse;
+        }
+    }
+
+    public static function checkAdresse(User $user, AdresseRepository $adresseRepository)
+    {
+        $adresse_livraison = null;
+        $adresse_facturation = null;
+
+        $checkAdresseLivraison = $adresseRepository->findLastLivraison($user);
+        $checkAdresseFacturation = $adresseRepository->findLastFacturation($user);
+
+        if ($checkAdresseLivraison && $checkAdresseFacturation) {
+            $adresse_livraison = $checkAdresseLivraison;
+            $adresse_facturation = $checkAdresseFacturation;
+        } else if (isset($_SESSION['adresse_livraison'])) {
+            $adresse_livraison = $_SESSION['adresse_livraison'];
+            $adresse_facturation = $_SESSION['adresse_facturation'];
+        }
+
+        return [
+            'livraison' => $adresse_livraison,
+            'facturation' => $adresse_facturation
+        ];
     }
 }

@@ -4,14 +4,14 @@
       <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner details-img">
           <div class="carousel-item active detail-img">
-            <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>" />
+            <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>"/>
           </div>
           <?php if ($item !== null) {
             foreach ($item as $i) { ?>
               <div class="carousel-item detail-img">
-                <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>" />
+                <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>"/>
               </div>
-          <?php }
+            <?php }
           } ?>
         </div>
         <button class="carousel-control-prev absolutePrev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -74,10 +74,10 @@
           <?php } ?>
         </div>
         <span class="bg-warning absolutePrix" style="text-align:center"><?= $detail->getPrixProduit() ?>€</span>
-        <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] == 'admin') { ?>
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === '["ROLE_ADMIN"]') { ?>
           <form action="" method="post" enctype="multipart/form-data">
             <div class="add_image">
-              <input type="file" name="imagePlante" accept="image/*" />
+              <input type="file" name="imagePlante" accept="image/*"/>
               <button type="submit">Ajouter image</button>
             </div>
           </form>
@@ -87,3 +87,4 @@
     <div id="ajout-panier"></div>
   </div>
 </div>
+

@@ -36,9 +36,8 @@ class AdresseController extends BaseController
 
 
         if ($this->adresseLivraisonHandleRequest->isSubmitted() && $this->adresseLivraisonHandleRequest->isValid()) {
-            $_SESSION['adresseValide'] = true;
             $this->redirectToRoute(['commande', 'recapp']);
-        }
+        } 
 
         $this->render('adresse/adresse.html.php', [
             'pays' => $pays,
@@ -54,7 +53,7 @@ class AdresseController extends BaseController
         $dataVille = file_get_contents('data/cities.json');
         $ville = json_decode($dataVille, true);
 
-        $this->adresseFacturationHandleRequest->handleInsertForm($this->adresse);
+        $this->adresseFacturationHandleRequest->handleEditForm($this->adresse);
 
 
         if ($this->adresseLivraisonHandleRequest->isSubmitted() && $this->adresseFacturationHandleRequest->isValid()) {

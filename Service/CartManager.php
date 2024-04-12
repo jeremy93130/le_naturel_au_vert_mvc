@@ -48,13 +48,19 @@ class CartManager
         ];
 
         $_SESSION["cart"] = $panier;  // je remets $panier dans la session, à l'indice 'cart'
-
+        
+        $panierJson = json_encode($_SESSION['cart']);
+        setcookie('cart', $panierJson, time() + (86400 * 365), '/');
+        
         $nb = 0;
         foreach ($panier as $value) {
             $nb += $value["nbArticles"];
         }
+
         $_SESSION["nombre"] = $nb;
 
+        $nombreJson = json_encode($_SESSION['nombre']);
+        setcookie('nombre', $nombreJson, time() + (86400 * 365), '/');
         echo json_encode(['message' => 'Votre produit a bien été ajouté au panier', 'totalQuantite' => $nb]);
     }
 
@@ -77,6 +83,7 @@ class CartManager
                 if ($cart['id'] == $id) {
                     unset($_SESSION['cart'][$key]);
                     $_SESSION['nombre']--;
+                    setcookie('cart', json_encode($_SESSION['cart']), time() + (86400 * 365), "/");
                     if ($_SESSION['nombre'] == 0) {
                         $_SESSION['nombre'] = "";
                     }
@@ -93,6 +100,7 @@ class CartManager
     {
         unset($_SESSION['cart']);
         unset($_SESSION['nombre']);
+        setcookie('cart', '', time() - 3600, '/'); // Expiration du temps du cookie pour le supprimer
         echo json_encode(['success' => 'Super']);
     }
 }

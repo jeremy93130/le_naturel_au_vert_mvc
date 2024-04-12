@@ -9,9 +9,9 @@ use Model\Entity\Adresse;
 
 class AdresseRepository extends BaseRepository
 {
-    public function insertAdresse(array $adresse)
+    public function insertAdresse(Adresse $adresse)
     {
-        $adresse = new Adresse;
+
         $adresse->setClient($_SESSION["user"]->getId());
 
         try {
@@ -28,7 +28,7 @@ class AdresseRepository extends BaseRepository
             $request->bindValue(':instructions', $adresse->getInstruction_livraison());
             $request->bindValue(':client', $adresse->getClient());
             $request->bindValue('nom', $adresse->getNomComplet());
-            $request->bindValue('commande', $adresse->getCommande());
+            $request->bindValue('commande', $adresse->getCommandeId());
             $request->bindValue('telephone', $adresse->getTelephone());
             $request->bindValue('type', $adresse->getType());
 
@@ -78,7 +78,7 @@ class AdresseRepository extends BaseRepository
 
     public function findByIdAndType($id, $type)
     {
-        $sql = "SELECT * FROM adresse WHERE client_id = :id AND type = :type";
+        $sql = "SELECT * FROM adresse WHERE client_id = :id AND type = :type ORDER BY id DESC LIMIT 1";
 
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(':id', $id);
@@ -88,11 +88,15 @@ class AdresseRepository extends BaseRepository
             $request->execute();
             $class = "Model\Entity\\" . ucfirst('Adresse');
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
-            $result = $request->fetchAll();
+            $result = $request->fetch();
             if (!$result) {
                 return null;
             }
-            return $result;
+            if ($type == "livraison") {
+                return $_SESSION['adresse_livraison'] = $result;
+            } else if ($type == "facturation") {
+                return $_SESSION['adresse_facturation'] = $result;
+            }
         } catch (PDOException $e) {
             echo $e->getMessage();
             return null;
@@ -134,7 +138,7 @@ class AdresseRepository extends BaseRepository
             $request->setFetchMode(\PDO::FETCH_CLASS, $class);
             $result = $request->fetch();
 
-            if(!$result){
+            if (!$result) {
                 return null;
             }
             return $request->fetch(); // Utilisation de fetch() au lieu de fetchAll()

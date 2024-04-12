@@ -7,13 +7,6 @@ use Model\Repository\AdresseRepository;
 
 class AdresseLivraisonHandleRequest extends BaseHandleRequest
 {
-    private AdresseRepository $adresseRepository;
-    private $imageTraitement;
-
-    public function __construct()
-    {
-        $this->adresseRepository = new AdresseRepository;
-    }
 
     public function handleInsertForm(Adresse $adresses)
     {
@@ -38,7 +31,8 @@ class AdresseLivraisonHandleRequest extends BaseHandleRequest
                     ->setInstruction_livraison($instructions ?? null)
                     ->setType('livraison');
 
-                    $_SESSION['adresse_livraison'] = $adresses;
+                $_SESSION['adresse_livraison'] = $adresses;
+                $_SESSION['adresse_facturation'] = clone $adresses;
                 return $this;
             }
 
@@ -59,36 +53,18 @@ class AdresseLivraisonHandleRequest extends BaseHandleRequest
             if (strlen($nom) < 4) {
                 $errors[] = "Le nom doit avoir au moins 4 caractères";
             }
-            if (strlen($nom) > 20) {
-                $errors[] = "Le nom ne peut avoir plus de 20 caractères";
-            }
-
-            if (!(isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK)) {
-                $errors[] = "Veuillez sélectionner une image à télécharger pour continuer.";
-            }
-
-            if (!is_numeric($prix)) {
-                $errors[] = "Le prix doit avoir une valeur numérique";
-            }
-            if (empty($prix)) {
-                $errors[] = "Le prix ne peut pas être vide";
-            }
-            if (!is_numeric($stock)) {
-                $errors[] = "Le stock doit avoir une valeur numérique";
-            }
-            if (empty($stock)) {
-                $errors[] = "Le stock ne peut pas être vide";
-            }
 
             if (empty($errors)) {
-                $product->setNomProduit($title);
-                $product->setDescriptionProduit($description ?? null);
-                $product->setPrixProduit($prix_produit);
-                $product->setStock($stock);
-                $product->setCaracteristique($carac);
-                $product->setEntretien($entretien);
-                $product->setCategorie($categorie);
-                $product->setLot($lot);
+                $adresses->setNomComplet($nomComplet)
+                    ->setAdresse($adresse)
+                    ->setCodePostal($codePostal)
+                    ->setVille($ville)
+                    ->setPays($pays)
+                    ->setTelephone($telephone)
+                    ->setInstruction_livraison($instructions ?? null)
+                    ->setType('livraison');
+
+                $_SESSION['adresse_livraison'] = $adresses;
                 return $this;
             }
 

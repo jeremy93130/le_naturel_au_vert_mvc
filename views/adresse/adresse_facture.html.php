@@ -35,7 +35,7 @@
         <label for="telephone" class="form-label">Numero de téléphone</label>
         <input type="number" class="form-control" id="telephone" name="telephone">
       </div>
-      <button type="submit" class="btn btn-primary" name="confirme_adresse_facturation">Confirmer</button>
+      <button type="submit" class="btn btn-primary" name="modif_adresse_facturation">Modifier les coordonnées</button>
     </form>
   </div>
 </div>

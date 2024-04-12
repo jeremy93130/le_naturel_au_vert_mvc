@@ -1,15 +1,5 @@
 <div
   class="container-height">
-  <?php if (isset($_SESSION['confirmation_paiement'])) { ?>
-    <div class="container text-center text-warning">
-      <h1>{{ message }}</h1>
-      <p>
-        À très vite chez
-        <span class="titre-site">Le Naturel Au Vert</span>
-      </p>
-      <a href="{{ path('app_home') }}" class="text-warning">Retour à l'accueil</a>
-    </div>
-  <?php } else { ?>
     <?php if (isset($_SESSION['commande'])) ?>
     <div class="recap">
       <h1>Récapitulatif de la commande</h1>
@@ -55,7 +45,7 @@
           </tr>
         </tfoot>
       </table>
-      <?php if (isset($_SESSION['adresseValide']) || (isset($adresse_livraison) && $adresse_livraison !== null)) { ?>
+      <?php if ($adresse_livraison !== null && $adresse_facturation !== null) { ?>
         <div class="adresse_livraison_facture">
           <div>
             <h3 class="livraison_factureh3">Adresse de Facturation :</h3>
@@ -118,6 +108,5 @@
         <a class="paiement_links" href="<?= addLink('paiement', 'stripeCheckout') ?>?<?= http_build_query($url) ?>"><img src="<?= ROOT ?>uploads/logos/Logo_CB.png" alt="Logo CB"></a>
       </div>
     </div>
-  <?php } ?>
 </div>
 

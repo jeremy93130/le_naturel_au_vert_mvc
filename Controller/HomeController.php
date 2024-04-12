@@ -22,6 +22,12 @@ class HomeController extends BaseController
 
     public function index()
     {
+        // Si la confirmation de paiement a été affichée à l'utilisateur et qu'il recharge la page
+        if (isset($_SESSION['confirmation_affichee'])) {
+            unset($_SESSION['confirmation_affichee']);
+            header("Location: " . addLink('home', 'index'));
+            exit;
+        }
         $this->render('home.html.php', ["h1" => "Accueil"]);
     }
     public function list($categorie)

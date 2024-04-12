@@ -17,17 +17,19 @@
       </div>
       <div class="mb-3">
         <label for="ville">Ville</label>
-        <select name="ville" id="ville">
+        <select
+          name="ville" id="ville">
           <?php foreach ($villes as $value) { ?>
-              <option value="<?= $value['city'] ?>"><?= $value['city'] ?></option>
+            <option value="<?= $value['city'] ?>"><?= $value['city'] ?></option>
           <?php } ?>
         </select>
       </div>
       <div class="mb-3">
         <label for="pays" class="form-label">Pays</label>
-        <select name="pays" id="pays">
+        <select
+          name="pays" id="pays">
           <?php foreach ($pays as $codePays => $p) { ?>
-              <option value="<?= $p ?>"><?= $p; ?></option>
+            <option value="<?= $p ?>"><?= $p; ?></option>
           <?php } ?>
         </select>
       </div>
@@ -39,7 +41,7 @@
         <label for="instructions" class="form-label">Instructions de livraison (facultatif)</label>
         <textarea name="instructions" id="instructions" cols="80" rows="5"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary" name="confirme_adresse_livraison">Confirmer</button>
+      <button type="submit" class="btn btn-primary" name="confirme_adresse_livraison"><?= !isset($_SESSION['adresse_livraison']) ? "Confirmer les coordonnées" : "Modifier les coordonnées" ?></button>
     </form>
   </div>
 </div>

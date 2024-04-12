@@ -108,6 +108,7 @@ class UserHandleRequest extends BaseHandleRequest
                     // Le mot de passe actuel est correct, procédez à la mise à jour
                     $hashedPassword = password_hash($nouveauMdp, PASSWORD_DEFAULT);
                     $user->setPassword($hashedPassword);
+                    $message = "Votre mot de passe a bien été modifié";
                 } else {
                     echo json_encode(['erreur_mdp' => 'Ancien mot de passe incorrect']);
                 }

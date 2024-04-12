@@ -147,9 +147,11 @@ function checkMDP() {
   var nouveauMdp = $("#input-newMdp").val();
   var confirmMDP = $("#input-newMdp-confirm").val();
   var ancienMdp = $("#input-ancienMdp").val();
+  var url = $(".modifInfos").data("url");
+  var parentInput = $("#inputs-mdp");
+  var confirmDiv = $("#confirm-infos");
 
   if (confirmMDP !== nouveauMdp) {
-    parentInput = $("#inputs-mdp");
     parentInput.append(
       "<p id='erreurConfirm' class='alert alert-danger'>les mots de passe ne correspondent pas ! </p>"
     );
@@ -161,7 +163,7 @@ function checkMDP() {
     validatePasswordButton.remove();
   } else {
     $.ajax({
-      url: "/update",
+      url: url,
       method: "post",
       data: {
         ancienMdp,
@@ -183,7 +185,13 @@ function checkMDP() {
           parentInput = $("#inputs-mdp");
           parentInput.append(
             "<p id='erreurConfirm' class='alert alert-success'>" +
-              response.success_message +
+              response.message +
+              "</p>"
+          );
+          confirmDiv.empty();
+          confirmDiv.append(
+            '<p class="alert alert-success text-center">' +
+              response.message +
               "</p>"
           );
           oldPassword.hide();

@@ -41,7 +41,7 @@ class UserController extends BaseController
 
             $this->userRepository->insertUser($user);
             Session::delete('infos_user_invalid_email');
-            Session::delete('mdp_temp');
+            Session::delete('password_inscription');
             if (isset($_SESSION['recapp_url'])) {
                 return redirection(addLink($_SESSION['recapp_url']));
             }
@@ -169,7 +169,7 @@ class UserController extends BaseController
     {
         $this->disconnection();
         $this->setMessage("success", "Vous êtes déconnecté");
-        redirection(addLink("home", 'index'));
+        redirection(addLink("user", 'login'));
     }
 
     public function infoUser()

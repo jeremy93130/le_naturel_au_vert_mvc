@@ -20,7 +20,7 @@ require "views/errors_form.html.php";
                 <sup>*</sup>
             </label>
             <div class="mdp_show">
-                <input type="password" name="password" id="password_inscription" class="form-control" <?= $mode == "suppression" ? "disabled" : "" ?> required>
+                <input type="password" name="password" id="password_inscription" class="form-control" value="<?= $userInvalid ? $_SESSION['password_inscription'] : "" ?>" <?= $mode == "suppression" ? "disabled" : "" ?> required>
                 <i class="fa-regular fa-eye" id="oeil_mdp"></i>
             </div>
         </div>

@@ -42,7 +42,8 @@ class UserHandleRequest extends BaseHandleRequest
 
 
             if (empty($errors)) {
-                $password = password_hash($password, PASSWORD_DEFAULT);
+                $_SESSION['password_inscription'] = $_POST['password'];
+                $password = password_hash($motdepasse, PASSWORD_DEFAULT);
                 $user->setPrenom($prenom ?? null);
                 $user->setNom($nom ?? null);
                 $user->setPassword($password);
@@ -125,7 +126,7 @@ class UserHandleRequest extends BaseHandleRequest
             extract($_POST);
             $errors = [];
             if (empty($email) || empty($password)) {
-                $errors[] = "Veuillez inserer vos coordonnées";
+                $errors[] = "Veuillez inserer vos informations de connexion";
             } else {
                 /**
                  * @var User
@@ -141,6 +142,13 @@ class UserHandleRequest extends BaseHandleRequest
             }
             if (empty($errors)) {
                 Sess::authentication($user);
+                if (isset($_POST['remember'])) {
+                    setcookie('email_connexion', $email, time() + (86400 * 365), "/");
+                    setcookie('password_connexion', $password, time() + (86400 * 365), "/");
+                } else {
+                    setcookie('email_connexion', $email, time() - 3600,"/");
+                    setcookie('password_connexion', $email, time() - 3600,"/");
+                }
                 return $this;
             }
 

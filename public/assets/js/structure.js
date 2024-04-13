@@ -69,20 +69,20 @@ document.addEventListener("DOMContentLoaded", function () {
   var stripe = Stripe(
     "pk_test_51OICEgC3GA5BR02AuVfYushtuoMQHtv99wK9FATC9PnIHCwDhOR2jlvTOAcZIoGmnxNOSeU9JDvP7OHMAeg0AX0B00E7MKlVNK"
   );
-});
 
-var searchInput = document.getElementById("plante_search");
-var plantes = document.querySelectorAll(".plantesResults");
-if (searchInput) {
-  searchInput.addEventListener("input", function () {
-    var searchTerm = searchInput.value.toLowerCase();
-    plantes.forEach(function (plante) {
-      var planteName = plante.getAttribute("data-nom").toLowerCase();
-      if (planteName.startsWith(searchTerm)) {
-        plante.style.display = "block";
-      } else {
-        plante.style.display = "none";
-      }
+  var searchInput = document.getElementById("plante_search");
+  var plantes = document.querySelectorAll(".plantesResults");
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      var searchTerm = searchInput.value.toLowerCase();
+      plantes.forEach(function (plante) {
+        var planteName = plante.getAttribute("data-nom").toLowerCase();
+        if (planteName.startsWith(searchTerm)) {
+          plante.style.display = "block";
+        } else {
+          plante.style.display = "none";
+        }
+      });
     });
-  });
-}
+  }
+});

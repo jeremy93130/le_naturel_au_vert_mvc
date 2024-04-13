@@ -19,6 +19,12 @@ class UserController extends BaseController
         $this->form = new UserHandleRequest;
         $this->user = new User;
     }
+
+    public function index()
+    {
+        $this->render('admin/index.html.php');
+    }
+
     public function list()
     {
         $users = $this->userRepository->findAll($this->user);

@@ -49,7 +49,11 @@ class UserHandleRequest extends BaseHandleRequest
                 $user->setPassword($password);
                 $user->setPhone($telephone);
                 $user->setEmail($email);
-                $user->setRole(null);
+                if (isset($_POST['admin'])) {
+                    $user->setRole('ROLE_ADMIN');
+                } else {
+                    $user->setRole(null);
+                }
                 return $this;
             }
             $this->setEerrorsForm($errors);
@@ -146,8 +150,8 @@ class UserHandleRequest extends BaseHandleRequest
                     setcookie('email_connexion', $email, time() + (86400 * 365), "/");
                     setcookie('password_connexion', $password, time() + (86400 * 365), "/");
                 } else {
-                    setcookie('email_connexion', $email, time() - 3600,"/");
-                    setcookie('password_connexion', $email, time() - 3600,"/");
+                    setcookie('email_connexion', $email, time() - 3600, "/");
+                    setcookie('password_connexion', $email, time() - 3600, "/");
                 }
                 return $this;
             }

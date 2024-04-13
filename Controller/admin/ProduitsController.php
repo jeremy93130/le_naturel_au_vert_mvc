@@ -30,7 +30,7 @@ class ProduitsController extends BaseController
 
     public function list()
     {
-        $products = $this->productRepository->findProductAndCategory();
+        $products = $this->productRepository->findAll($this->product);
         
         $this->render("admin/product/index.html.php", [
             "h1" => "Liste des produits",

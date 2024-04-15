@@ -8,6 +8,7 @@ class User extends BaseEntity
     private $prenom;
     private $mot_de_passe;
     private $email;
+    private $birthday;
     private $telephone;
     private $roles;
 
@@ -80,6 +81,17 @@ class User extends BaseEntity
     {
         $this->email = $email;
 
+        return $this;
+    }
+
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
         return $this;
     }
 

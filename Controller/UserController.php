@@ -34,19 +34,19 @@ class UserController extends BaseController
         $this->form->handleInsertForm($user);
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             $email = $this->emailVerifyManager->verifyEmail($user);
-            if($email == false) {
-                $_SESSION['infos_user_invalid_email'] = $user;
-                return redirection(addLink('user','new'));
-            }
 
-            $this->userRepository->insertUser($user);
+            if (!$email) {
+                $_SESSION['infos_user_invalid_email'] = $user;
+                return redirection(addLink('user', 'new'));
+            }
+            $test = $this->userRepository->insertUser($user);
             Session::delete('infos_user_invalid_email');
             Session::delete('password_inscription');
             if (isset($_SESSION['recapp_url'])) {
                 return redirection(addLink($_SESSION['recapp_url']));
             }
 
-            return redirection(addLink("user",'login'));
+            return redirection(addLink("user", 'login'));
         }
 
         $errors = $this->form->getEerrorsForm();

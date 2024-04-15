@@ -43,11 +43,12 @@ class UserHandleRequest extends BaseHandleRequest
 
             if (empty($errors)) {
                 $_SESSION['password_inscription'] = $_POST['password'];
-                $password = password_hash($motdepasse, PASSWORD_DEFAULT);
+                $password = password_hash($password, PASSWORD_DEFAULT);
                 $user->setPrenom($prenom ?? null);
                 $user->setNom($nom ?? null);
                 $user->setPassword($password);
                 $user->setPhone($telephone);
+                $user->setBirthday($birthday);
                 $user->setEmail($email);
                 if (isset($_POST['admin'])) {
                     $user->setRole('ROLE_ADMIN');

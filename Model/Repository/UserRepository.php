@@ -35,12 +35,13 @@ class UserRepository extends BaseRepository
 
     public function insertUser(User $user)
     {
-        $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, telephone, roles) VALUES (:lastname, :firstname, :email,:password, :telephone,:role)";
+        $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, date_de_naissance, telephone, roles) VALUES (:lastname, :firstname, :email,:password, :birthday, :telephone,:role)";
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(":lastname", $user->getNom());
         $request->bindValue(":firstname", $user->getPrenom());
         $request->bindValue(":email", $user->getEmail());
         $request->bindValue(":password", $user->getPassword());
+        $request->bindValue(":birthday", $user->getBirthday());
         $request->bindValue(":telephone", $user->getPhone());
         $request->bindValue(":role", $user->getRole());
 
@@ -61,13 +62,14 @@ class UserRepository extends BaseRepository
     public function updateUser(User $user)
     {
         $sql = "UPDATE user 
-                SET nom = :lastname, prenom = :firstname, email = :email, mot_de_passe = :password, telephone = :telephone, roles = :role
+                SET nom = :lastname, prenom = :firstname, email = :email, mot_de_passe = :password, date_de_naissance = :birthday, telephone = :telephone, roles = :role
                 WHERE id = :id";
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(":id", $user->getId());
         $request->bindValue(":lastname", $user->getNom());
         $request->bindValue(":firstname", $user->getPrenom());
         $request->bindValue(":password", $user->getPassword());
+        $request->bindValue(":birthday", $user->getBirthday());
         $request->bindValue(":telephone", $user->getPhone());
         $request->bindValue(":email", $user->getEmail());
         $request->bindValue(":role", $user->getRole());

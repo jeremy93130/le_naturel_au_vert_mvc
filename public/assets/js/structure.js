@@ -85,4 +85,32 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+  // verification taille écran pour le panier
+  var screenWidth = window.innerWidth || document.documentElement.clientWidth;
+  var url = $("#url_panier").data("url");
+
+  $("#url_panier").on("click", function () {
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {
+        tailleEcran: screenWidth,
+      },
+      success: function (response) {
+        if (response) {
+          var parsedResponse = JSON.parse(response);
+          if (parsedResponse && parsedResponse.redirect) {
+           window.location.href= parsedResponse.redirect;
+          } else {
+            console.log("La propriété redirect est undefined");
+          }
+        } else {
+          console.log("La réponse est vide");
+        }
+      },
+      error: function (error) {
+        console.error("Erreur lors de la requête AJAX:", error);
+      },
+    });
+  });
 });

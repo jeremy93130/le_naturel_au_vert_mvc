@@ -62,4 +62,5 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {; ?>
                 </tr>
             </tfoot>
         </table>
+
     </div><?php } ?>

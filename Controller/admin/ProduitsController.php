@@ -97,10 +97,6 @@ class ProduitsController extends BaseController
     {
         if ($id) {
             if (is_numeric($id)) {
-
-                $product = $this->productRepository->findProductAndCategoryById($id);
-                $product->setCategory($product);
-                
             } else {
                 $this->setMessage("danger",  "Erreur 404 : cette page n'existe pas");
             }
@@ -110,7 +106,6 @@ class ProduitsController extends BaseController
         }
 
         $this->render("product/show.html.php", [
-            "product" => $product,
             "h1" => "Fiche product"
         ]);
     }

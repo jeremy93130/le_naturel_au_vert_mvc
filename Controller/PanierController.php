@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Summary of namespace Controller
  */
+
 namespace Controller;
 
 use Model\Repository\ProduitsRepository;
@@ -17,6 +19,14 @@ class PanierController extends BaseController
     public function __construct()
     {
         $this->produitsRepository = new ProduitsRepository;
+    }
+
+
+    public function index()
+    {
+        if (isset($_POST['tailleEcran'])) {
+            CartManager::checktaille($_POST['tailleEcran']);
+        }
     }
 
     public function addToCart(): void
@@ -57,14 +67,19 @@ class PanierController extends BaseController
             $_SESSION['totalGeneral'] = $totalGeneral;
         }
 
-
-
-        $this->render("panier/panier.html.php", [
-            "h1" => "Fiche cart",
-            'produits' => $produits,
-            'cssRed' => $cssRed
-        ]);
-
+        if (isset($_SESSION['grand_panier'])) {
+            $this->render("panier/panier.html.php", [
+                "h1" => "Fiche cart",
+                'produits' => $produits,
+                'cssRed' => $cssRed
+            ]);
+        } else if (isset($_SESSION['petit_panier'])){
+            $this->render("panier/panier_mobile.html.php", [
+                "h1" => "Fiche cart",
+                'produits' => $produits,
+                'cssRed' => $cssRed
+            ]);
+        }
     }
     /**
      * Summary of edit
@@ -73,7 +88,6 @@ class PanierController extends BaseController
      */
     public function edit($id)
     {
-
     }
 
     public function delete($id)
@@ -87,5 +101,4 @@ class PanierController extends BaseController
         $cm = new CartManager;
         $cm->deleteAll();
     }
-
 }

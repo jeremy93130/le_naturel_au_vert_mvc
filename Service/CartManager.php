@@ -48,10 +48,10 @@ class CartManager
         ];
 
         $_SESSION["cart"] = $panier;  // je remets $panier dans la session, à l'indice 'cart'
-        
+
         $panierJson = json_encode($_SESSION['cart']);
         setcookie('cart', $panierJson, time() + (86400 * 365), '/');
-        
+
         $nb = 0;
         foreach ($panier as $value) {
             $nb += $value["nbArticles"];
@@ -102,5 +102,18 @@ class CartManager
         unset($_SESSION['nombre']);
         setcookie('cart', '', time() - 3600, '/'); // Expiration du temps du cookie pour le supprimer
         echo json_encode(['success' => 'Super']);
+    }
+
+    public static function checktaille($taille)
+    {
+        if ($taille > 1168) {
+            $_SESSION['grand_panier'] = true;
+            Session::delete('petit_panier');
+        } else {
+            $_SESSION['petit_panier'] = true;
+            Session::delete('grand_panier');
+        }
+
+        echo json_encode(['redirect' => addLink('panier', 'show')]);
     }
 }

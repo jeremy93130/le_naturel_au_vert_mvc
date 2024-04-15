@@ -44,7 +44,7 @@
                         </div>
                 <?php } ?>
                 <li class="list-unstyled me-5">
-                    <a class="w-100" href="<?= addLink('panier', 'show'); ?>">
+                    <a class="w-100" data-url="<?= addLink('panier', 'index'); ?>" id="url_panier">
                         <?php if ($_SERVER['REQUEST_URI'] != ROOT . 'commande/recapp' && $_SERVER['REQUEST_URI'] != ROOT . 'user/login' && $_SERVER['REQUEST_URI'] != ROOT . 'user/new') { ?>
                                 <i class="fa-solid fa-cart-shopping nav-link text-warning" id="nav_panier">
                                     <span id="nb_articles">

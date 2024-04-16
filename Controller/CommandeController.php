@@ -42,8 +42,8 @@ class CommandeController extends BaseController
         }
         $data = $_SESSION['commande'] ?? null;
         $totalGeneral = $_SESSION['totalGeneral'];
-
-        $adresses = AdresseManager::checkAdresse($this->getUser(), $this->adresseRepository);
+        
+        $adresses = AdresseManager::checkAdresse($this->getUser()->getId(), $this->adresseRepository);
 
         if ($adresses) {
             $adresse_livraison = $adresses['livraison'];

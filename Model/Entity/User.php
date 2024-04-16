@@ -128,7 +128,7 @@ class User extends BaseEntity
      *
      * @return  self
      */
-    public function setRole($role)
+    public function setRole(string $role = null)
     {
         $this->roles = $role !== null ? $role : ROLE_USER;
 

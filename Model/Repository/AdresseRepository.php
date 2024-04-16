@@ -104,7 +104,7 @@ class AdresseRepository extends BaseRepository
     }
 
 
-    public function findLastLivraison(User $user)
+    public function findLastLivraison(int $user)
     {
         $sql = "SELECT * FROM adresse WHERE type='livraison' AND client_id=:user ORDER BY id DESC LIMIT 1";
 
@@ -120,13 +120,13 @@ class AdresseRepository extends BaseRepository
             if (!$result) {
                 return null;
             }
-            return $request->fetch(); // Utilisation de fetch() au lieu de fetchAll()
+            return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
 
-    public function findLastFacturation(User $user)
+    public function findLastFacturation(int $user)
     {
         $sql = "SELECT * FROM adresse WHERE type='facturation' AND client_id = :user ORDER BY id DESC LIMIT 1";
 
@@ -141,7 +141,7 @@ class AdresseRepository extends BaseRepository
             if (!$result) {
                 return null;
             }
-            return $request->fetch(); // Utilisation de fetch() au lieu de fetchAll()
+            return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

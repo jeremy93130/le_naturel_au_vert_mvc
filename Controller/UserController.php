@@ -58,19 +58,9 @@ class UserController extends BaseController
             'userInvalid' => $_SESSION['infos_user_invalid_email'] ?? null
         ]);
     }
-
-    /**
-     * Summary of edit
-     * @param mixed $id
-     * @return void
-     */
     public function edit($id)
     {
         if (!empty($id) && is_numeric($id) && $this->getUser()) {
-
-            /**
-             * @var User
-             */
             $user = $this->getUser();
 
             $this->form->handleEditForm($user);

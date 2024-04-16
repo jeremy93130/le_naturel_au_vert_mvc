@@ -46,7 +46,7 @@ class AdresseManager
         }
     }
 
-    public static function checkAdresse(User $user, AdresseRepository $adresseRepository)
+    public static function checkAdresse(int $user, AdresseRepository $adresseRepository)
     {
         $adresse_livraison = null;
         $adresse_facturation = null;

@@ -7,22 +7,6 @@ use Service\Session;
 
 class UserRepository extends BaseRepository
 {
-    public function findBySurname($surname)
-    {
-        $request = $this->dbConnection->prepare("SELECT * FROM user WHERE surname = :surname");
-        $request->bindParam(":surname", $surname);
-
-        if ($request->execute()) {
-            if ($request->rowCount() == 1) {
-                $request->setFetchMode(\PDO::FETCH_CLASS, "Model\Entity\User");
-                return $request->fetch();
-            } else {
-                return false;
-            }
-        } else {
-            return null;
-        }
-    }
     public function checkUserExist($email)
     {
         $request = $this->dbConnection->prepare("SELECT COUNT(*) FROM user WHERE email = :email");

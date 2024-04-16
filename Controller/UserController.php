@@ -39,7 +39,7 @@ class UserController extends BaseController
                 $_SESSION['infos_user_invalid_email'] = $user;
                 return redirection(addLink('user', 'new'));
             }
-            $test = $this->userRepository->insertUser($user);
+            $this->userRepository->insertUser($user);
             Session::delete('infos_user_invalid_email');
             Session::delete('password_inscription');
             if (isset($_SESSION['recapp_url'])) {

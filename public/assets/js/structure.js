@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
   let quantityInputs = document.querySelectorAll(".quantity");
 
   quantityInputs.forEach((input) => {
-    let plusButton = input.nextElementSibling;
-    let moinsButton = input.previousElementSibling;
-    let totalColumn = input.parentElement.nextElementSibling;
+    let parentDiv = input.parentElement;
+    let plusButton = parentDiv.querySelector(".plus");
+    let moinsButton = parentDiv.querySelector(".moins");
+    let totalColumn = parentDiv.querySelector(".total-column") ?? input.parentElement.nextElementSibling;
 
     plusButton.addEventListener("click", function () {
       if (!plusButton.disabled) {
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response) {
           var parsedResponse = JSON.parse(response);
           if (parsedResponse && parsedResponse.redirect) {
-           window.location.href= parsedResponse.redirect;
+            window.location.href = parsedResponse.redirect;
           } else {
             console.log("La propriété redirect est undefined");
           }

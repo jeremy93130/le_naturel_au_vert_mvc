@@ -59,8 +59,8 @@ class PaiementController extends BaseController
         // Utilisez la clé secrète Stripe comme nécessaire
         Stripe::setApiKey($stripeSecretKey);
 
-        $adresseLivraison = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findLastLivraison($this->user);
-        $adresseFacturation = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findLastFacturation($this->user) ?? $adresseLivraison;
+        $adresseLivraison = $_SESSION['adresse_livraison'] ?? $this->adresseRepository->findLastLivraison($this->user->getId());
+        $adresseFacturation = $_SESSION['adresse_facturation'] ?? $this->adresseRepository->findLastFacturation($this->user->getId()) ?? $adresseLivraison;
 
         if (!empty($adresse_facturation) && $adresseFacturation == $adresseLivraison) {
             $adresseFacturation = AdresseManager::AdresseTableauOuObjet($adresseFacturation);

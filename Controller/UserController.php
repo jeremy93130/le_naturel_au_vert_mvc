@@ -127,7 +127,8 @@ class UserController extends BaseController
              * @var User
              */
             $user = $this->getUser();
-            return redirection(addLink("home"));
+            Session::addMessage('connexion', $user . 'Vous êtes déjà connecté(e)');
+            return redirection(addLink("home", 'index'));
         }
 
         $this->form->handleLogin();

@@ -35,7 +35,8 @@ class CommandeController extends BaseController
     {
         // unset($_SESSION['adresse_livraison']);
         $_SESSION['adresseValide'] = null;
-        if (!isset($_SESSION['user'])) {
+
+        if (!$this->isUserConnected()) {
             $_SESSION['message_connexion'] = "Merci de vous connecter ou vous inscrire avant de valider votre panier";
             $_SESSION['url_commande'] = true;
             redirection(addLink('user', 'login'));

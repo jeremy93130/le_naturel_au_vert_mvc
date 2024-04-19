@@ -74,11 +74,13 @@
           <?php } ?>
         </div>
         <span class="bg-warning absolutePrix" style="text-align:center"><?= $detail->getPrixProduit() ?>€</span>
-        <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === '["ROLE_ADMIN"]') { ?>
-          <form action="" method="post" enctype="multipart/form-data">
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === 'ROLE_ADMIN') { ?>
+          <form action="<?= addLink('images', "add"); ?>" method="post" enctype="multipart/form-data">
             <div class="add_image">
-              <input type="file" name="imagePlante" accept="image/*"/>
-              <button type="submit">Ajouter image</button>
+              <input type="hidden" name="categorie" value="<?= $detail->getCategorie(); ?>">
+              <input type="hidden" name="produit_id" value="<?= $detail->getId(); ?>">
+              <input type="file" name="photo" accept="image/*"/>
+              <button type="submit" name="ajout_image">Ajouter image</button>
             </div>
           </form>
         <?php } ?>

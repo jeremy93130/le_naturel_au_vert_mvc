@@ -2,22 +2,28 @@
 
 namespace Controller;
 
+use Service\Pagination;
+use Service\CartManager;
+use Form\ImagesHandleRequest;
 use Controller\BaseController;
+use Model\Entity\Images;
+use Service\BackgroundManager;
 use Model\Repository\ImagesRepository;
 use Model\Repository\ProduitsRepository;
-use Service\BackgroundManager;
-use Service\CartManager;
-use Service\Pagination;
 
 class HomeController extends BaseController
 {
     private ProduitsRepository $productRepository;
     private ImagesRepository $imagesRepository;
+    private ImagesHandleRequest $imagesHandleRequest;
+    private Images $images;
 
     public function __construct()
     {
         $this->productRepository = new ProduitsRepository;
         $this->imagesRepository = new ImagesRepository;
+        $this->imagesHandleRequest = new ImagesHandleRequest;
+        $this->images = new Images;
     }
 
     public function index()
@@ -37,6 +43,7 @@ class HomeController extends BaseController
         $totalProduits = $paginationData['totalProduits'];
         $pageCourante = $paginationData['pageCourante'];
 
+        // CheminDossier récupère le chemin de chooseProductFolder en fonction de la catégorie du produit pour pouvoir récupérer facilement le bon dossier image
         $cheminDossier = BackgroundManager::chooseProductFolder($categorie);
         $css = BackgroundManager::getBackGround($categorie);
         $produitsParPage = Pagination::$produitsParPage;
@@ -68,7 +75,7 @@ class HomeController extends BaseController
         $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
         $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
 
-        $item = $this->imagesRepository->findById('images', $id);
+        $item = $this->imagesRepository->carousselImages($id);
 
         $this->render('details/details.html.php', [
             'detail' => $detailsProduit,

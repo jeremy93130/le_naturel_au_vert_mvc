@@ -2,9 +2,12 @@
 
 namespace Model\Repository;
 
+
+use PDO;
+use PDOException;
+use Service\Session;
 use Model\Entity\Images;
 use Model\Entity\Produits;
-use Service\Session;
 
 class ImagesRepository extends BaseRepository
 {
@@ -29,11 +32,33 @@ class ImagesRepository extends BaseRepository
             // Validez la transaction si tout s'est bien passé
             $this->dbConnection->commit();
 
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             // En cas d'erreur, annulez la transaction
 
             $this->dbConnection->rollBack();
             echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function carousselImages($id)
+    {
+        $sql = "SELECT * FROM images WHERE produit_id = :id";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+        try {
+            $request->execute();
+            $class = "Model\Entity\\" . ucfirst('Images');
+            $request->setFetchMode(PDO::FETCH_CLASS, $class);
+            $result = $request->fetchAll();
+            if (!$result) {
+                return null;
+            }else {
+                return $result;
+            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return null;
         }
     }
 }

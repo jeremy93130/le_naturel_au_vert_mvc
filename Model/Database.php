@@ -4,14 +4,12 @@ namespace Model;
 
 class Database
 {
-    // connetion à la base de données
     private $host = "localhost";
     private $db_name = "le_naturel_au_vert";
     private $username = "root";
     private $password = "";
     private $connetion = null;
 
-    // getter pour la connetion
     public function bddConnect()
     {
         try {

@@ -44,8 +44,8 @@ class UserHandleRequest extends BaseHandleRequest
             if (empty($errors)) {
                 $_SESSION['password_inscription'] = $password;
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $user->setPrenom($prenom ?? null);
-                $user->setNom($nom ?? null);
+                $user->setPrenom($prenom);
+                $user->setNom($nom);
                 $user->setPassword($password);
                 $user->setPhone($telephone);
                 $user->setBirthday($birthday);

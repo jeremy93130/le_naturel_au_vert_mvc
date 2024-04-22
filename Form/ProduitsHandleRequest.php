@@ -56,7 +56,7 @@ class ProduitsHandleRequest extends BaseHandleRequest
                 $errors[] = "La category ne peut pas être vide";
             }
 
-            $this->imageTraitement->handelPhoto($product);
+            $this->imageTraitement->handelPhoto($cat,'produits',$product);
 
             if (empty ($errors)) {
                 $product->setNomProduit($title);

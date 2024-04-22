@@ -49,15 +49,11 @@ class ProduitsRepository extends BaseRepository
 
         $request = $request->execute();
         if ($request) {
-            if ($request == 1) {
-                Session::addMessage("success", "Le nouveau produit a bien été enregistré");
-                return true;
-            }
-            Session::addMessage("danger", "Erreur : le produit n'a pas été enregisté");
-            return false;
+            Session::addMessage("success", "Le nouveau produit a bien été enregistré");
+            return true;
         }
-        Session::addMessage("danger", "Erreur SQL");
-        return null;
+        Session::addMessage("danger", "Erreur : le produit n'a pas été enregisté");
+        return false;
     }
 
 
@@ -81,15 +77,11 @@ class ProduitsRepository extends BaseRepository
 
         $request = $request->execute();
         if ($request) {
-            if ($request == 1) {
-                Session::addMessage("success", "La mise à jour du produit a bien été éffectuée");
-                return true;
-            }
-            Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
-            return false;
+            Session::addMessage("success", "La mise à jour du produit a bien été éffectuée");
+            return true;
         }
-        Session::addMessage("danger", "Erreur SQL");
-        return null;
+        Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
+        return false;
     }
     public function updateQuantityInProduct($productId, $stock)
     {
@@ -103,14 +95,10 @@ class ProduitsRepository extends BaseRepository
 
         $request = $request->execute();
         if ($request) {
-            if ($request == 1) {
                 return true;
-            }
-            Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
-            return false;
         }
-        Session::addMessage("danger", "Erreur SQL");
-        return null;
+        Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
+        return false;
     }
 
     public function paginate($limit, $offset)

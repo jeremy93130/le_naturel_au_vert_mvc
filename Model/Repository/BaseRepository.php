@@ -8,7 +8,7 @@ use Service\Session as Sess;
 
 class BaseRepository
 {
-        protected $dbConnection;
+    protected $dbConnection;
 
     public function __construct()
     {
@@ -25,11 +25,11 @@ class BaseRepository
         return null;
     }
 
-    public function findById($tableName, $id)
+    public function findById(string $tableName, int $id)
     {
         // Construction de la requête SELECT
         $query = "SELECT * FROM $tableName WHERE id = :id";
-        
+
         $request = $this->dbConnection->prepare($query);
         $request->bindValue(':id', $id);
 
@@ -39,12 +39,8 @@ class BaseRepository
 
             if ($request->rowCount() == 1) {
                 $request->setFetchMode(\PDO::FETCH_CLASS, $class);
-                
+
                 return $request->fetch();
-            } else if ($request->rowCount() > 1) {
-                // ucfirst : majuscule au début de la chaine de caractères
-                $result = $request->fetchAll(\PDO::FETCH_CLASS, $class);
-                return $result;
             }
         } catch (\PDOException $exception) {
             echo "Erreur de connexion : " . $exception->getMessage();
@@ -101,13 +97,13 @@ class BaseRepository
         $request = $request->execute();
         if ($request) {
             if ($request == 1) {
-                Sess::addMessage("success",  "La mise à jour de l'utilisateur a bien été éffectuée");
+                Sess::addMessage("success", "La mise à jour de l'utilisateur a bien été éffectuée");
                 return true;
             }
-            Sess::addMessage("danger",  "Erreur : l'utilisateur n'a pas été mise à jour");
+            Sess::addMessage("danger", "Erreur : l'utilisateur n'a pas été mise à jour");
             return false;
         }
-        Sess::addMessage("danger",  "Erreur SQL");
+        Sess::addMessage("danger", "Erreur SQL");
         return null;
 
     }
@@ -119,13 +115,13 @@ class BaseRepository
         $request = $request->execute();
         if ($request) {
             if ($request == 1) {
-                Sess::addMessage("success",  "La mise à jour de l'utilisateur a bien été éffectuée");
+                Sess::addMessage("success", "La mise à jour de l'utilisateur a bien été éffectuée");
                 return true;
             }
-            Sess::addMessage("danger",  "Erreur : l'utilisateur n'a pas été mise à jour");
+            Sess::addMessage("danger", "Erreur : l'utilisateur n'a pas été mise à jour");
             return false;
         }
-        Sess::addMessage("danger",  "Erreur SQL");
+        Sess::addMessage("danger", "Erreur SQL");
         return null;
     }
 }

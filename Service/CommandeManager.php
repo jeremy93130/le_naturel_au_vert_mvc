@@ -39,12 +39,13 @@ class CommandeManager
             } else {
                 // Calcul du prix TTC
                 $prixTTC = ($d['categorie'] == 1) ? 0.1 : 0.055;
-                $d['prix'] *= $d['quantite'];
-                $prixTTCProduit = $d['prix'] + ($d['prix'] * $prixTTC);
-                $d['prixTTC'] = number_format($prixTTCProduit, 2);
+                $total = $d['prix'] * $d['quantite'];
+                $prixTTCProduit = $total + ($total * $prixTTC);
+                $d['prixTTC'] = number_format($d['prix'] + ($d['prix'] * $prixTTC), 2);
+                $d['prixTotalTTC'] = number_format($prixTTCProduit, 2);
 
                 // Ajout du prix TTC au total général
-                $totalGeneral += $d['prixTTC'];
+                $totalGeneral += $d['prixTotalTTC'];
             }
         }
         if ($errors) {

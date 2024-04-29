@@ -19,8 +19,8 @@
               <td class="td-nom"><?= $d['alt']; ?></td>
               <td class="td-quantite"><?= $d['quantite']; ?></td>
               <td class="td-quantite"><?= $d['lot'] * $d['quantite'] ?></td>
-              <td class="td-prix"><?= $d['prix'] ?>€</td>
-              <td class="td-prix"><?= $d['prixTTC'] ?>€</td>
+              <td class="td-prix"><?= $d['prix'] * $d['quantite']; ?>€</td>
+              <td class="td-prix"><?= $d['prixTTC'] * $d['quantite']?>€</td>
             </tr>
           <?php }
           if ($totalGeneral < 50) { ?>

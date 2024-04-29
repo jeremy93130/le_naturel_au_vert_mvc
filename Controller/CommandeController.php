@@ -34,6 +34,7 @@ class CommandeController extends BaseController
     public function recapp()
     {
         // unset($_SESSION['adresse_livraison']);
+        // unset($_SESSION['adresse_facturation']);
         $_SESSION['adresseValide'] = null;
 
         if (!$this->isUserConnected()) {

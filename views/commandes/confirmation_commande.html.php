@@ -1,4 +1,4 @@
-<div class="container text-center text-warning">
+<div class="container text-center text-warning container-height">
     <h1><?= $_SESSION['confirmation_paiement']; ?>
         <?php unset($_SESSION['confirmation_paiement']); ?>
     </h1>

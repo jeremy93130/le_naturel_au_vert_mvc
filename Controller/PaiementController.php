@@ -71,7 +71,6 @@ class PaiementController extends BaseController
             return $this->redirectToRoute(['commande', 'recapp']);
         } else {
             $commandeData = $_SESSION['commande'];
-            // dd($commandeData);
             $totalData = $_SESSION['totalGeneral'];
             $lineItems = [];
 
@@ -117,7 +116,7 @@ class PaiementController extends BaseController
     {
         // d_die('test');
         $_SESSION['adresseValide'] = false;
-        $adresses = AdresseManager::checkAdresse($this->getUser(), $this->adresseRepository);
+        $adresses = AdresseManager::checkAdresse($this->getUser()->getId(), $this->adresseRepository);
 
         if ($adresses) {
             $adresse_livraison = $adresses['livraison'];
@@ -155,6 +154,9 @@ class PaiementController extends BaseController
             }
         }
         $commande->setNumeroCommande();
+        if ($total < 50) {
+            $total += 3.99;
+        }
         $commande->setTotal((float) number_format($total, 2));
 
         $commandeId = $this->commandeRepository->insertOrder($commande);

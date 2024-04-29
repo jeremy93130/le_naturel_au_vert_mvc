@@ -2,7 +2,6 @@
 
 namespace Service;
 
-use Model\Entity\Produits;
 use Model\Repository\ProduitsRepository;
 
 /**

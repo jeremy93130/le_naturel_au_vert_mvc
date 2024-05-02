@@ -73,7 +73,7 @@ class PanierController extends BaseController
                 'produits' => $produits,
                 'cssRed' => $cssRed
             ]);
-        } else if (isset($_SESSION['petit_panier'])){
+        } else if (isset($_SESSION['petit_panier'])) {
             $this->render("panier/panier_mobile.html.php", [
                 "h1" => "Fiche cart",
                 'produits' => $produits,
@@ -92,6 +92,18 @@ class PanierController extends BaseController
 
     public function delete($id)
     {
+        $jsonContent = file_get_contents('php://input');
+        if (!empty($jsonContent)) {
+            // Décoder le contenu JSON en tableau associatif
+            $jsonData = json_decode($jsonContent, true);
+
+            // Vérifier si l'ID existe dans les données JSON
+            if (isset($jsonData['id'])) {
+                // Récupérer l'ID à partir des données JSON
+                $id = $jsonData['id'];
+            }
+        }
+
         $cm = new CartManager;
         $cm->deleteFromCart($id);
     }

@@ -89,7 +89,7 @@ class CartManager
                     break;
                 }
             }
-            echo json_encode(['success' => "Article bien supprimé"]);
+            echo json_encode(['success' => "Article bien supprimé", 'nb' => $_SESSION['nombre']]);
         } else {
             echo json_encode(['erreur' => 'une erreur s\'est produite']);
         }

@@ -39,6 +39,7 @@ function ajouterAuPanier(url, id, nom, prix, image, clickedIcon) {
 }
 
 function supprimerArticleDuPanier(url, id) {
+  let nbArticles = $("#nb_articles");
   $.ajax({
     url: url,
     type: "POST",
@@ -47,14 +48,16 @@ function supprimerArticleDuPanier(url, id) {
     dataType: "json",
     success: function (response) {
       if (response && response.success) {
-        location.reload();
+        nbArticles.text(response.nb);
+        window.location.reload();
       } else {
         console.log("Erreur lors de la suppression de l'article du panier");
         console.log(response);
       }
     },
-    error: function () {
+    error: function (error) {
       console.log("Une erreur s'est produite lors de la requête AJAX");
+      console.log(error.responseText);
     },
   });
 }
@@ -82,16 +85,27 @@ $(document).ready(function () {
     var image = $(this).data("image");
     ajouterAuPanier(url, id, nom, prix, image, null);
   });
+
   $(".ajouter_panier_icon").click(function (e) {
     e.preventDefault();
-    var clickedIcon = $(this).find("i")[0];
+    var clickedIcon = $(this).find("i");
     $(this).each(function () {
-      var url = $(this).data("url");
+      var url;
       var id = $(this).data("id");
       var nom = $(this).data("nom");
       var prix = $(this).data("prix");
       var image = $(this).data("image");
-      ajouterAuPanier(url, id, nom, prix, image, clickedIcon);
+      var estDansPanier = clickedIcon.hasClass("selected_cart");
+      if (estDansPanier) {
+        url = "panier/delete";
+        clickedIcon.removeClass("selected_cart");
+        // Si l'article est déjà dans le panier, le retirer
+        supprimerArticleDuPanier(url, id);
+      } else {
+        url = $(this).data("url");
+        // Sinon, l'ajouter au panier
+        ajouterAuPanier(url, id, nom, prix, image, clickedIcon);
+      }
     });
   });
 });

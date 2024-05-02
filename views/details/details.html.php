@@ -23,36 +23,36 @@
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-      <div class="card-body bg-success details_mobile" style="width: 400px; margin:auto;">
+      <div class="card-body bg-dark details_mobile text-warning" style="width: 400px; margin:auto;">
         <h5 class="card-title"><?= $detail->getNomProduit() ?></h5>
         <div class="accordion accordion-flush bg-transparent" id="accordionFlushExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Description</button>
+              <button class="accordion-button collapsed text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Description</button>
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
-                <p class="card-text" style="text-align:justify"><?= $detail->getDescriptionProduit(); ?></p>
+                <p class="card-text text-warning" style="text-align:justify"><?= $detail->getDescriptionProduit(); ?></p>
               </div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">Caractèristiques</button>
+              <button class="accordion-button collapsed text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">Caractèristiques</button>
             </h2>
             <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
-                <p style="text-align:justify"><?= $detail->getCaracteristique(); ?></p>
+                <p style="text-align:justify" class="text-warning"><?= $detail->getCaracteristique(); ?></p>
               </div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">Conseils d'Entretien</button>
+              <button class="accordion-button collapsed text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">Conseils d'Entretien</button>
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
-                <p style="text-align:justify"><?= $detail->getEntretien(); ?></p>
+                <p style="text-align:justify" class="text-warning"><?= $detail->getEntretien(); ?></p>
               </div>
             </div>
           </div>
@@ -73,7 +73,7 @@
             </div>
           <?php } ?>
         </div>
-        <span class="bg-warning absolutePrix" style="text-align:center"><?= $detail->getPrixProduit() ?>€</span>
+        <span class="bg-warning absolutePrix bg-dark" style="text-align:center"><?= $detail->getPrixProduit() ?>€</span>
         <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === 'ROLE_ADMIN') { ?>
           <form action="<?= addLink('images', "add"); ?>" method="post" enctype="multipart/form-data">
             <div class="add_image">

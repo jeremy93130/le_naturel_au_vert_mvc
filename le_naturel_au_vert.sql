@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 15 avr. 2024 à 10:57
+-- Généré le : ven. 03 mai 2024 à 12:15
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -48,6 +48,19 @@ CREATE TABLE `adresse` (
 INSERT INTO `adresse` (`id`, `adresse`, `code_postal`, `ville`, `pays`, `instruction_livraison`, `client_id`, `nom_complet`, `commande_id`, `telephone`, `type`) VALUES
 (105, 'livraison', 94422, 'Paris', 'Afghanistan', 'livraison', 11, 'charles henry', 129, '0102030405', 'livraison'),
 (106, 'facturation', 94400, 'Paris', 'Afghanistan', NULL, 11, 'charles henry', 129, '0102030405', 'facturation');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `avis`
+--
+
+CREATE TABLE `avis` (
+  `id` int(11) NOT NULL,
+  `id_produit` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `avis` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -193,6 +206,14 @@ ALTER TABLE `adresse`
   ADD KEY `IDX_C35F081682EA2E54` (`commande_id`);
 
 --
+-- Index pour la table `avis`
+--
+ALTER TABLE `avis`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_produit` (`id_produit`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Index pour la table `commande`
 --
 ALTER TABLE `commande`
@@ -238,6 +259,12 @@ ALTER TABLE `adresse`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
+-- AUTO_INCREMENT pour la table `avis`
+--
+ALTER TABLE `avis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `commande`
 --
 ALTER TABLE `commande`
@@ -277,6 +304,13 @@ ALTER TABLE `user`
 ALTER TABLE `adresse`
   ADD CONSTRAINT `FK_C35F081619EB6921` FOREIGN KEY (`client_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FK_C35F081682EA2E54` FOREIGN KEY (`commande_id`) REFERENCES `commande` (`id`);
+
+--
+-- Contraintes pour la table `avis`
+--
+ALTER TABLE `avis`
+  ADD CONSTRAINT `avis_ibfk_1` FOREIGN KEY (`id_produit`) REFERENCES `produits` (`id`),
+  ADD CONSTRAINT `avis_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `commande`

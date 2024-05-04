@@ -81,4 +81,21 @@ class AvisRepository extends BaseRepository
             }
         }
     }
+
+    public function getAvisByProduit(int $id)
+    {
+        $sql = "SELECT *,user.* FROM avis LEFT JOIN user ON avis.id_user = user.id WHERE id_produit = :id";
+
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
+        $request->execute();
+
+        $result = $request->fetchAll(\PDO::FETCH_ASSOC);
+
+        if ($result !== false) {
+            return $result;
+        } else {
+            return false;
+        }
+    }
 }

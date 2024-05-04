@@ -9,6 +9,8 @@ class Avis extends BaseEntity
     private int $produit_id;
     private int $user_id;
     private string $avis;
+    private int $note;
+    private string $titre_avis;
 
     public function getProduit_id()
     {
@@ -45,6 +47,31 @@ class Avis extends BaseEntity
     public function setAvis($avis)
     {
         $this->avis = $avis;
+
+        return $this;
+    }
+
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+
+    public function getTitre_avis()
+    {
+        return $this->titre_avis;
+    }
+
+    public function setTitre_avis($titre_avis)
+    {
+        $this->titre_avis = $titre_avis;
 
         return $this;
     }

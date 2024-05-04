@@ -2,50 +2,36 @@
 
 namespace Controller;
 
+use Model\Entity\Avis;
+use Model\Repository\AvisRepository;
+use Model\Repository\ProduitsRepository;
+use Service\AvisManager;
+use Service\BackgroundManager;
+
 class AvisController extends BaseController
 {
-    private $id_user;
-    private $id_produits;
-    private $avis;
+    private AvisRepository $avisRepository;
+    private ProduitsRepository $produitsRepository;
 
-
-
-    public function getId_user()
+    public function __construct()
     {
-        return $this->id_user;
+        $this->avisRepository = new AvisRepository;
+        $this->produitsRepository = new ProduitsRepository;
     }
-
-
-    public function setId_user($id_user)
+    public function show($id)
     {
-        $this->id_user = $id_user;
+        $avis = $this->avisRepository->getAvisByProduit($id);
+        $detailsProduit = $this->produitsRepository->findById('produits', $id);
+        $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
+        $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
 
-        return $this;
-    }
-
-
-    public function getId_produits()
-    {
-        return $this->id_produits;
-    }
-
-    public function setId_produits($id_produits)
-    {
-        $this->id_produits = $id_produits;
-
-        return $this;
-    }
-
-
-    public function getAvis()
-    {
-        return $this->avis;
-    }
-
-    public function setAvis($avis)
-    {
-        $this->avis = $avis;
-
-        return $this;
+        $avis[0]['note'] = AvisManager::stars($avis[0]['note']);
+        // d_die($avis);
+        return $this->render('avis/avis.html.php', [
+            'avis' => $avis,
+            'produit' => $detailsProduit,
+            'css' => $css,
+            'cheminDossier' => $cheminDossier
+        ]);
     }
 }

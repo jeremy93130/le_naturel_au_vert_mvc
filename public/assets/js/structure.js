@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let parentDiv = input.parentElement;
     let plusButton = parentDiv.querySelector(".plus");
     let moinsButton = parentDiv.querySelector(".moins");
-    let totalColumn = parentDiv.querySelector(".total-column") ?? input.parentElement.nextElementSibling;
+    let totalColumn =
+      parentDiv.querySelector(".total-column") ??
+      input.parentElement.nextElementSibling;
 
     plusButton.addEventListener("click", function () {
       if (!plusButton.disabled) {

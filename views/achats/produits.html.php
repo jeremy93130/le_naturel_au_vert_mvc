@@ -45,6 +45,11 @@
 									<span class="absolute-prix">
 										<?= $produit->getPrixProduit(); ?>€
 									</span>
+									<div>
+										<?php foreach($moyenne as $m){ ?>
+										<?= d_die($m) ?>
+										<?php } ?>
+									</div>
 								</div>
 						<?php } else { ?>
 								<div class="card m-5 plantesResults relative-div-achats" style="width: 18rem;" data-nom="<?= $produit->getNomProduit(); ?>">

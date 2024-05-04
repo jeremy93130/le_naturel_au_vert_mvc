@@ -4,26 +4,21 @@ namespace Controller;
 
 use Service\Pagination;
 use Service\CartManager;
-use Form\ImagesHandleRequest;
 use Controller\BaseController;
-use Model\Entity\Images;
 use Service\BackgroundManager;
 use Model\Repository\ImagesRepository;
 use Model\Repository\ProduitsRepository;
+use Service\AvisManager;
 
 class HomeController extends BaseController
 {
     private ProduitsRepository $productRepository;
     private ImagesRepository $imagesRepository;
-    private ImagesHandleRequest $imagesHandleRequest;
-    private Images $images;
 
     public function __construct()
     {
         $this->productRepository = new ProduitsRepository;
         $this->imagesRepository = new ImagesRepository;
-        $this->imagesHandleRequest = new ImagesHandleRequest;
-        $this->images = new Images;
     }
 
     public function index()
@@ -47,7 +42,9 @@ class HomeController extends BaseController
         $cheminDossier = BackgroundManager::chooseProductFolder($categorie);
         $css = BackgroundManager::getBackGround($categorie);
         $produitsParPage = Pagination::$produitsParPage;
-        $cssPanier = array();
+        $cssPanier = [];
+        $moyenneTab = [];
+
         foreach ($produits as $product) {
             if (CartManager::isInCart($product->getId())) {
                 $cssPanier[$product->getId()] = 'selected_cart'; // On ajoute la classe au tableau $cssPanier si le produit est dans le panier
@@ -64,7 +61,8 @@ class HomeController extends BaseController
             'pageCourante' => $pageCourante,
             'cheminDossier' => $cheminDossier,
             'css' => $css,
-            'cssRed' => $cssPanier
+            'cssRed' => $cssPanier,
+            'moyenne' => $moyenneTab
         ]);
     }
 

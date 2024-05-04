@@ -64,15 +64,18 @@ class AvisRepository extends BaseRepository
         return null;
     }
 
-    public function countAvis()
+    public function getAvisFromProduct($id)
     {
-        $sql = "SELECT COUNT(*) FROM avis";
+        $sql = "SELECT * FROM avis WHERE id_produit = :id";
 
         $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':id', $id);
         $request->execute();
 
         if ($request) {
-            $result = $request->fetch(\PDO::FETCH_ASSOC);
+            $class = "Model\Entity\\" . ucfirst('avis');
+            $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+            $result = $request->fetchAll();
 
             if ($result !== false) {
                 return $result;
@@ -90,7 +93,9 @@ class AvisRepository extends BaseRepository
         $request->bindValue(':id', $id);
         $request->execute();
 
-        $result = $request->fetchAll(\PDO::FETCH_ASSOC);
+        $class = "Model\Entity\\" . ucfirst('adresse');
+        $request->setFetchMode(\PDO::FETCH_CLASS, $class);
+        $result = $request->fetchAll();
 
         if ($result !== false) {
             return $result;

@@ -9,7 +9,18 @@ class AvisManager
     public static function getMoyenne($id)
     {
         $avisRepository = new AvisRepository;
-        $avis = $avisRepository->findById("avis", $id);
+        $avis = $avisRepository->getAvisFromProduct($id);
+        if(!empty($avis)){
+            $totalAvis = 0;
+            if(count($avis) > 1){
+                foreach($avis as $a){
+                    $totalAvis += $a->getNote();
+                }
+                return $totalAvis / count($avis);
+            } else {
+              return $avis[0]->getNote();
+            }        
+        }
     }
 
     public static function stars(int $note)

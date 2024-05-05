@@ -514,6 +514,17 @@
       cursor: pointer;
     }
 
+    #moyenne_notes{
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #link_avis_home{
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+
     /* FIN PAGE INSCRIPTION */
 
 

@@ -5,20 +5,24 @@ namespace Controller;
 use Service\Pagination;
 use Service\CartManager;
 use Controller\BaseController;
+use Model\Repository\AvisRepository;
 use Service\BackgroundManager;
 use Model\Repository\ImagesRepository;
 use Model\Repository\ProduitsRepository;
 use Service\AvisManager;
+use Service\Session;
 
 class HomeController extends BaseController
 {
     private ProduitsRepository $productRepository;
     private ImagesRepository $imagesRepository;
+    private AvisRepository $avisRepository;
 
     public function __construct()
     {
         $this->productRepository = new ProduitsRepository;
         $this->imagesRepository = new ImagesRepository;
+        $this->avisRepository = new AvisRepository;
     }
 
     public function index()
@@ -43,7 +47,6 @@ class HomeController extends BaseController
         $css = BackgroundManager::getBackGround($categorie);
         $produitsParPage = Pagination::$produitsParPage;
         $cssPanier = [];
-        $moyenneTab = [];
 
         foreach ($produits as $product) {
             if (CartManager::isInCart($product->getId())) {
@@ -51,7 +54,23 @@ class HomeController extends BaseController
             } else {
                 $cssPanier[$product->getId()] = ''; // sinon on laisse la class à vide
             }
+            $noteAvis = $this->avisRepository->getAvisByProduit($product->getId());
+            $notesAvisProduits = $this->avisRepository->getAvisFromProduct($product->getId());
+
+            $_SESSION['nbNotes'.$product->getId()] = count($notesAvisProduits);
+
+            if ($noteAvis !== null) {
+                $moyenne = AvisManager::getMoyenne($product->getId());
+                if($moyenne !== null) {
+                    $noteMoyenne = AvisManager::stars($moyenne);
+                    $product->setMoyenne($moyenne);
+                    $_SESSION['etoile' .$product->getId()] = $noteMoyenne;
+                } else {
+                    $product->setMoyenne(null);
+                }
+            }
         }
+
         $this->render("achats/produits.html.php", [
             "h1" => "Liste des produits",
             "produits" => $produits,
@@ -62,7 +81,6 @@ class HomeController extends BaseController
             'cheminDossier' => $cheminDossier,
             'css' => $css,
             'cssRed' => $cssPanier,
-            'moyenne' => $moyenneTab
         ]);
     }
 

@@ -16,6 +16,7 @@ class Produits extends BaseEntity
     private $categorie;
     private $lot;
     private $image_id;
+    private $moyenne;
     public function getNomProduit()
     {
         return $this->nom_produit;
@@ -130,6 +131,18 @@ class Produits extends BaseEntity
     public function setImageId($image_id)
     {
         $this->image_id = $image_id;
+
+        return $this;
+    }
+
+    public function getMoyenne()
+    {
+        return $this->moyenne;
+    }
+
+    public function setMoyenne($moyenne)
+    {
+        $this->moyenne = $moyenne;
 
         return $this;
     }

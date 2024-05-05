@@ -21,17 +21,19 @@ class AvisController extends BaseController
     public function show($id)
     {
         $avis = $this->avisRepository->getAvisByProduit($id);
+        // d_die($avis);
         $detailsProduit = $this->produitsRepository->findById('produits', $id);
         $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
         $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
 
-        $avis[0]['note'] = AvisManager::stars($avis[0]['note']);
+        $etoile = AvisManager::stars($avis[0]->getNote());
         // d_die($avis);
         return $this->render('avis/avis.html.php', [
             'avis' => $avis,
             'produit' => $detailsProduit,
             'css' => $css,
-            'cheminDossier' => $cheminDossier
+            'cheminDossier' => $cheminDossier,
+            'etoile' => $etoile
         ]);
     }
 }

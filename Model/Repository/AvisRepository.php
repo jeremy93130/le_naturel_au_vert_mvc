@@ -93,7 +93,7 @@ class AvisRepository extends BaseRepository
         $request->bindValue(':id', $id);
         $request->execute();
 
-        $class = "Model\Entity\\" . ucfirst('adresse');
+        $class = "Model\Entity\\" . ucfirst('avis');
         $request->setFetchMode(\PDO::FETCH_CLASS, $class);
         $result = $request->fetchAll();
 

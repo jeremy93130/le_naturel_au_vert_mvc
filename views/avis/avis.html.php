@@ -8,8 +8,8 @@
         </div>
         <div class="avis_notes">
             <?php foreach ($avis as $a) { ?>
-                <p>Avis laissé par : <?= $a['nom'] ?> <?= $a['prenom']; ?><span style="color: #FFC107"><?= htmlspecialchars_decode($a['note']); ?></span></p>
-                <p><?= $a['avis']; ?></p>
+                <p>Avis laissé par : <?= $a->nom; ?> <?= $a->prenom; ?><span style="color: #FFC107"><?= htmlspecialchars_decode($a->getNote()); ?></span></p>
+                <p><?= $a->getAvis(); ?></p>
             <?php } ?>
         </div>
     </div>

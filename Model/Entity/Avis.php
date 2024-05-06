@@ -10,6 +10,7 @@ class Avis extends BaseEntity
     private int $user_id;
     private string $avis;
     private int $note;
+    private $date_avis;
     private string $titre_avis;
 
     public function getProduit_id()
@@ -72,6 +73,18 @@ class Avis extends BaseEntity
     public function setTitre_avis($titre_avis)
     {
         $this->titre_avis = $titre_avis;
+
+        return $this;
+    }
+
+    public function getDate_avis()
+    {
+        return $this->date_avis;
+    }
+
+    public function setDate_avis($date_avis)
+    {
+        $this->date_avis = $date_avis;
 
         return $this;
     }

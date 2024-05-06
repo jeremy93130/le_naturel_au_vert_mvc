@@ -26,8 +26,14 @@ class AvisController extends BaseController
         $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
         $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
 
-        $etoile = AvisManager::stars($avis[0]->getNote());
-        // d_die($avis);
+        $etoile = [];
+
+        foreach ($avis as $a) {
+            $frDate = new \DateTime($a->getDate_Avis());
+            $frDateFormat = $frDate->format('d-m-Y');
+            $a->setDate_avis($frDateFormat);
+            $etoile[] = AvisManager::stars($a->getNote());
+        }
         return $this->render('avis/avis.html.php', [
             'avis' => $avis,
             'produit' => $detailsProduit,

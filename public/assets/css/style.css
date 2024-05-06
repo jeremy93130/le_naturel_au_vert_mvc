@@ -514,15 +514,15 @@
       cursor: pointer;
     }
 
-    #moyenne_notes{
-      display: flex;
+    #moyenne_notes {
+      display        : flex;
       justify-content: flex-end;
     }
 
-    #link_avis_home{
-      cursor: pointer;
+    #link_avis_home {
+      cursor         : pointer;
       text-decoration: none;
-      color: white;
+      color          : white;
     }
 
     /* FIN PAGE INSCRIPTION */
@@ -941,43 +941,74 @@
 
 
     /* Page Avis */
-    .avis_div{
-      display: flex;
+    .avis_div {
+      display        : flex;
       justify-content: space-evenly;
     }
-    #image_produit_avis{
-      width: 25%;
-      img{
+
+    #image_produit_avis {
+      width           : 300px;
+      padding         : 40px;
+      border          : 2px solid #FFC107;
+      background-color: #000000;
+      margin          : 10px auto;
+      padding         : 30px;
+
+      img {
         width: 100%;
       }
     }
 
-    #text_produit_avis{
-      width: 75%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .titre_avis {
+      margin-bottom  : 50px;
+      color          : #FFC107;
+      text-decoration: underline;
+      text-align: center;
     }
 
-    .titre_avis{
-      margin-bottom: 50px;
-      color: #FFC107;
-      text-decoration: underline;
+    .commentaires_avis {
+      width: 50%;
     }
 
     .avis_notes {
-     text-align: center;
+      display: flex;
+      justify-content: space-around;
     }
-    .avis_notes p:last-child{
-      border: 1px solid black;
-      /* background-color: #212529; */
-      height: 130px;
-      width: 75%;
-      margin: auto;
-      overflow-wrap: break-word;
-      text-align: justify;
-      overflow-x: auto;
-    
+
+    .avis_notes>div:nth-child(odd){
+     display: flex; 
+     flex-direction: column;
+     align-items: end;
+      margin-right: 30px;
+    }
+
+    .avis_notes>div:nth-child(even){
+      display: flex;
+      flex-direction: column;
+    }
+
+    .avis_notes p:first-child, .avis_notes p:nth-child(2) {
+      font-weight: bold;
+      color      : #FFC107;
+
+      span {
+        margin: 0 0 0 10px;
+      }
+    }
+
+
+    .avis_notes p:last-child {
+      border             : 1px solid black;
+      background-color: #e6eaee94;
+      color: black;
+      height             : 200px;
+      overflow-wrap      : break-word;
+      text-align         : justify;
+      overflow-x         : auto;
+    }
+
+    .avis_p {
+      width: 400px;
     }
 
     /* MEDIAS QUERIES */
@@ -1056,12 +1087,12 @@
       }
 
       .img_panier_mobile {
-        width: 25%;
+        width : 25%;
         height: 200px;
         margin: 30px;
 
-        img{
-          width: 100%;
+        img {
+          width : 100%;
           height: 100%;
         }
       }

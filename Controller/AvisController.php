@@ -26,14 +26,9 @@ class AvisController extends BaseController
         $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
         $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
 
-        $etoile = [];
+        $etoile = AvisManager::getEtoiles($avis); 
 
-        foreach ($avis as $a) {
-            $frDate = new \DateTime($a->getDate_Avis());
-            $frDateFormat = $frDate->format('d-m-Y');
-            $a->setDate_avis($frDateFormat);
-            $etoile[] = AvisManager::stars($a->getNote());
-        }
+        $avis = AvisManager::formatDateAvis($avis);
         return $this->render('avis/avis.html.php', [
             'avis' => $avis,
             'produit' => $detailsProduit,
@@ -41,5 +36,11 @@ class AvisController extends BaseController
             'cheminDossier' => $cheminDossier,
             'etoile' => $etoile
         ]);
+    }
+
+    public function new()
+    {
+        
+        return $this->render('avis/formulaire_avis.html.php', []);
     }
 }

@@ -18,6 +18,7 @@
     <script src="https://kit.fontawesome.com/c2e186b2d4.js" crossorigin="anonymous"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="public/assets/js/add_delete_cart.js"></script>
+    <script src="public/assets/js/avis.js"></script>
     <script src="public/assets/js/commande.js"></script>
     <script src="public/assets/js/password.js"></script>
     <script src="public/assets/js/paiement.js"></script>

@@ -377,7 +377,7 @@
     .ajouter_panier_icon {
       cursor   : pointer;
       position : absolute;
-      bottom   : 100px;
+      top      : 0;
       left     : 0;
       padding  : 3px 7px;
       color    : #000000;
@@ -963,7 +963,7 @@
       margin-bottom  : 50px;
       color          : #FFC107;
       text-decoration: underline;
-      text-align: center;
+      text-align     : center;
     }
 
     .commentaires_avis {
@@ -971,23 +971,24 @@
     }
 
     .avis_notes {
-      display: flex;
+      display        : flex;
       justify-content: space-around;
     }
 
-    .avis_notes>div:nth-child(odd){
-     display: flex; 
-     flex-direction: column;
-     align-items: end;
-      margin-right: 30px;
+    .avis_notes>div:nth-child(odd) {
+      display       : flex;
+      flex-direction: column;
+      align-items   : end;
+      margin-right  : 30px;
     }
 
-    .avis_notes>div:nth-child(even){
-      display: flex;
+    .avis_notes>div:nth-child(even) {
+      display       : flex;
       flex-direction: column;
     }
 
-    .avis_notes p:first-child, .avis_notes p:nth-child(2) {
+    .avis_notes p:first-child,
+    .avis_notes p:nth-child(2) {
       font-weight: bold;
       color      : #FFC107;
 
@@ -998,13 +999,13 @@
 
 
     .avis_notes p:last-child {
-      border             : 1px solid black;
-      background-color: #e6eaee94;
-      color: black;
-      height             : 200px;
-      overflow-wrap      : break-word;
-      text-align         : justify;
-      overflow-x         : auto;
+      border          : 1px solid black;
+      background-color: white;
+      color           : black;
+      height          : 150px;
+      overflow-wrap   : break-word;
+      text-align      : justify;
+      overflow-x      : auto;
     }
 
     .avis_p {

@@ -35,4 +35,24 @@ class AvisManager
             }
         return $etoiles;
     }
+
+    public static function formatDateAvis(array $avis)
+    {
+        foreach($avis as $a){
+            $newDate = new \DateTime($a->getDate_Avis());
+            $formatFr = $newDate->format('d-m-Y');
+            $a->setDate_avis($formatFr);
+        }
+        return $avis;
+    }
+
+    public static function getEtoiles(array $avis)
+    {
+        $etoiles = [];
+        foreach($avis as $a){
+            $etoiles[] = self::stars($a->getNote());
+        }
+
+        return $etoiles;
+    }
 }

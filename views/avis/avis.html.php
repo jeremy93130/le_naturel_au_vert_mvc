@@ -4,7 +4,8 @@
     </div>
     <div id="text_produit_avis">
         <div class="titre_avis">
-            <h2> Avis laissés sur <?= $produit->getNomProduit(); ?></h2>
+            <h2> Ce que les acheteurs pensent de <?= $produit->getNomProduit(); ?></h2>
+            <p><a href="<?= addLink('avis', 'new', $produit->getId()); ?>">Laissez mon avis</a></p>
         </div>
         <div class="avis_notes">
             <?php foreach ($avis as $index => $a) { ?>

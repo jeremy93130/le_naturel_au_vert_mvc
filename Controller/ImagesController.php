@@ -26,11 +26,10 @@ class ImagesController extends BaseController
 
     public function add()
     {
-        $this->imagesHandleRequest->handleInsertForm($this->images);
-
+        $this->imagesHandleRequest->handleInsertForm($this->images);    
         if($this->imagesHandleRequest->isSubmitted() && $this->imagesHandleRequest->isValid()){
             $this->imagesRepository->insertImages($this->images->getProduitId(), $this->images->getImageName());
-            $this->redirectToRoute(['home', 'details']);
+            $this->redirectToRoute(['home', 'details',$_POST['produit_id']]);
         }
     }
 

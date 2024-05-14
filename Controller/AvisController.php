@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Form\AvisHandleRequest;
 use Model\Entity\Avis;
 use Model\Repository\AvisRepository;
 use Model\Repository\ProduitsRepository;
@@ -12,35 +13,21 @@ class AvisController extends BaseController
 {
     private AvisRepository $avisRepository;
     private ProduitsRepository $produitsRepository;
+    private AvisHandleRequest $avisHandleRequest;
 
     public function __construct()
     {
         $this->avisRepository = new AvisRepository;
         $this->produitsRepository = new ProduitsRepository;
-    }
-    public function show($id)
-    {
-        $avis = $this->avisRepository->getAvisByProduit($id);
-        // d_die($avis);
-        $detailsProduit = $this->produitsRepository->findById('produits', $id);
-        $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
-        $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
-
-        $etoile = AvisManager::getEtoiles($avis); 
-
-        $avis = AvisManager::formatDateAvis($avis);
-        return $this->render('avis/avis.html.php', [
-            'avis' => $avis,
-            'produit' => $detailsProduit,
-            'css' => $css,
-            'cheminDossier' => $cheminDossier,
-            'etoile' => $etoile
-        ]);
+        $this->avisHandleRequest = new AvisHandleRequest;
     }
 
     public function new()
     {
-        
+        if($this->avisHandleRequest->isSubmitted() && $this->avisHandleRequest->isValid())
+        {
+
+        }
         return $this->render('avis/formulaire_avis.html.php', []);
     }
 }

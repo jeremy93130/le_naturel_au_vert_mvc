@@ -597,6 +597,10 @@
       text-align: center;
     }
 
+    .relative-details {
+      border-bottom: 10px solid #FFC107;
+    }
+
     /* FIN PAGE DETAILS */
 
 
@@ -940,76 +944,32 @@
     }
 
 
-    /* Page Avis */
-    .avis_div {
-      display        : flex;
-      justify-content: space-evenly;
+    /* Section Avis */
+    .commentaire_avis {
+      margin-top: 100px;
+      border-top: 5px dashed black;
     }
 
-    #image_produit_avis {
-      width           : 300px;
-      padding         : 40px;
-      border          : 2px solid #FFC107;
-      background-color: #000000;
-      margin          : 10px auto;
-      padding         : 30px;
-
-      img {
-        width: 100%;
-      }
+    .avis_none {
+      display: none;
     }
 
-    .titre_avis {
-      margin-bottom  : 50px;
-      color          : #FFC107;
-      text-decoration: underline;
-      text-align     : center;
+    #show_avis {
+      max-height: 0;
+      overflow  : hidden;
+      opacity   : 0;
+      transition: max-height 3s ease, opacity 0.5s ease;
     }
 
-    .commentaires_avis {
-      width: 50%;
+    #show_avis.open {
+      min-height: 1000px;
+      /* Assurez-vous que cette valeur est suffisamment grande pour contenir le contenu */
+      opacity   : 1;
     }
 
-    .avis_notes {
-      display        : flex;
-      justify-content: space-around;
-    }
-
-    .avis_notes>div:nth-child(odd) {
-      display       : flex;
-      flex-direction: column;
-      align-items   : end;
-      margin-right  : 30px;
-    }
-
-    .avis_notes>div:nth-child(even) {
-      display       : flex;
-      flex-direction: column;
-    }
-
-    .avis_notes p:first-child,
-    .avis_notes p:nth-child(2) {
-      font-weight: bold;
-      color      : #FFC107;
-
-      span {
-        margin: 0 0 0 10px;
-      }
-    }
-
-
-    .avis_notes p:last-child {
-      border          : 1px solid black;
-      background-color: white;
-      color           : black;
-      height          : 150px;
-      overflow-wrap   : break-word;
-      text-align      : justify;
-      overflow-x      : auto;
-    }
-
-    .avis_p {
-      width: 400px;
+    /* Formulaire avis */
+    #nb_etoiles_form_avis:hover {
+      cursor: pointer;
     }
 
     /* MEDIAS QUERIES */

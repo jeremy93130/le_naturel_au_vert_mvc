@@ -60,6 +60,10 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {; ?>
                         <a class="link-supp" onclick="viderPanier('<?= addLink('panier', 'deleteAll'); ?>')">Vider le panier</a>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="5"></td>
+                    <td class="text-danger"> Une TVA sera appliquée après cette page</td>
+                </tr>
             </tfoot>
         </table>
 

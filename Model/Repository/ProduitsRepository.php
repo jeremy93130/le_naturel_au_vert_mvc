@@ -3,6 +3,7 @@
 namespace Model\Repository;
 
 use Model\Entity\Produits;
+use Model\Entity\User;
 use Service\Session;
 
 class ProduitsRepository extends BaseRepository

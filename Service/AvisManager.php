@@ -2,7 +2,9 @@
 
 namespace Service;
 
+use Model\Entity\User;
 use Model\Repository\AvisRepository;
+use Model\Repository\CommandeRepository;
 
 class AvisManager
 {
@@ -54,5 +56,14 @@ class AvisManager
         }
 
         return $etoiles;
+    }
+
+    public static function checkUserAchat(int $userId, int $produitId)
+    {
+        $commandeAchat = new CommandeRepository;
+
+        $achat = $commandeAchat->checkAchatByUser($userId,$produitId);
+
+        return $achat;
     }
 }

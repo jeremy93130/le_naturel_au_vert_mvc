@@ -87,7 +87,7 @@ class AvisRepository extends BaseRepository
 
     public function getAvisByProduit(int $id)
     {
-        $sql = "SELECT *,user.* FROM avis LEFT JOIN user ON avis.id_user = user.id WHERE id_produit = :id";
+        $sql = "SELECT *,user.* FROM avis LEFT JOIN user ON avis.id_user = user.id WHERE id_produit = :id AND allow = true";
 
         $request = $this->dbConnection->prepare($sql);
         $request->bindValue(':id', $id);

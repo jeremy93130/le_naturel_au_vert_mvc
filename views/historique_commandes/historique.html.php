@@ -14,7 +14,7 @@
           <th>Adresse de facturation</th>
           <th>Adresse de livraison</th>
           <th>Produit(s)</th>
-          <th>prix</th>
+          <th>prix_HT</th>
           <th>Quantité</th>
           <th>Total</th>
         </tr>

@@ -4,14 +4,14 @@
       <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner details-img">
           <div class="carousel-item active detail-img">
-            <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>"/>
+            <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>" />
           </div>
           <?php if ($item !== null) {
             foreach ($item as $i) { ?>
               <div class="carousel-item detail-img">
-                <img src="<?= $cheminDossier . $detail->getImage(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>"/>
+                <img src="<?= $cheminDossier . $i->getImageName(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>" />
               </div>
-            <?php }
+          <?php }
           } ?>
         </div>
         <button class="carousel-control-prev absolutePrev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -75,11 +75,11 @@
         </div>
         <span class="bg-warning absolutePrix bg-dark" style="text-align:center"><?= $detail->getPrixProduit() ?>€</span>
         <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === 'ROLE_ADMIN') { ?>
-          <form action="<?= addLink('images', "add"); ?>" method="post" enctype="multipart/form-data">
+          <form action="<?= addLink('images', "add") ?>" method="post" enctype="multipart/form-data">
             <div class="add_image">
               <input type="hidden" name="categorie" value="<?= $detail->getCategorie(); ?>">
               <input type="hidden" name="produit_id" value="<?= $detail->getId(); ?>">
-              <input type="file" name="photo" accept="image/*"/>
+              <input type="file" name="photo" accept="image/*" />
               <button type="submit" name="ajout_image">Ajouter image</button>
             </div>
           </form>
@@ -88,5 +88,30 @@
     </div>
     <div id="ajout-panier"></div>
   </div>
+  <?php if (!empty($avis)) { ?>
+    <button id="show_avis_link">Voir les avis</button>
+    <div id="show_avis" class="avis_none">
+      <div class="commentaire_avis">
+        <h2 class="mb-4 mt-4 text-center text-warning">Ce que les acheteurs en ont pensé</h2>
+        <?php if ($allowAvis) { ?>
+          <p>Vous avez déjà acheté ce produit, <a href="<?= addLink('avis', 'new'); ?>">laissez votre avis?</a></p>
+        <?php } ?>
+        <div class="d-flex justify-content-center">
+          <?php foreach ($avis as $index => $a) { ?>
+            <div class="card w-25 bg-dark text-warning m-3">
+              <div class="card-header">
+                <?= mb_strtoupper($a->getTitre_avis()) ?>
+              </div>
+              <div class="card-body">
+                <blockquote class="blockquote mb-0 d-flex flex-column justify-content-between h-100">
+                  <p><?= $a->getAvis() ?></p>
+                  <footer class="blockquote-footer text-warning"><?= ucfirst($a->nom); ?> <?= $a->prenom; ?><cite title="nombre d'étoiles" class="ms-3"><?= htmlspecialchars_decode($etoile[$index]); ?></cite></footer>
+                </blockquote>
+              </div>
+            </div>
+          <?php } ?>
+        </div>
+      </div>
+    </div>
+  <?php } ?>
 </div>
-

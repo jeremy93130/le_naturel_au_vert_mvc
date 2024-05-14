@@ -57,14 +57,14 @@ class HomeController extends BaseController
             $noteAvis = $this->avisRepository->getAvisByProduit($product->getId());
             $notesAvisProduits = $this->avisRepository->getAvisFromProduct($product->getId());
 
-            $_SESSION['nbNotes'.$product->getId()] = count($notesAvisProduits);
+            $_SESSION['nbNotes' . $product->getId()] = count($notesAvisProduits);
 
             if ($noteAvis !== null) {
                 $moyenne = AvisManager::getMoyenne($product->getId());
-                if($moyenne !== null) {
+                if ($moyenne !== null) {
                     $noteMoyenne = AvisManager::stars($moyenne);
                     $product->setMoyenne($moyenne);
-                    $_SESSION['etoile' .$product->getId()] = $noteMoyenne;
+                    $_SESSION['etoile' . $product->getId()] = $noteMoyenne;
                 } else {
                     $product->setMoyenne(null);
                 }
@@ -87,17 +87,35 @@ class HomeController extends BaseController
     public function details($id)
     {
         $detailsProduit = $this->productRepository->findById('produits', $id);
-        // d_die($detailsProduit);
         $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
         $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
 
         $item = $this->imagesRepository->carousselImages($id);
 
+        // d_die($item);
+
+        $avis = $this->avisRepository->getAvisByProduit($id);
+        $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
+        $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
+
+        // On gère l'utilisation des étoiles, on récupère la note de l'utilisateur puis on la transforme en nombre d'étoiles correspondantes
+
+        $etoile = AvisManager::getEtoiles($avis);
+
+        $avis = AvisManager::formatDateAvis($avis);
+
+
+        // on vérifie que l'utilisateur a bien acheté le produit s'il veut laisser son avis
+        $allowAvis = AvisManager::checkUserAchat($this->getUser()->getId(), $detailsProduit->getId());
+
         $this->render('details/details.html.php', [
             'detail' => $detailsProduit,
             'cheminDossier' => $cheminDossier,
             'item' => $item,
-            'css' => $css
+            'css' => $css,
+            'etoile' => $etoile,
+            'avis' => $avis,
+            'allowAvis' => $allowAvis
         ]);
     }
 }

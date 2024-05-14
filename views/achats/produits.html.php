@@ -49,7 +49,7 @@
 							<?php if (isset($_SESSION['etoile' . $produit->getId()]) && isset($_SESSION['nbNotes' . $produit->getId()])) { ?>
 								<div>
 									<p id='moyenne_notes'>
-										<a href="<?= addLink('avis', 'show', $produit->getId()); ?>" title="Voir les avis pour ce produit" id="link_avis_home">
+										<a href="<?= addLink('home','details',$produit->getId()); ?>" title="Voir les avis pour ce produit" id="link_avis_home">
 											<span class="text-warning"><?= htmlspecialchars_decode($_SESSION['etoile' . $produit->getId()]); ?>
 											</span>
 											(<?= $_SESSION['nbNotes' . $produit->getId()]; ?>)

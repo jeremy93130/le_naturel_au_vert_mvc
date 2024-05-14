@@ -3,17 +3,19 @@
 namespace Model\Repository;
 
 use Model\Entity\Commande;
+use Model\Entity\Produits;
+use Model\Entity\User;
 use Service\Session;
 
 class CommandeRepository extends BaseRepository
 {
     public function insertOrder(Commande $order)
-    {        
-       
+    {
+
         $order->setClientId($_SESSION["user"]->getId());
 
         try {
-            
+
             $this->dbConnection->beginTransaction();
             $sql = "INSERT INTO `commande` (client_id,date_commande,etat_commande,total,numero_commande) VALUES (:client,NOW(),:etat,:total,:numero)";
 
@@ -26,7 +28,7 @@ class CommandeRepository extends BaseRepository
 
             $request = $request->execute();
             $idOrder = $this->dbConnection->lastInsertId();
-            
+
             // Validez la transaction si tout s'est bien passé
             $this->dbConnection->commit();
 
@@ -67,5 +69,38 @@ class CommandeRepository extends BaseRepository
         }
         Session::addMessage("danger",  "Erreur SQL");
         return null;
+    }
+
+    public function checkAchatByUser(int $userId, int $produitsId)
+    {
+        $sql = "
+        SELECT COUNT(*) as count
+        FROM details_commande dc
+        JOIN commande c ON dc.commande_id = c.id
+        WHERE c.client_id = :user_id
+        AND dc.produit_id = :produit_id
+    ";
+        $request = $this->dbConnection->prepare($sql);
+        $request->bindValue(':user_id', $userId);
+        $request->bindValue(':produit_id', $produitsId);
+        $request->execute();
+
+        $result = $request->fetchColumn();
+
+        if ($result > 0) {
+            $sql = "SELECT COUNT(*) as count FROM avis WHERE id_produit = :id_produit AND id_user = :id_user";
+
+            $request = $this->dbConnection->prepare($sql);
+            $request->bindValue(':id_produit', $produitsId, \PDO::PARAM_INT);
+            $request->bindValue(':id_user', $userId, \PDO::PARAM_INT);
+            $request->execute();
+
+            $avisCount = $request->fetchColumn();
+
+            // Retourne true si l'utilisateur a acheté le produit et n'a pas encore laissé d'avis
+            return $avisCount == 0;
+        } else {
+            return false;
+        }
     }
 }

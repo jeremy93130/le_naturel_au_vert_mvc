@@ -33,7 +33,7 @@
                                     </li>
                                     <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() === 'ROLE_ADMIN') { ?>
                                             <li>
-                                                <a class="nav-link text-danger dropdown-item p-2" href="<?= addLink('admin/user','') ?>">Admin</a>
+                                                <a class="nav-link text-danger dropdown-item p-2" href="<?= addLink('admin/home','index') ?>">Admin</a>
                                             </li>
                                     <?php } ?>
                                     <li>

@@ -4,7 +4,6 @@ namespace Controller;
 
 require_once 'vendor/autoload.php';
 use Dotenv\Dotenv;
-use Model\Entity\Adresse;
 use Stripe\Stripe;
 use Service\Session;
 use Model\Entity\Commande;
@@ -18,7 +17,6 @@ use Model\Repository\DetailCommandeRepository;
 class PaiementController extends BaseController
 {
     private AdresseRepository $adresseRepository;
-    private Commande $commande;
     private ProduitsRepository $produitsRepository;
     private DetailCommandeRepository $detailCommandeRepository;
     private CommandeRepository $commandeRepository;

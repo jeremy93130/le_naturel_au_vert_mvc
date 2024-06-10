@@ -106,8 +106,11 @@ class HomeController extends BaseController
 
 
         // on vérifie que l'utilisateur a bien acheté le produit s'il veut laisser son avis
-        $allowAvis = AvisManager::checkUserAchat($this->getUser()->getId(), $detailsProduit->getId());
-
+        if ($this->getUserId()) {
+            $allowAvis = AvisManager::checkUserAchat($this->getUser()->getId(), $detailsProduit->getId());
+        } else {
+            $allowAvis = "";
+        }
         $this->render('details/details.html.php', [
             'detail' => $detailsProduit,
             'cheminDossier' => $cheminDossier,

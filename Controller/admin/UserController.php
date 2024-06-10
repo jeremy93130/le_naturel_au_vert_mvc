@@ -29,7 +29,7 @@ class UserController extends BaseController
     {
         $users = $this->userRepository->findAll($this->user);
 
-        $this->render("admin/list.html.php", [
+        $this->render("admin/user/admin_user_list.html.php", [
             "h1" => "Liste des utilisateurs",
             "users" => $users
         ]);
@@ -47,7 +47,7 @@ class UserController extends BaseController
 
         $errors = $this->form->getEerrorsForm();
 
-        return $this->render("user/form.html.php", [
+        return $this->render("admin/user/add_user.html.php", [
             "h1" => "Ajouter un nouvel utilisateur",
             "user" => $user,
             "errors" => $errors
@@ -116,5 +116,7 @@ class UserController extends BaseController
             "h1" => "Fiche user"
         ]);
     }
+
+
 
 }

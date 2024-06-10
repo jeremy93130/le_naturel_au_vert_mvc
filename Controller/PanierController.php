@@ -31,6 +31,7 @@ class PanierController extends BaseController
 
     public function addToCart(): void
     {
+        // Lit le corps de la requête et stock le contenu dans la variable jsonContent
         $jsonContent = file_get_contents('php://input');
 
         $data = json_decode($jsonContent, true);

@@ -2,14 +2,18 @@
 function ajouterAuPanier(url, id, nom, prix, image, clickedIcon) {
   let nbArticles = $("#nb_articles");
   var ajoutPanier = $("#ajout-panier");
+
+  // produitData est un Objet javascript qui sera converti en chaîne de caractère JSON grâce à la méthode stringify,
+  // Stringify est utilisé car sans ça, Javascript ne sait pas comment nativement il peut convertir l'objet produitData au bon format pour php 
   var produitData = {
     id: id,
     nom: nom,
     image: image,
     prix: prix,
   };
+
   $.ajax({
-    url: url,
+    url: url, // l'url sera http://localhost/panier/addToCart
     type: "POST",
     contentType: "application/json",
     data: JSON.stringify(produitData),

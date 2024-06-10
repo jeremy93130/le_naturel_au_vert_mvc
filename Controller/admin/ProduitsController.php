@@ -1,16 +1,17 @@
 <?php
+
 /**
  * Summary of namespace Controller
  */
+
 namespace Controller\Admin;
 
 use Controller\BaseController;
 use Model\Entity\Produits;
-use Model\Entity\Category;
 use Form\ProduitsHandleRequest;
 use Model\Repository\ProduitsRepository;
-use Model\Repository\CategoryRepository;
-use Service\ImageHandler;
+use Service\BackgroundManager;
+use Service\Session;
 
 /**
  * Summary of ProductController
@@ -31,15 +32,17 @@ class ProduitsController extends BaseController
     public function list()
     {
         $products = $this->productRepository->findAll($this->product);
-        
+
+        $cheminDossier = [];
+        foreach($products as $p) {
+            $cheminDossier[$p->getId()] = BackgroundManager::chooseProductFolder($p->getCategorie());
+        }
+
         $this->render("admin/product/index.html.php", [
             "h1" => "Liste des produits",
-            "products" => $products
+            "products" => $products,
+            'cheminDossier' => $cheminDossier
         ]);
-    }
-
-    public function new()
-    {
     }
 
     /**
@@ -62,10 +65,9 @@ class ProduitsController extends BaseController
                 $this->productRepository->updateProduct($product);
                 return redirection(addLink("home"));
             }
-
             $errors = $this->form->getEerrorsForm();
-            return $this->render("product/form.html.php", [
-                "h1" => "Update de l'utilisateur n° $id",
+            return $this->render("admin/product/edit_product.html.php", [
+                "h1" => "Update du produit n° $id",
                 "product" => $product,
                 "errors" => $errors
             ]);
@@ -108,5 +110,15 @@ class ProduitsController extends BaseController
         $this->render("product/show.html.php", [
             "h1" => "Fiche product"
         ]);
+    }
+
+    public function new()
+    {
+        $this->form->handleInsertForm();
+
+        if ($this->form->isSubmitted() && $this->form->isValid()) {
+            Session::addMessage('success', 'Votre produit a bien été ajouté à la liste');
+        }
+        $this->render('admin/product/add_product.html.php');
     }
 }

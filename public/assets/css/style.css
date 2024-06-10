@@ -68,6 +68,24 @@
       }
     }
 
+    /* Admin update produits */
+
+    #form_update_product_admin ul{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+      li{
+        margin: 30px;
+      }
+    }
+
+    .none {
+      display: none;
+    }
+
+    /* Fin */
+
     /* Page Login */
 
     .form-login {

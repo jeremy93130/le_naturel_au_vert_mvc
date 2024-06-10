@@ -6,7 +6,8 @@ use Model\Database;
 use Model\Entity\BaseEntity;
 use Service\Session as Sess;
 
-class BaseRepository
+// abstract = ne peut pas être instancié directement. On l'utilise en tant que class mère.
+abstract class BaseRepository
 {
     protected $dbConnection;
 

@@ -79,7 +79,7 @@
             <div class="add_image">
               <input type="hidden" name="categorie" value="<?= $detail->getCategorie(); ?>">
               <input type="hidden" name="produit_id" value="<?= $detail->getId(); ?>">
-              <input type="file" name="photo" accept="image/*" />
+              <input type="file" name="image" accept="image/*" />
               <button type="submit" name="ajout_image">Ajouter image</button>
             </div>
           </form>

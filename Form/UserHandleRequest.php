@@ -134,7 +134,7 @@ class UserHandleRequest extends BaseHandleRequest
                 $errors[] = "Veuillez inserer vos informations de connexion";
             } else {
                 /**
-                 * @var User
+                 * @var  User
                  */
                 $user = $this->userRepository->loginUser($email);
                 if (empty($user)) {

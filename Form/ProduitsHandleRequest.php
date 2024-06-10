@@ -76,8 +76,8 @@ class ProduitsHandleRequest extends BaseHandleRequest
     }
     public function handleEditForm(Produits $product)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modif_produit'])) {
-
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            d_die('ok');
             extract($_POST);
             $errors = [];
             // Vérification de la validité du formulaire

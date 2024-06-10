@@ -34,7 +34,7 @@ class ProduitsController extends BaseController
         $products = $this->productRepository->findAll($this->product);
 
         $cheminDossier = [];
-        foreach($products as $p) {
+        foreach ($products as $p) {
             $cheminDossier[$p->getId()] = BackgroundManager::chooseProductFolder($p->getCategorie());
         }
 
@@ -52,27 +52,23 @@ class ProduitsController extends BaseController
      */
     public function edit($id)
     {
-        if (!empty($id) && is_numeric($id)) {
+        /**
+         * @var Produits
+         */
+        $product = $this->productRepository->findById('produits', $id);
 
-            /**
-             * @var Produits
-             */
-            $product = $this->product;
+        $this->form->handleEditForm($product);
 
-            $this->form->handleEditForm($product);
-
-            if ($this->form->isSubmitted() && $this->form->isValid()) {
-                $this->productRepository->updateProduct($product);
-                return redirection(addLink("home"));
-            }
-            $errors = $this->form->getEerrorsForm();
-            return $this->render("admin/product/edit_product.html.php", [
-                "h1" => "Update du produit n° $id",
-                "product" => $product,
-                "errors" => $errors
-            ]);
+        if ($this->form->isSubmitted() && $this->form->isValid()) {
+            $this->productRepository->updateProduct($product);
         }
-        return redirection("/errors/404.php");
+
+        $errors = $this->form->getEerrorsForm();
+        return $this->render("admin/product/edit_product.html.php", [
+            "h1" => "Update du produit n° $id",
+            "product" => $product,
+            "errors" => $errors
+        ]);
     }
 
     public function delete($id)

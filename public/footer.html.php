@@ -18,11 +18,13 @@
     <div class="nav-footer">
         <nav>
             <ul>
-                <li><a id=""href="{{ path('app_cgv') }}"><i class="fa-solid fa-scale-balanced pe-2"></i>Voir nos CGV</a></li>
-                <li><a id=""href="{{ path('app_mentions') }}"><i class="fa-solid fa-book-open pe-2"></i>Mentions légales</a></li>
-                <li><a id=""href="{{ path('app_info_entreprise') }}"><i class="fa-solid fa-person-circle-question pe-2"></i>Qui sommes-nous?</a></li>
+                <li><a id="" href="<?= addLink('legalite', 'show') ?>"><i class="fa-solid fa-scale-balanced pe-2"></i>Voir nos CGV</a></li>
+                <li><a id="" href="{{ path('app_mentions') }}"><i class="fa-solid fa-book-open pe-2"></i>Mentions légales</a></li>
+                <li><a id="" href="{{ path('app_info_entreprise') }}"><i class="fa-solid fa-person-circle-question pe-2"></i>Qui sommes-nous?</a></li>
             </ul>
         </nav>
     </div>
-</footer></body></html>
+</footer>
+</body>
 
+</html>

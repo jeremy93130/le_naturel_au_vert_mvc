@@ -106,7 +106,6 @@ abstract class BaseRepository
         }
         Sess::addMessage("danger", "Erreur SQL");
         return null;
-
     }
     public function remove(BaseEntity $tableName)
     {
@@ -116,7 +115,7 @@ abstract class BaseRepository
         $request = $request->execute();
         if ($request) {
             if ($request == 1) {
-                Sess::addMessage("success", "La mise à jour de l'utilisateur a bien été éffectuée");
+                Sess::addMessage("success", "L'article a été correctement supprimé");
                 return true;
             }
             Sess::addMessage("danger", "Erreur : l'utilisateur n'a pas été mise à jour");

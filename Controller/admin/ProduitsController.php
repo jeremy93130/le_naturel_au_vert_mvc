@@ -52,15 +52,21 @@ class ProduitsController extends BaseController
      */
     public function edit($id)
     {
-        /**
-         * @var Produits
-         */
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+        }
         $product = $this->productRepository->findById('produits', $id);
+        // d_die($product);
 
         $this->form->handleEditForm($product);
-
+        // d_die($this->form);
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             $this->productRepository->updateProduct($product);
+            echo json_encode(['success' => 'Le produit a bien été mis à jour', 'modifs' => $this->form->getModifElement()]);
+            return;
+        } else if (!$this->form->isSubmitted() && !$this->form->isValid()) {
+            echo json_encode(['error', 'Il y\'a eu un problème avec la mise à jour du produit']);
+            return;
         }
 
         $errors = $this->form->getEerrorsForm();
@@ -76,19 +82,17 @@ class ProduitsController extends BaseController
         if (!empty($id) && $id > 0) {
             if (is_numeric($id)) {
 
-                $product = $this->product;
+                $this->product = $this->productRepository->findById('produits', $id);
+                if ($this->product) {
+                    $this->productRepository->remove($this->product);
+                    return $this->redirectToRoute(['admin/produits', 'list']);
+                }
             } else {
                 $this->setMessage("danger",  "ERREUR 404 : la page demandé n'existe pas");
             }
         } else {
             $this->setMessage("danger",  "ERREUR 404 : la page demandé n'existe pas");
         }
-
-        $this->render("product/form.html.php", [
-            "h1" => "Suppresion du produit n°$id ?",
-            "product" => $product,
-            "mode" => "suppression"
-        ]);
     }
 
     public function show($id)

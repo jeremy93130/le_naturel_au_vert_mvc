@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var searchTerm = searchInput.value.toLowerCase();
       plantes.forEach(function (plante) {
         var planteName = plante.getAttribute("data-nom").toLowerCase();
-        if (planteName.startsWith(searchTerm)) {
+        if (planteName.includes(searchTerm)) {
           plante.style.display = "block";
         } else {
           plante.style.display = "none";

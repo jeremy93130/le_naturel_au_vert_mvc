@@ -37,7 +37,7 @@ class ImageHandler
 
                 if($entity instanceof Images){
                     $entity->setImageName($uniqueFileName);
-                } else {
+                    } else {
                     $entity->setImage($uniqueFileName);
                 }
 

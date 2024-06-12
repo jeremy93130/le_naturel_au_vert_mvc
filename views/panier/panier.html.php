@@ -35,7 +35,7 @@ if (empty($_SESSION['cart']) || !isset($_SESSION['cart'])) {; ?>
                         </td>
                         <td class="quantite-input" id="quantite-<?= $p['id']; ?>">
                             <button type="button" data-article="<?= $p['id']; ?>" class="quantity-change moins none" data-delta="-1">-</button>
-                            <input type="text" value="<?= $p['nbArticles'] ?>" data-article="<?= $p['id'] ?>" class="quantity" name="quantity_produit" id="quantity-<?= $p['id'] ?>" data-lot="<?= $p['lot']; ?>" />
+                            <input type="number" value="<?= $p['nbArticles'] ?>" data-article="<?= $p['id'] ?>" class="quantity" name="quantity_produit" id="quantity-<?= $p['id'] ?>" data-lot="<?= $p['lot']; ?>" />
                             <button type="button" data-article="<?= $p['id'] ?>" class="quantity-change plus none" data-delta="1">+</button>
                         </td>
                         <td class="total-column">

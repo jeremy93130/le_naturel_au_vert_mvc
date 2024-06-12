@@ -2,10 +2,10 @@
     <h1 class="text-center">Modification du produit</h1>
     <h2 class="text-center">Que voulez-vous modifier sur <?= $product->getNomProduit() ?>?</h2>
     <div class="text-warning w-50 m-auto mt-5">
-        <ul data-url='<?= addLink('admin/produits', 'edit'); ?>'>
+        <ul data-url='<?= addLink('admin/produits', 'edit'); ?>' data-id = "<?= $product->getId(); ?>">
             <li class="modif_produit">Le Nom
                 <div class="none">
-                    <input type="text">
+                    <input type="text" name="nom">
                     <button type="submit">Valider</button>
                 </div>
             </li>
@@ -17,7 +17,7 @@
             </li>
             <li class="modif_produit">Le Prix
                 <div class="none">
-                    <input type="number">
+                    <input type="number" name="prix">
                     <button type="submit">Valider</button>
                 </div>
             </li>
@@ -29,13 +29,13 @@
             </li>
             <li class="modif_produit">L'Image
                 <div class="none">
-                    <input type="file">
+                    <input type="file" name="image">
                     <button type="submit">Valider</button>
                 </div>
             </li>
             <li class="modif_produit">Le Stock
                 <div class="none">
-                    <input type="number">
+                    <input type="number" name="stock">
                     <button type="submit">Valider</button>
                 </div>
             </li>
@@ -59,10 +59,11 @@
             </li>
             <li class="modif_produit">Le Lot
                 <div class="none">
-                    <input type="number">
+                    <input type="number" name="lot">
                     <button type="submit">Valider</button>
                 </div>
             </li>
         </ul>
+        <div id="reponse"></div>
     </div>
 </div>

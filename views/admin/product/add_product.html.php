@@ -67,7 +67,7 @@
                 Lot
                 <sup>*</sup>
             </label>
-            <input type="text" name="lot" id="lot_admin" class="form-control" required>
+            <input type="number" name="lot" id="lot_admin" class="form-control" required>
         </div>
         <div class="d-flex justify-content-between mt-3">
             <button type="submit" class="btn btn-primary" name="add_produit">Ajouter le produit</button>

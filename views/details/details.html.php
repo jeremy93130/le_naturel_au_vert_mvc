@@ -11,8 +11,6 @@
               <div class="carousel-item detail-img">
                 <img src="<?= $cheminDossier . $i->getImageName(); ?>" class="d-block w-100" alt="<?= $detail->getNomProduit(); ?>" />
               </div>
-          <?php }
-          } ?>
         </div>
         <button class="carousel-control-prev absolutePrev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -22,8 +20,10 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
+    <?php }
+          } ?>
       </div>
-      <div class="card-body bg-dark details_mobile text-warning" style="width: 400px; margin:auto;">
+      <div class="card-body bg-dark details_mobile text-warning mb-5" style="width: 400px; margin:auto;">
         <h5 class="card-title"><?= $detail->getNomProduit() ?></h5>
         <div class="accordion accordion-flush bg-transparent" id="accordionFlushExample">
           <div class="accordion-item">

@@ -95,8 +95,6 @@ class HomeController extends BaseController
         // d_die($item);
 
         $avis = $this->avisRepository->getAvisByProduit($id);
-        $css = BackgroundManager::getBackGround($detailsProduit->getCategorie());
-        $cheminDossier = BackgroundManager::chooseProductFolder($detailsProduit->getCategorie());
 
         // On gère l'utilisation des étoiles, on récupère la note de l'utilisateur puis on la transforme en nombre d'étoiles correspondantes
 

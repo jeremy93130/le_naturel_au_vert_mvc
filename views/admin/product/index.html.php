@@ -15,6 +15,7 @@
                             <?= $produit->getNomProduit(); ?>
                         </h5>
                         <a href="<?= addLink('admin/produits', 'edit', $produit->getId()) ?>" class="btn btn-warning change-btn">Modifier ce produit</a>
+                        <a href="<?= addLink('admin/produits', 'delete', $produit->getId()) ?>" class="btn btn-warning change-btn mt-4">Supprimer ce produit</a>
                     </div>
                 </div>
             <?php } ?>

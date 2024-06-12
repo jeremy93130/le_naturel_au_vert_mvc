@@ -60,43 +60,58 @@ class ProduitsRepository extends BaseRepository
 
     public function updateProduct(Produits $product)
     {
-        $sql = "UPDATE produits 
-                SET nom_produit = :nom,description_produit=:description,prix_produit=:prix,stock=:stock,image=:image,caracteristiques=:caract,entretien=:entretien,categorie=:categorie,lot=:lot
-                WHERE id = :id";
-        $request = $this->dbConnection->prepare($sql);
-
-        $request->bindValue(":id", $product->getId());
-        $request->bindValue(":nom", $product->getNomProduit());
-        $request->bindValue(":description", $product->getDescriptionProduit());
-        $request->bindValue(":prix", $product->getPrixProduit());
-        $request->bindValue(":stock", $product->getStock());
-        $request->bindValue(":image", $product->getImage());
-        $request->bindValue(":caract", $product->getCaracteristique());
-        $request->bindValue(":entretien", $product->getEntretien());
-        $request->bindValue(":categorie", $product->getCategorie());
-        $request->bindValue(":lot", $product->getLot());
-
-        $request = $request->execute();
-        if ($request) {
-            Session::addMessage("success", "La mise à jour du produit a bien été éffectuée");
-            return true;
+        $sql = "UPDATE produits SET ";
+        $params = [];
+        if ($product->getId() !== null) {
+            $sql .= "id = :id, ";
+            $params[':id'] = $product->getId();
         }
-        Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
-        return false;
-    }
-    public function updateQuantityInProduct($productId, $stock)
-    {
-        $sql = "UPDATE produits 
-                SET stock = stock - :stock
-                WHERE id = :id";
+        if ($product->getNomProduit() !== null) {
+            $sql .= "nom_produit = :nom, ";
+            $params[':nom'] = $product->getNomProduit();
+        }
+        if ($product->getDescriptionProduit() !== null) {
+            $sql .= 'description_produit = :description, ';
+            $params[':description'] = $product->getDescriptionProduit();
+        }
+        if ($product->getPrixProduit() !== null) {
+            $sql .= 'prix_produit = :prix, ';
+            $params[':prix'] = $product->getPrixProduit();
+        }
+        if ($product->getStock() !== null) {
+            $sql .= 'stock = :stock, ';
+            $params[':stock'] = $product->getStock();
+        }
+        if ($product->getImage() !== null) {
+            $sql .= 'image = :image, ';
+            $params[':image'] = $product->getImage();
+        }
+        if ($product->getCaracteristique() !== null) {
+            $sql .= 'caracteristiques = :caracteristique, ';
+            $params[':caracteristique'] = $product->getCaracteristique();
+        }
+        if ($product->getEntretien() !== null) {
+            $sql .= 'entretien = :entretien, ';
+            $params[':entretien'] = $product->getEntretien();
+        }
+        if ($product->getCategorie() !== null) {
+            $sql .= 'categorie = :categorie, ';
+            $params[':categorie'] = $product->getCategorie();
+        }
+        if ($product->getLot() !== null) {
+            $sql .= 'lot = :lot ';
+            $params[':lot'] = $product->getLot();
+        }
+        $sql .= 'WHERE id = :id';
         $request = $this->dbConnection->prepare($sql);
 
-        $request->bindValue(":id", $productId);
-        $request->bindValue(":stock", $stock);
-
+        // Boucler pour lier les paramètres 
+        foreach ($params as $key => $value) {
+            $request->bindValue($key,$value);
+        }
         $request = $request->execute();
         if ($request) {
-                return true;
+            return true;
         }
         Session::addMessage("danger", "Erreur : Le produit n'a pas été mise à jour");
         return false;
@@ -111,5 +126,4 @@ class ProduitsRepository extends BaseRepository
         $statement->execute();
         return $statement->fetchAll();
     }
-
 }

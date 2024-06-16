@@ -4,6 +4,7 @@ namespace Form;
 
 use Model\Entity\Adresse;
 use Model\Repository\AdresseRepository;
+use Service\FormSecurity;
 
 class AdresseLivraisonHandleRequest extends BaseHandleRequest
 {
@@ -11,6 +12,8 @@ class AdresseLivraisonHandleRequest extends BaseHandleRequest
     public function handleInsertForm(Adresse $adresses)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirme_adresse_livraison'])) {
+
+            FormSecurity::htmlSecurity($_POST);
             extract($_POST);
             $errors = [];
             // Vérification de la validité du formulaire
@@ -20,7 +23,6 @@ class AdresseLivraisonHandleRequest extends BaseHandleRequest
             if (strlen($nomComplet) < 4 || strlen($adresse) < 4 || strlen($ville) < 1 || strlen($pays) < 2) {
                 $errors[] = "Ce champ doit avoir au moins 4 caractères";
             }
-
             if (empty($errors)) {
                 $adresses->setNomComplet($nomComplet)
                     ->setAdresse($adresse)
@@ -30,9 +32,10 @@ class AdresseLivraisonHandleRequest extends BaseHandleRequest
                     ->setTelephone($telephone)
                     ->setInstruction_livraison($instructions ?? null)
                     ->setType('livraison');
-
                 $_SESSION['adresse_livraison'] = $adresses;
-                $_SESSION['adresse_facturation'] = clone $adresses;
+                if (!isset($_SESSION['adresse_facturation'])) {
+                    $_SESSION['adresse_facturation'] = clone $adresses;
+                }
                 return $this;
             }
 

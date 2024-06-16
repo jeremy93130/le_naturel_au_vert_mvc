@@ -3,6 +3,7 @@
 namespace Form;
 
 use Model\Entity\Adresse;
+use Service\FormSecurity;
 
 class AdresseFacturationHandleRequest extends BaseHandleRequest
 {
@@ -12,7 +13,7 @@ class AdresseFacturationHandleRequest extends BaseHandleRequest
     public function handleEditForm(Adresse $adresses)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modif_adresse_facturation'])) {
-
+            FormSecurity::htmlSecurity($_POST);
             extract($_POST);
             $errors = [];
             // Vérification de la validité du formulaire

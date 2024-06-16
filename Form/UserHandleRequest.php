@@ -5,6 +5,7 @@ namespace Form;
 use Service\Session as Sess;
 use Model\Entity\User;
 use Model\Repository\UserRepository;
+use Service\FormSecurity;
 
 class UserHandleRequest extends BaseHandleRequest
 {
@@ -17,6 +18,7 @@ class UserHandleRequest extends BaseHandleRequest
     public function handleInsertForm(User $user)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+            FormSecurity::htmlSecurity($_POST);
             extract($_POST);
             $errors = [];
 
@@ -38,6 +40,10 @@ class UserHandleRequest extends BaseHandleRequest
             }
             if (empty($password)) {
                 $errors[] = "Le mot de passe ne peut pas être vide";
+            }
+
+            if(strlen($password < 12)){
+                $errors[] = "Votre mot de passe doit comporter au minimum 12 caractères";
             }
 
 
@@ -65,6 +71,7 @@ class UserHandleRequest extends BaseHandleRequest
     public function handleEditForm(User $user)
     {
         if (isset($_POST)) {
+            FormSecurity::htmlSecurity($_POST);
             $nom = $_POST['nom'] ?? null;
             $prenom = $_POST['prenom'] ?? null;
             $email = $_POST['email'] ?? null;
@@ -97,8 +104,6 @@ class UserHandleRequest extends BaseHandleRequest
             $telephone = $telephone !== null ? ($telephone) : $user->getPhone();
             $ancienMdp = $ancienMdp !== null ? trim($ancienMdp) : '';
             $nouveauMdp = $nouveauMdp !== null ? trim($nouveauMdp) : '';
-
-
 
             $user->setNom($nom);
             $user->setPrenom($prenom);

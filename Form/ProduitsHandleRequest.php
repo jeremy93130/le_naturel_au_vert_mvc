@@ -6,6 +6,7 @@ namespace Form;
 use Model\Entity\Produits;
 use Service\ImageHandler;
 use Model\Repository\ProduitsRepository;
+use Service\FormSecurity;
 
 class ProduitsHandleRequest extends BaseHandleRequest
 {
@@ -24,7 +25,7 @@ class ProduitsHandleRequest extends BaseHandleRequest
     public function handleInsertForm()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_produit'])) {
-
+            FormSecurity::htmlSecurity($_POST);
             extract($_POST);
             $errors = [];
             // Vérification de la validité du formulaire
@@ -133,9 +134,10 @@ class ProduitsHandleRequest extends BaseHandleRequest
             $this->setEerrorsForm($errors);
             return $this;
         }
-    } 
+    }
 
-    public function getModifElement(){
+    public function getModifElement()
+    {
         return $this->modifElement;
     }
 }

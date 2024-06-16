@@ -33,7 +33,7 @@ class AdresseController extends BaseController
         $ville = json_decode($dataVille, true);
 
         $this->adresseLivraisonHandleRequest->handleInsertForm($this->adresse);
-
+        
 
         if ($this->adresseLivraisonHandleRequest->isSubmitted() && $this->adresseLivraisonHandleRequest->isValid()) {
             $this->redirectToRoute(['commande', 'recapp']);

@@ -148,6 +148,7 @@ class PaiementController extends BaseController
                 if ($produit->getStock() >= $quantite) {
                     // Soustrayez la quantité du stock
                     $produit->setStock($produit->getStock() - $quantite);
+                    $this->produitsRepository->updateProduct($produit);
                 }
             }
         }

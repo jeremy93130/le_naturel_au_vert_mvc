@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Summary of namespace Controller
  */
+
 namespace Controller;
 
 use Model\Entity\User;
@@ -39,7 +41,14 @@ class UserController extends BaseController
                 $_SESSION['infos_user_invalid_email'] = $user;
                 return redirection(addLink('user', 'new'));
             }
-            $this->userRepository->insertUser($user);
+            $register = $this->userRepository->insertUser($user);
+
+            if (!$register) {
+                // Rediriger vers la page précédente (page de création de l'utilisateur) en cas d'échec
+                $_SESSION['infos_user_invalid_email'] = $user;
+                return redirection(addLink('user', 'new'));
+            }
+            
             Session::delete('infos_user_invalid_email');
             Session::delete('password_inscription');
             if (isset($_SESSION['recapp_url'])) {
@@ -178,5 +187,4 @@ class UserController extends BaseController
         $user = $this->getUser();
         $this->form->handleEditForm($user);
     }
-
 }

@@ -3,6 +3,7 @@
 namespace Model\Repository;
 
 use Model\Entity\User;
+use PDOException;
 use Service\Session;
 
 class UserRepository extends BaseRepository
@@ -19,27 +20,34 @@ class UserRepository extends BaseRepository
 
     public function insertUser(User $user)
     {
-        $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, date_de_naissance, telephone, roles) VALUES (:lastname, :firstname, :email,:password, :birthday, :telephone,:role)";
-        $request = $this->dbConnection->prepare($sql);
-        $request->bindValue(":lastname", $user->getNom());
-        $request->bindValue(":firstname", $user->getPrenom());
-        $request->bindValue(":email", $user->getEmail());
-        $request->bindValue(":password", $user->getPassword());
-        $request->bindValue(":birthday", $user->getBirthday());
-        $request->bindValue(":telephone", $user->getPhone());
-        $request->bindValue(":role", $user->getRole());
+        try {
 
-        $request = $request->execute();
-        if ($request) {
-            if ($request == 1) {
-                Session::addMessage("success", "Votre inscription s'est bien déroulée");
-                return true;
+            $sql = "INSERT INTO user (nom, prenom, email, mot_de_passe, date_de_naissance, telephone, roles) VALUES (:lastname, :firstname, :email,:password, :birthday, :telephone,:role)";
+            $request = $this->dbConnection->prepare($sql);
+            $request->bindValue(":lastname", $user->getNom());
+            $request->bindValue(":firstname", $user->getPrenom());
+            $request->bindValue(":email", $user->getEmail());
+            $request->bindValue(":password", $user->getPassword());
+            $request->bindValue(":birthday", $user->getBirthday());
+            $request->bindValue(":telephone", $user->getPhone());
+            $request->bindValue(":role", $user->getRole());
+
+            $request = $request->execute();
+            if ($request) {
+                if ($request == 1) {
+                    Session::addMessage("success", "Votre inscription s'est bien déroulée");
+                    return true;
+                } else {
+                    Session::addMessage("danger", "Erreur : Il y'a eu un problème lors de votre inscription");
+                    return false;
+                }
             }
-            Session::addMessage("danger", "Erreur : Il y'a eu un problème lors de votre inscription");
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) { // Code erreur pour violation de contrainte d'unicité
+                Session::addMessage("danger", "Erreur : Cet email est déjà utilisé");
+            }
             return false;
         }
-        Session::addMessage("danger", "Erreur SQL");
-        return null;
     }
 
 

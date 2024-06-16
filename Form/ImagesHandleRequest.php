@@ -7,6 +7,7 @@ use Model\Entity\Produits;
 use Service\ImageHandler;
 use Service\Session as Sess;
 use Model\Repository\ProduitsRepository;
+use Service\FormSecurity;
 
 class ImagesHandleRequest extends BaseHandleRequest
 {
@@ -22,8 +23,9 @@ class ImagesHandleRequest extends BaseHandleRequest
     public function handleInsertForm(Images $images)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajout_image'])) {
+            FormSecurity::htmlSecurity($_POST);
             extract($_POST);
-            $this->imageTraitement->handelPhoto($categorie,$images,$produit_id);
+            $this->imageTraitement->handelPhoto($categorie, $images, $produit_id);
             return $this;
         }
     }

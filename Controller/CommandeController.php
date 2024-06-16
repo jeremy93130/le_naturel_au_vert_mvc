@@ -44,12 +44,21 @@ class CommandeController extends BaseController
         }
         $data = $_SESSION['commande'] ?? null;
         $totalGeneral = $_SESSION['totalGeneral'];
-        
+
         $adresses = AdresseManager::checkAdresse($this->getUser()->getId(), $this->adresseRepository);
 
-        if ($adresses) {
-            $adresse_livraison = $adresses['livraison'];
-            $adresse_facturation = $adresses['facturation'];
+        if (isset($_SESSION['adresse_livraison']) || isset($_SESSION['adresse_facturation'])) {
+            if (isset($_SESSION['adresse_livraison'])) {
+                $adresse_livraison = $_SESSION['adresse_livraison'];
+            } else if ($adresses) {
+                $adresse_livraison = $adresses['livraison'];
+            }
+
+            if (isset($_SESSION['adresse_facturation'])) {
+                $adresse_facturation = $_SESSION['adresse_facturation'];
+            } else if ($adresses) {
+                $adresse_facturation = $adresses['facturation'];
+            }
         }
 
         if ($data !== null && is_array($data)) {
